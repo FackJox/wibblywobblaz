@@ -120,8 +120,8 @@ export default function WibblyWobblazLanding() {
 
   const LinksPage = () => (
     <div className="h-full bg-white flex flex-col">
-      {/* Navigation */}
-      <nav className="border-b-4 border-black p-4 md:p-6 relative z-10">
+      {/* Sticky Navigation */}
+      <nav className="sticky-nav border-b-4 border-black p-4 md:p-6 bg-white">
         <div className="flex justify-between items-center">
           <div className="text-2xl md:text-3xl font-black tracking-tighter">WIBBLY WOBBLAZ</div>
 
@@ -184,78 +184,93 @@ export default function WibblyWobblazLanding() {
         )}
       </nav>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col md:flex-row relative">
-        {/* Left Side - Logo */}
-        <div className="flex-1 flex items-center justify-center p-4 md:p-8 bg-white relative z-10">
-          <div className="max-w-lg w-full">
-            <Image
-              src="/images/wibbly-wobblaz-logo.png"
-              alt="WIBBLY WOBBLAZ"
-              width={500}
-              height={400}
-              className="w-full h-auto"
-              priority
-            />
-          </div>
-        </div>
-
-        {/* Right Side - Links */}
-        <div className="flex-1 bg-black text-white p-4 md:p-8 flex flex-col justify-center">
-          <div className="space-y-6 md:space-y-8">
-            {/* Social Links */}
-            <div className="space-y-4">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
-                FOLLOW US
-              </h2>
-              <div className="space-y-3">
-                {socialLinks.map((social) => (
-                  <Link
-                    key={social.name}
-                    href={social.url}
-                    className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <social.icon size={24} />
-                    <span>{social.name.toUpperCase()}</span>
-                    <ExternalLink size={20} className="ml-auto" />
-                  </Link>
-                ))}
+      {/* Scrollable Main Content */}
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 scrollable-content mobile-scroll-optimized"
+      >
+        <div className="links-container">
+          {/* Combined Layout */}
+          <div className="flex flex-col md:flex-row min-h-screen">
+            {/* Left Side - Logo */}
+            <div className="flex-1 flex items-center justify-center p-4 md:p-8 bg-white">
+              <div className={`max-w-lg w-full logo-transition ${logoScaled ? 'logo-shrunk' : ''}`}>
+                <Image
+                  src="/images/wibbly-wobblaz-logo.png"
+                  alt="WIBBLY WOBBLAZ"
+                  width={500}
+                  height={400}
+                  className="w-full h-auto"
+                  priority
+                />
               </div>
             </div>
 
-            {/* Tickets */}
-            <div className="space-y-4">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
-                GET TICKETS
-              </h2>
-              <Link
-                href="https://www.headfirstbristol.co.uk/"
-                className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Calendar size={24} />
-                <span>HEADFIRST</span>
-                <ExternalLink size={20} className="ml-auto" />
-              </Link>
-            </div>
+            {/* Right Side - Links */}
+            <div className="flex-1 bg-black text-white p-4 md:p-8 flex flex-col justify-center">
+            <div className="space-y-6 md:space-y-8">
+              {/* Social Links */}
+              <div className="space-y-4">
+                <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                  FOLLOW US
+                </h2>
+                <div className="space-y-3">
+                  {socialLinks.map((social) => (
+                    <Link
+                      key={social.name}
+                      href={social.url}
+                      className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <social.icon size={24} />
+                      <span>{social.name.toUpperCase()}</span>
+                      <ExternalLink size={20} className="ml-auto" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
 
-            {/* Merch */}
-            <div className="space-y-4">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
-                MERCH STORE
-              </h2>
-              <Link
-                href="https://merch.wibblywobblaz.xyz"
-                className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
-              >
-                <span>SHOP NOW</span>
-                <ExternalLink size={20} className="ml-auto" />
-              </Link>
+              {/* Tickets */}
+              <div className="space-y-4">
+                <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                  GET TICKETS
+                </h2>
+                <Link
+                  href="https://www.headfirstbristol.co.uk/"
+                  className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Calendar size={24} />
+                  <span>HEADFIRST</span>
+                  <ExternalLink size={20} className="ml-auto" />
+                </Link>
+              </div>
+
+              {/* Merch */}
+              <div className="space-y-4">
+                <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                  MERCH STORE
+                </h2>
+                <Link
+                  href="https://merch.wibblywobblaz.xyz"
+                  className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                >
+                  <span>SHOP NOW</span>
+                  <ExternalLink size={20} className="ml-auto" />
+                </Link>
+              </div>
+
+           
+ 
+            </div>
             </div>
           </div>
+          
+
+          
+     
         </div>
       </div>
     </div>
