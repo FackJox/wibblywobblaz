@@ -232,16 +232,8 @@ body {
   }
 }
 
-/* Smooth scrolling and logo scaling styles */
+/* Smooth scrolling styles */
 @layer utilities {
-  .logo-transition {
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-  
-  .logo-shrunk {
-    transform: scale(0.75); /* 25% reduction for smooth scaling */
-  }
-  
   .sticky-nav {
     position: sticky;
     top: 0;

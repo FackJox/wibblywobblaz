@@ -11,7 +11,6 @@ export default function WibblyWobblazLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [shhhState, setShhhState] = useState<'hidden' | 'animating' | 'visible'>('hidden')
-  const [logoScaled, setLogoScaled] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const handlePageTransition = (targetPage: "links" | "parties") => {
@@ -67,49 +66,6 @@ export default function WibblyWobblazLanding() {
     }
   }, [currentPage, isTransitioning, shhhState])
 
-  // Handle scroll events for logo scaling on Links page (mobile only)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (currentPage !== "links" || !scrollContainerRef.current) return
-      
-      // Only enable scrolling/scaling on mobile viewports
-      if (window.innerWidth >= 768) return
-      
-      const scrollTop = scrollContainerRef.current.scrollTop
-      const threshold = window.innerHeight * 0.1 // Trigger scaling after scrolling 10% of viewport height
-      
-      if (scrollTop > threshold && !logoScaled) {
-        setLogoScaled(true)
-      } else if (scrollTop <= threshold && logoScaled) {
-        setLogoScaled(false)
-      }
-    }
-
-    const handleResize = () => {
-      // Reset logo scaling when switching to desktop
-      if (window.innerWidth >= 768 && logoScaled) {
-        setLogoScaled(false)
-      }
-    }
-
-    const scrollContainer = scrollContainerRef.current
-    if (scrollContainer && currentPage === "links") {
-      scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
-      window.addEventListener('resize', handleResize)
-      
-      return () => {
-        scrollContainer.removeEventListener('scroll', handleScroll)
-        window.removeEventListener('resize', handleResize)
-      }
-    }
-  }, [currentPage, logoScaled])
-
-  // Reset logo scaling when switching pages
-  useEffect(() => {
-    if (currentPage !== "links") {
-      setLogoScaled(false)
-    }
-  }, [currentPage])
 
   const upcomingParties = [
     {
@@ -206,7 +162,7 @@ export default function WibblyWobblazLanding() {
           <div className="flex flex-col md:flex-row h-full">
             {/* Left Side - Logo */}
             <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full">
-              <div className={`max-w-lg w-full logo-transition ${logoScaled ? 'logo-shrunk' : ''}`}>
+              <div className="max-w-lg w-full">
                 <Image
                   src="/images/wibbly-wobblaz-logo.png"
                   alt="WIBBLY WOBBLAZ"
@@ -261,7 +217,7 @@ export default function WibblyWobblazLanding() {
                 </div>
 
                 {/* Merch */}
-                <div className="space-y-4">
+                <div className="space-y-4 pb-10">
                   <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
                     MERCH STORE
                   </h2>
