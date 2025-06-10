@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Hegval';
+  src: url('/hegval.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -9,6 +17,10 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .font-hegval {
+    font-family: 'Hegval', Arial, Helvetica, sans-serif;
   }
 }
 
@@ -237,27 +249,46 @@ body {
   }
   
   .scrollable-content {
-    height: 100vh;
-    overflow-y: auto;
-    scroll-behavior: smooth;
+    /* Desktop: no scrolling */
+    @media (min-width: 768px) {
+      overflow: hidden;
+      height: 100%;
+    }
+    /* Mobile: enable scrolling */
+    @media (max-width: 767px) {
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      height: 100%;
+    }
   }
   
   .links-container {
-    min-height: 150vh; /* Ensure enough content to scroll */
+    /* Desktop: fit viewport exactly */
+    @media (min-width: 768px) {
+      height: 100%;
+    }
+    /* Mobile: minimal extra height for scroll trigger */
+    @media (max-width: 767px) {
+      min-height: 100%;
+    }
   }
 }
 
 /* Smooth scrolling for supported browsers */
 @supports (scroll-behavior: smooth) {
   .scrollable-content {
-    scroll-behavior: smooth;
+    @media (max-width: 767px) {
+      scroll-behavior: smooth;
+    }
   }
 }
 
 /* Enhanced mobile scrolling */
 @layer utilities {
   .mobile-scroll-optimized {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    @media (max-width: 767px) {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+    }
   }
 }
