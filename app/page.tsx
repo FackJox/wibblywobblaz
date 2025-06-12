@@ -26,33 +26,33 @@ export default function WibblyWobblazLanding() {
     }, 800)
   }
 
-  // Handle parties page animation and bounce-back
-  useEffect(() => {
-    if (currentPage === "parties" && shhhState === 'hidden' && !isTransitioning) {
-      // Start animation after page transition completes
-      const startAnimationTimer = setTimeout(() => {
-        setShhhState('animating')
+  // // Handle parties page animation and bounce-back
+  // useEffect(() => {
+  //   if (currentPage === "parties" && shhhState === 'hidden' && !isTransitioning) {
+  //     // Start animation after page transition completes
+  //     const startAnimationTimer = setTimeout(() => {
+  //       setShhhState('animating')
         
-        // After animation completes, bounce back to links
-        const bounceBackTimer = setTimeout(() => {
-          setShhhState('visible') // Keep visible but stop animating
+  //       // After animation completes, bounce back to links
+  //       const bounceBackTimer = setTimeout(() => {
+  //         setShhhState('visible') // Keep visible but stop animating
           
-          // Direct page transition back to links
-          setIsTransitioning(true)
-          setMobileMenuOpen(false)
-          setCurrentPage("links")
+  //         // Direct page transition back to links
+  //         setIsTransitioning(true)
+  //         setMobileMenuOpen(false)
+  //         setCurrentPage("links")
           
-          setTimeout(() => {
-            setIsTransitioning(false)
-          }, 800)
-        }, 1000) // 900ms animation + small buffer
+  //         setTimeout(() => {
+  //           setIsTransitioning(false)
+  //         }, 800)
+  //       }, 1000) // 900ms animation + small buffer
         
-        return () => clearTimeout(bounceBackTimer)
-      }, 200)
+  //       return () => clearTimeout(bounceBackTimer)
+  //     }, 200)
       
-      return () => clearTimeout(startAnimationTimer)
-    }
-  }, [currentPage, shhhState, isTransitioning])
+  //     return () => clearTimeout(startAnimationTimer)
+  //   }
+  // }, [currentPage, shhhState, isTransitioning])
 
   // Reset shhh state when back on links page and transition is complete
   useEffect(() => {
@@ -73,9 +73,9 @@ export default function WibblyWobblazLanding() {
       title: "WIBBLY WOBBLAZ",
       date: "2025-08-30",
       time: "22:00",
-      venue: "THE PACKHORSE",
+      venue: "THE PACKHORSE SECRET CELLAR",
       location: "BRISTOL",
-      poster: "/placeholder.svg?height=400&width=300",
+      poster: "/images/flyer4.png",
     },
   ]
 
@@ -205,7 +205,7 @@ export default function WibblyWobblazLanding() {
                     GET TICKETS
                   </h2>
                   <Link
-                    href="https://www.headfirstbristol.co.uk/"
+                    href="https://hdfst.uk/e132325"
                     className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -238,9 +238,9 @@ export default function WibblyWobblazLanding() {
   )
 
   const PartiesPage = () => (
-    <div className="h-full bg-black text-white flex flex-col">
+    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
       {/* Navigation */}
-      <nav className="border-b-4 border-white p-4 md:p-6">
+      <nav className="border-b-4 border-white p-4 md:p-6 flex-shrink-0">
         <div className="flex justify-between items-center">
           <div className="text-2xl md:text-3xl font-black tracking-tighter text-white">UPCOMING PARTIES</div>
 
@@ -308,9 +308,9 @@ export default function WibblyWobblazLanding() {
       </nav>
 
       {/* Main Content Area with Shhh SVG */}
-      <div className="flex-1 relative overflow-hidden">
+      <div className="flex-1 relative overflow-y-auto">
         {/* Shhh SVG - stays visible after first animation */}
-        <div
+        {/* <div
           className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated ${
             shhhState === 'animating' ? 'shhh-slide-up' : ''
           }`}
@@ -337,22 +337,22 @@ export default function WibblyWobblazLanding() {
               priority
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Party content overlay */}
              {/* Poster */}
                  {/* Event Details */}
-        {/* <div className="relative z-10 p-4 md:p-8 h-full flex flex-col justify-start">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+         <div className="relative z-10 parties-content p-4 md:p-8">
+          <div className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
             {upcomingParties.map((party, index) => (
               <div
                 key={party.id}
-                className="border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
+                className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
               >
            
                 <div className="aspect-[3/4] border-b-4 border-white relative overflow-hidden">
                   <Image
-                    src={party.poster || "/placeholder.svg"}
+                    src={party.poster || "/images/flyer4.png"}
                     alt={party.title}
                     fill
                     className="object-cover group-hover:invert transition-all duration-200"
@@ -394,7 +394,7 @@ export default function WibblyWobblazLanding() {
                     className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
                     asChild
                   >
-                    <Link href="https://www.headfirstbristol.co.uk/" target="_blank" rel="noopener noreferrer">
+                    <Link href="https://hdfst.uk/e132325" target="_blank" rel="noopener noreferrer">
                       GET TICKETS
                     </Link>
                   </Button>
@@ -402,7 +402,7 @@ export default function WibblyWobblazLanding() {
               </div>
             ))}
           </div>
-        </div> */}
+        </div> 
 
 
       </div>

@@ -266,6 +266,48 @@ body {
   }
 }
 
+/* Parties page viewport optimization */
+@layer utilities {
+  .parties-container {
+    /* Ensure content fits viewport on all devices */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .parties-content {
+    /* Desktop: center content vertically */
+    @media (min-width: 768px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+    }
+    /* Mobile: allow scrolling with proper spacing */
+    @media (max-width: 767px) {
+      padding-bottom: 2rem;
+      min-height: calc(100vh - 120px); /* Account for nav height */
+    }
+  }
+  
+  .parties-grid {
+    /* Ensure grid doesn't overflow viewport */
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Mobile-specific adjustments for parties */
+  @media (max-width: 767px) {
+    .parties-card {
+      margin-bottom: 1rem;
+    }
+    
+    .parties-card:last-child {
+      margin-bottom: 2rem; /* Extra space for last card */
+    }
+  }
+}
+
 /* Smooth scrolling for supported browsers */
 @supports (scroll-behavior: smooth) {
   .scrollable-content {
