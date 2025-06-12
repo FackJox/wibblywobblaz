@@ -70,7 +70,7 @@ export default function WibblyWobblazLanding() {
   const upcomingParties = [
     {
       id: 1,
-      title: "WIBBLY WOBBLAZ",
+      title: "WIBBLY WOBBLAZ - LAUNCH PARTY",
       date: "2025-08-30",
       time: "22:00",
       venue: "THE PACKHORSE SECRET CELLAR",
