@@ -16,35 +16,46 @@ export const useStaggeredReveal = ({
   const [isInView, setIsInView] = useState(false)
   const [hasAnimated, setHasAnimated] = useState(false)
   const ref = useRef<HTMLElement | null>(null)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const hasTriggeredRef = useRef(false)
 
   useEffect(() => {
     if (!ref.current) return
+    
+    // If we've already triggered and triggerOnce is true, don't create observer
+    if (triggerOnce && hasTriggeredRef.current) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const shouldAnimate = entry.isIntersecting && (!triggerOnce || !hasAnimated)
-        
-        if (shouldAnimate) {
+        if (entry.isIntersecting && !hasTriggeredRef.current) {
+          // Mark as triggered immediately
+          hasTriggeredRef.current = true
           setIsInView(true)
-          if (triggerOnce) {
-            setHasAnimated(true)
+          setHasAnimated(true)
+          
+          // If triggerOnce, immediately disconnect to prevent any retriggering
+          if (triggerOnce && observerRef.current) {
+            observerRef.current.disconnect()
+            observerRef.current = null
           }
-        } else if (!triggerOnce) {
+        } else if (!triggerOnce && !entry.isIntersecting) {
           setIsInView(false)
+          hasTriggeredRef.current = false
         }
       },
       { threshold, rootMargin }
     )
 
+    observerRef.current = observer
     observer.observe(ref.current)
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+        observerRef.current = null
       }
-      observer.disconnect()
     }
-  }, [threshold, rootMargin, triggerOnce, hasAnimated])
+  }, [threshold, rootMargin, triggerOnce])
 
   return { ref, isInView, hasAnimated }
 }

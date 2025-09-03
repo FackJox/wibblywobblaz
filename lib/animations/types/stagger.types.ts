@@ -30,10 +30,18 @@ export interface AnimationProps {
 
 export type StaggerDirection = 'up' | 'down' | 'left' | 'right' | 'none'
 
-export interface StaggeredRevealProps extends AnimationProps {
+export interface StaggeredRevealProps {
   children: React.ReactNode
   className?: string
   stagger?: StaggerConfig
   reveal?: RevealConfig
   direction?: StaggerDirection
+  variants?: Variants
+  initial?: string
+  viewport?: {
+    once?: boolean
+    amount?: number | 'some' | 'all'
+    margin?: string
+  }
+  debugId?: string
 }

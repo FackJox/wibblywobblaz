@@ -1,8 +1,7 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { useStaggeredReveal } from '@/lib/animations/hooks/useStaggeredReveal'
 import { StaggeredRevealProps, StaggerDirection } from '@/lib/animations/types/stagger.types'
 import {
   staggerContainerVariants,
@@ -32,28 +31,25 @@ export const StaggerReveal: React.FC<StaggeredRevealProps> = ({
   direction = 'up',
   variants,
   initial = 'hidden',
-  animate,
-  whileInView,
-  viewport = { once: true, amount: 0.3 }
+  viewport = { once: true, amount: 0.1, margin: "-50px" },
+  debugId = 'unknown'
 }) => {
-  const {
-    threshold = 0.1,
-    rootMargin = '-50px',
-    triggerOnce = true
-  } = reveal
+  const mountTime = useRef(Date.now())
+  const animationCount = useRef(0)
 
-  const { ref, isInView } = useStaggeredReveal({ 
-    threshold, 
-    rootMargin, 
-    triggerOnce 
-  })
-
+  useEffect(() => {
+    console.log(`[StaggerReveal ${debugId}] MOUNTED at ${new Date(mountTime.current).toISOString()}`)
+    
+    return () => {
+      console.log(`[StaggerReveal ${debugId}] UNMOUNTED after ${Date.now() - mountTime.current}ms`)
+    }
+  }, [debugId])
   const shouldReduceMotion = typeof window !== 'undefined' && 
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   if (shouldReduceMotion) {
     return (
-      <div ref={ref as React.RefObject<HTMLDivElement>} className={className}>
+      <div className={className}>
         {children}
       </div>
     )
@@ -74,18 +70,27 @@ export const StaggerReveal: React.FC<StaggeredRevealProps> = ({
     }
   }
 
-  const animateState = animate || (isInView ? 'visible' : initial)
-
   if (React.Children.count(children) === 1) {
     return (
       <motion.div
-        ref={ref as React.RefObject<HTMLDivElement>}
         className={className}
         variants={itemVars}
         initial={initial}
-        animate={animateState}
-        whileInView={whileInView}
+        whileInView="visible"
         viewport={viewport}
+        onAnimationStart={() => {
+          animationCount.current++
+          console.log(`[StaggerReveal ${debugId}] SINGLE ANIMATION START #${animationCount.current}`, {
+            timestamp: new Date().toISOString(),
+            timeSinceMount: Date.now() - mountTime.current + 'ms'
+          })
+        }}
+        onViewportEnter={() => {
+          console.log(`[StaggerReveal ${debugId}] SINGLE VIEWPORT ENTER`, {
+            timestamp: new Date().toISOString(),
+            timeSinceMount: Date.now() - mountTime.current + 'ms'
+          })
+        }}
       >
         {children}
       </motion.div>
@@ -94,13 +99,24 @@ export const StaggerReveal: React.FC<StaggeredRevealProps> = ({
 
   return (
     <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
       className={className}
       variants={updatedContainerVariants}
       initial={initial}
-      animate={animateState}
-      whileInView={whileInView}
+      whileInView="visible"
       viewport={viewport}
+      onAnimationStart={() => {
+        animationCount.current++
+        console.log(`[StaggerReveal ${debugId}] MULTI ANIMATION START #${animationCount.current}`, {
+          timestamp: new Date().toISOString(),
+          timeSinceMount: Date.now() - mountTime.current + 'ms'
+        })
+      }}
+      onViewportEnter={() => {
+        console.log(`[StaggerReveal ${debugId}] MULTI VIEWPORT ENTER`, {
+          timestamp: new Date().toISOString(),
+          timeSinceMount: Date.now() - mountTime.current + 'ms'
+        })
+      }}
     >
       {React.Children.map(children, (child, index) => (
         <motion.div

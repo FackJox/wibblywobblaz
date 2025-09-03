@@ -1,18 +1,17 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { motion, Variants } from 'framer-motion'
-import { useStaggeredReveal } from '@/lib/animations/hooks/useStaggeredReveal'
 
 interface StaggerContainerProps {
   children: React.ReactNode
   staggerDelay?: number
   className?: string
   threshold?: number
-  rootMargin?: string
   triggerOnce?: boolean
   containerVariants?: Variants
   itemVariants?: Variants
+  debugId?: string // Add debug identifier
 }
 
 const defaultContainerVariants: Variants = {
@@ -47,19 +46,27 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   staggerDelay = 0.1,
   className = '',
   threshold = 0.1,
-  rootMargin = '-50px',
   triggerOnce = true,
   containerVariants = defaultContainerVariants,
-  itemVariants = defaultItemVariants
+  itemVariants = defaultItemVariants,
+  debugId = 'unknown'
 }) => {
-  const { ref, isInView } = useStaggeredReveal({ threshold, rootMargin, triggerOnce })
-  
+  const mountTime = useRef(Date.now())
+  const animationCount = useRef(0)
+
+  useEffect(() => {
+    console.log(`[StaggerContainer ${debugId}] MOUNTED at ${new Date(mountTime.current).toISOString()}`)
+    
+    return () => {
+      console.log(`[StaggerContainer ${debugId}] UNMOUNTED after ${Date.now() - mountTime.current}ms`)
+    }
+  }, [debugId])
   const shouldReduceMotion = typeof window !== 'undefined' && 
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   if (shouldReduceMotion) {
     return (
-      <div ref={ref as React.RefObject<HTMLDivElement>} className={className}>
+      <div className={className}>
         {children}
       </div>
     )
@@ -78,11 +85,44 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
 
   return (
     <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
       className={className}
       variants={updatedContainerVariants}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      whileInView="visible"
+      viewport={{ 
+        once: triggerOnce,
+        amount: threshold,
+        margin: "-50px"
+      }}
+      onAnimationStart={(definition) => {
+        animationCount.current++
+        console.log(`[StaggerContainer ${debugId}] ANIMATION START #${animationCount.current}`, {
+          definition,
+          timestamp: new Date().toISOString(),
+          timeSinceMount: Date.now() - mountTime.current + 'ms'
+        })
+      }}
+      onAnimationComplete={(definition) => {
+        console.log(`[StaggerContainer ${debugId}] ANIMATION COMPLETE #${animationCount.current}`, {
+          definition,
+          timestamp: new Date().toISOString(),
+          timeSinceMount: Date.now() - mountTime.current + 'ms'
+        })
+      }}
+      onViewportEnter={(entry) => {
+        console.log(`[StaggerContainer ${debugId}] VIEWPORT ENTER`, {
+          timestamp: new Date().toISOString(),
+          timeSinceMount: Date.now() - mountTime.current + 'ms',
+          entry
+        })
+      }}
+      onViewportLeave={(entry) => {
+        console.log(`[StaggerContainer ${debugId}] VIEWPORT LEAVE`, {
+          timestamp: new Date().toISOString(),
+          timeSinceMount: Date.now() - mountTime.current + 'ms',
+          entry
+        })
+      }}
     >
       {React.Children.map(children, (child, index) => (
         <motion.div
