@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import { RippleButton } from "@/components/ui/ripple-button"
+import { BreathingRippleButton } from "@/components/ui/breathing-ripple-button"
+import { BreathingElement, BreathingLogo } from "@/components/ui/breathing-element"
 import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -91,7 +93,7 @@ export default function WibblyWobblazLanding() {
       {/* Sticky Navigation */}
       <nav className="sticky-nav border-b-4 border-black p-4 md:p-6 bg-white flex-shrink-0">
         <div className="flex justify-between items-center">
-          <div className="text-2xl md:text-7xl font-black tracking-tighter font-hegval">WIBBLY WOBBLAZ</div>
+          <BreathingElement variant="subtle" className="text-2xl md:text-7xl font-black tracking-tighter font-hegval">WIBBLY WOBBLAZ</BreathingElement>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
@@ -162,7 +164,7 @@ export default function WibblyWobblazLanding() {
           <div className="flex flex-col md:flex-row h-full">
             {/* Left Side - Logo */}
             <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full">
-              <div className="max-w-lg w-full">
+              <BreathingLogo className="max-w-lg w-full">
                 <Image
                   src="/images/wibbly-wobblaz-logo.png"
                   alt="WIBBLY WOBBLAZ"
@@ -171,7 +173,7 @@ export default function WibblyWobblazLanding() {
                   className="w-full h-auto"
                   priority
                 />
-              </div>
+              </BreathingLogo>
             </div>
 
             {/* Right Side - Links */}
@@ -184,9 +186,10 @@ export default function WibblyWobblazLanding() {
                   </h2>
                   <div className="space-y-3">
                     {socialLinks.map((social) => (
-                      <RippleButton
+                      <BreathingRippleButton
                         key={social.name}
                         variant="ghost"
+                        breathingVariant="subtle"
                         className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
                         asChild
                       >
@@ -199,7 +202,7 @@ export default function WibblyWobblazLanding() {
                           <span>{social.name.toUpperCase()}</span>
                           <ExternalLink size={20} className="ml-auto" />
                         </Link>
-                      </RippleButton>
+                      </BreathingRippleButton>
                     ))}
                   </div>
                 </div>
@@ -209,8 +212,9 @@ export default function WibblyWobblazLanding() {
                   <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
                     GET TICKETS
                   </h2>
-                  <RippleButton
+                  <BreathingRippleButton
                     variant="ghost"
+                    breathingVariant="pulse"
                     className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
                     asChild
                   >
@@ -223,7 +227,7 @@ export default function WibblyWobblazLanding() {
                       <span>HEADFIRST</span>
                       <ExternalLink size={20} className="ml-auto" />
                     </Link>
-                  </RippleButton>
+                  </BreathingRippleButton>
                 </div>
 
                 {/* Merch */}
@@ -231,8 +235,9 @@ export default function WibblyWobblazLanding() {
                   <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
                     MERCH STORE
                   </h2>
-                  <RippleButton
+                  <BreathingRippleButton
                     variant="ghost"
+                    breathingVariant="pulse"
                     className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
                     asChild
                   >
@@ -244,7 +249,7 @@ export default function WibblyWobblazLanding() {
                       <span>SHOP NOW</span>
                       <ExternalLink size={20} className="ml-auto" />
                     </Link>
-                  </RippleButton>
+                  </BreathingRippleButton>
                 </div>
               </div>
             </div>
@@ -362,8 +367,9 @@ export default function WibblyWobblazLanding() {
          <div className="relative z-10 parties-content p-4 md:p-8">
           <div className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
             {upcomingParties.map((party, index) => (
-              <div
+              <BreathingElement
                 key={party.id}
+                variant="subtle"
                 className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
               >
            
@@ -407,16 +413,17 @@ export default function WibblyWobblazLanding() {
                     <div className="text-xs font-black tracking-wider">{party.location}</div>
                   </div>
 
-                  <RippleButton
+                  <BreathingRippleButton
                     className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
+                    breathingVariant="pulse"
                     asChild
                   >
                     <Link href="https://hdfst.uk/e132325" target="_blank" rel="noopener noreferrer">
                       GET TICKETS
                     </Link>
-                  </RippleButton>
+                  </BreathingRippleButton>
                 </div>
-              </div>
+              </BreathingElement>
             ))}
           </div>
         </div> 
