@@ -29,8 +29,7 @@ export const BreathingElement = ({
   
   return (
     <Component
-      animate={shouldAnimate ? variant : undefined}
-      variants={breathingVariants}
+      animate={shouldAnimate ? breathingVariants[variant] : {}}
       className={cn(className)}
       {...props}
     >

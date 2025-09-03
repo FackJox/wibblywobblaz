@@ -264,7 +264,7 @@ export default function WibblyWobblazLanding() {
       {/* Navigation */}
       <nav className="border-b-4 border-white p-4 md:p-6 flex-shrink-0">
         <div className="flex justify-between items-center">
-          <div className="text-2xl md:text-3xl font-black tracking-tighter text-white">UPCOMING PARTIES</div>
+          <BreathingElement variant="subtle" className="text-2xl md:text-3xl font-black tracking-tighter text-white">UPCOMING PARTIES</BreathingElement>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
