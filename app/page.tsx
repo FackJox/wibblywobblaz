@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { BreathingRippleButton } from "@/components/ui/breathing-ripple-button"
 import { BreathingElement, BreathingLogo } from "@/components/ui/breathing-element"
+import { StaggerReveal } from "@/components/ui/stagger-reveal"
+import { StaggerContainer } from "@/components/ui/stagger-container"
 import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -93,10 +95,16 @@ export default function WibblyWobblazLanding() {
       {/* Sticky Navigation */}
       <nav className="sticky-nav border-b-4 border-black p-4 md:p-6 bg-white flex-shrink-0">
         <div className="flex justify-between items-center">
-          <BreathingElement variant="subtle" className="text-2xl md:text-7xl font-black tracking-tighter font-hegval">WIBBLY WOBBLAZ</BreathingElement>
+          <StaggerReveal direction="up" stagger={{ staggerChildren: 0.05 }}>
+            <BreathingElement variant="subtle" className="text-2xl md:text-7xl font-black tracking-tighter font-hegval">WIBBLY WOBBLAZ</BreathingElement>
+          </StaggerReveal>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <StaggerContainer
+            className="hidden md:flex space-x-8"
+            staggerDelay={0.1}
+            threshold={0.1}
+          >
             <RippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
@@ -117,7 +125,7 @@ export default function WibblyWobblazLanding() {
             >
               PARTIES
             </RippleButton>
-          </div>
+          </StaggerContainer>
 
           {/* Mobile Menu Button */}
           <RippleButton variant="ghost" className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -128,7 +136,11 @@ export default function WibblyWobblazLanding() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 border-t-2 border-black pt-4">
-            <div className="flex flex-col space-y-2">
+            <StaggerContainer
+              className="flex flex-col space-y-2"
+              staggerDelay={0.08}
+              threshold={0}
+            >
               <RippleButton
                 variant="ghost"
                 className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
@@ -149,7 +161,7 @@ export default function WibblyWobblazLanding() {
               >
                 PARTIES
               </RippleButton>
-            </div>
+            </StaggerContainer>
           </div>
         )}
       </nav>
@@ -164,16 +176,18 @@ export default function WibblyWobblazLanding() {
           <div className="flex flex-col md:flex-row h-full">
             {/* Left Side - Logo */}
             <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full">
-              <BreathingLogo className="max-w-lg w-full">
-                <Image
-                  src="/images/wibbly-wobblaz-logo.png"
-                  alt="WIBBLY WOBBLAZ"
-                  width={500}
-                  height={400}
-                  className="w-full h-auto"
-                  priority
-                />
-              </BreathingLogo>
+              <StaggerReveal direction="up" stagger={{ delayChildren: 0.3 }}>
+                <BreathingLogo className="max-w-lg w-full">
+                  <Image
+                    src="/images/wibbly-wobblaz-logo.png"
+                    alt="WIBBLY WOBBLAZ"
+                    width={500}
+                    height={400}
+                    className="w-full h-auto"
+                    priority
+                  />
+                </BreathingLogo>
+              </StaggerReveal>
             </div>
 
             {/* Right Side - Links */}
@@ -181,10 +195,16 @@ export default function WibblyWobblazLanding() {
               <div className="space-y-6 md:space-y-8">
                 {/* Social Links */}
                 <div className="space-y-4">
-                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
-                    FOLLOW US
-                  </h2>
-                  <div className="space-y-3">
+                  <StaggerReveal direction="left" stagger={{ delayChildren: 0.2 }}>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                      FOLLOW US
+                    </h2>
+                  </StaggerReveal>
+                  <StaggerContainer
+                    className="space-y-3"
+                    staggerDelay={0.08}
+                    threshold={0.1}
+                  >
                     {socialLinks.map((social) => (
                       <BreathingRippleButton
                         key={social.name}
@@ -204,52 +224,60 @@ export default function WibblyWobblazLanding() {
                         </Link>
                       </BreathingRippleButton>
                     ))}
-                  </div>
+                  </StaggerContainer>
                 </div>
 
                 {/* Tickets */}
                 <div className="space-y-4">
-                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
-                    GET TICKETS
-                  </h2>
-                  <BreathingRippleButton
-                    variant="ghost"
-                    breathingVariant="pulse"
-                    className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
-                    asChild
-                  >
-                    <Link
-                      href="https://hdfst.uk/e132325"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <StaggerReveal direction="left" stagger={{ delayChildren: 0.3 }}>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                      GET TICKETS
+                    </h2>
+                  </StaggerReveal>
+                  <StaggerReveal direction="up" stagger={{ delayChildren: 0.35 }}>
+                    <BreathingRippleButton
+                      variant="ghost"
+                      breathingVariant="pulse"
+                      className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
+                      asChild
                     >
-                      <Calendar size={24} />
-                      <span>HEADFIRST</span>
-                      <ExternalLink size={20} className="ml-auto" />
-                    </Link>
-                  </BreathingRippleButton>
+                      <Link
+                        href="https://hdfst.uk/e132325"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Calendar size={24} />
+                        <span>HEADFIRST</span>
+                        <ExternalLink size={20} className="ml-auto" />
+                      </Link>
+                    </BreathingRippleButton>
+                  </StaggerReveal>
                 </div>
 
                 {/* Merch */}
                 <div className="space-y-4 pb-10">
-                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
-                    MERCH STORE
-                  </h2>
-                  <BreathingRippleButton
-                    variant="ghost"
-                    breathingVariant="pulse"
-                    className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
-                    asChild
-                  >
-                    <Link
-                      href="https://merch.wibblywobblaz.xyz"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <StaggerReveal direction="left" stagger={{ delayChildren: 0.4 }}>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                      MERCH STORE
+                    </h2>
+                  </StaggerReveal>
+                  <StaggerReveal direction="up" stagger={{ delayChildren: 0.45 }}>
+                    <BreathingRippleButton
+                      variant="ghost"
+                      breathingVariant="pulse"
+                      className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
+                      asChild
                     >
-                      <span>SHOP NOW</span>
-                      <ExternalLink size={20} className="ml-auto" />
-                    </Link>
-                  </BreathingRippleButton>
+                      <Link
+                        href="https://merch.wibblywobblaz.xyz"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span>SHOP NOW</span>
+                        <ExternalLink size={20} className="ml-auto" />
+                      </Link>
+                    </BreathingRippleButton>
+                  </StaggerReveal>
                 </div>
               </div>
             </div>
@@ -264,7 +292,9 @@ export default function WibblyWobblazLanding() {
       {/* Navigation */}
       <nav className="border-b-4 border-white p-4 md:p-6 flex-shrink-0">
         <div className="flex justify-between items-center">
-          <BreathingElement variant="subtle" className="text-2xl md:text-3xl font-black tracking-tighter text-white">UPCOMING PARTIES</BreathingElement>
+          <StaggerReveal direction="up" stagger={{ staggerChildren: 0.05 }}>
+            <BreathingElement variant="subtle" className="text-2xl md:text-3xl font-black tracking-tighter text-white">UPCOMING PARTIES</BreathingElement>
+          </StaggerReveal>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
@@ -303,7 +333,11 @@ export default function WibblyWobblazLanding() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 border-t-2 border-white pt-4">
-            <div className="flex flex-col space-y-2">
+            <StaggerContainer
+              className="flex flex-col space-y-2"
+              staggerDelay={0.08}
+              threshold={0}
+            >
               <RippleButton
                 variant="ghost"
                 className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 justify-start text-white ${
@@ -324,7 +358,7 @@ export default function WibblyWobblazLanding() {
               >
                 PARTIES
               </RippleButton>
-            </div>
+            </StaggerContainer>
           </div>
         )}
       </nav>
@@ -365,7 +399,11 @@ export default function WibblyWobblazLanding() {
              {/* Poster */}
                  {/* Event Details */}
          <div className="relative z-10 parties-content p-4 md:p-8">
-          <div className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
+          <StaggerContainer
+            className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"
+            staggerDelay={0.12}
+            threshold={0.1}
+          >
             {upcomingParties.map((party, index) => (
               <BreathingElement
                 key={party.id}
@@ -425,7 +463,7 @@ export default function WibblyWobblazLanding() {
                 </div>
               </BreathingElement>
             ))}
-          </div>
+          </StaggerContainer>
         </div> 
 
 
