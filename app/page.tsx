@@ -35,6 +35,17 @@ export default function WibblyWobblazLanding() {
     }
   }, [currentPage, isTransitioning, shhhState])
 
+  // Create a unique key for each page view to reset animations
+  const [pageViewCount, setPageViewCount] = useState({ links: 0, parties: 0 })
+  
+  useEffect(() => {
+    // Increment view count when page changes to trigger animation reset
+    setPageViewCount(prev => ({
+      ...prev,
+      [currentPage]: prev[currentPage as keyof typeof prev] + 1
+    }))
+  }, [currentPage])
+
   return (
     <div className="fixed inset-0 overflow-hidden">
       {/* Pages Container - Both pages always mounted */}
@@ -47,11 +58,11 @@ export default function WibblyWobblazLanding() {
               : "-translate-x-full"
           }`}
           style={{
-            pointerEvents: currentPage === "links" ? "auto" : "none",
-            visibility: currentPage === "links" || isTransitioning ? "visible" : "hidden"
+            pointerEvents: currentPage === "links" ? "auto" : "none"
           }}
         >
           <LinksPage
+            key={`links-${pageViewCount.links}`}
             currentPage={currentPage}
             mobileMenuOpen={mobileMenuOpen}
             isTransitioning={isTransitioning}
@@ -68,11 +79,11 @@ export default function WibblyWobblazLanding() {
               : "translate-x-full"
           }`}
           style={{
-            pointerEvents: currentPage === "parties" ? "auto" : "none",
-            visibility: currentPage === "parties" || isTransitioning ? "visible" : "hidden"
+            pointerEvents: currentPage === "parties" ? "auto" : "none"
           }}
         >
           <PartiesPage
+            key={`parties-${pageViewCount.parties}`}
             currentPage={currentPage}
             mobileMenuOpen={mobileMenuOpen}
             isTransitioning={isTransitioning}
