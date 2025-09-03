@@ -3,6 +3,9 @@
 import { memo } from "react"
 import { RippleButton } from "@/components/ui/ripple-button"
 import { BreathingRippleButton } from "@/components/ui/breathing-ripple-button"
+import { MagneticButton } from "@/components/ui/magnetic-button"
+import { MagneticIconButton } from "@/components/ui/magnetic-icon"
+import { MagneticRippleButton } from "@/components/ui/magnetic-ripple-button"
 import { BreathingElement, BreathingLogo } from "@/components/ui/breathing-element"
 import { StaggerReveal } from "@/components/ui/stagger-reveal"
 import { StaggerContainer } from "@/components/ui/stagger-container"
@@ -20,9 +23,7 @@ interface PageProps {
 
 const socialLinks = [
   { name: "Instagram", icon: Instagram, url: "https://instagram.com/wibblywobblaz" },
-  { name: "TikTok", icon: Music, url: "https://tiktok.com/@wibblywobblaz" },
   { name: "SoundCloud", icon: Music, url: "https://soundcloud.com/wibblywobblaz" },
-  { name: "YouTube", icon: Music, url: "https://youtube.com/@wibblywobblaztv" },
 ]
 
 const upcomingParties = [
@@ -59,26 +60,30 @@ export const LinksPage = memo<PageProps>(({
           threshold={0.1}
           debugId="links-nav-desktop"
         >
-          <RippleButton
+          <MagneticRippleButton
             variant="ghost"
             className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
               currentPage === "links" ? "bg-black text-white" : ""
             }`}
             onClick={() => handlePageTransition("links")}
             disabled={isTransitioning}
+            magneticStrength="normal"
+            rippleColor="rgba(0, 0, 0, 0.3)"
           >
             LINKS
-          </RippleButton>
-          <RippleButton
+          </MagneticRippleButton>
+          <MagneticRippleButton
             variant="ghost"
             className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
               currentPage === "parties" ? "bg-black text-white" : ""
             }`}
             onClick={() => handlePageTransition("parties")}
             disabled={isTransitioning}
+            magneticStrength="normal"
+            rippleColor="rgba(0, 0, 0, 0.3)"
           >
             PARTIES
-          </RippleButton>
+          </MagneticRippleButton>
         </StaggerContainer>
 
         {/* Mobile Menu Button */}
@@ -96,26 +101,30 @@ export const LinksPage = memo<PageProps>(({
             threshold={0}
             debugId="links-nav-mobile"
           >
-            <RippleButton
+            <MagneticRippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
                 currentPage === "links" ? "bg-black text-white" : ""
               }`}
               onClick={() => handlePageTransition("links")}
               disabled={isTransitioning}
+              magneticStrength="subtle"
+              rippleColor="rgba(0, 0, 0, 0.3)"
             >
               LINKS
-            </RippleButton>
-            <RippleButton
+            </MagneticRippleButton>
+            <MagneticRippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
                 currentPage === "parties" ? "bg-black text-white" : ""
               }`}
               onClick={() => handlePageTransition("parties")}
               disabled={isTransitioning}
+              magneticStrength="subtle"
+              rippleColor="rgba(0, 0, 0, 0.3)"
             >
               PARTIES
-            </RippleButton>
+            </MagneticRippleButton>
           </StaggerContainer>
         </div>
       )}
