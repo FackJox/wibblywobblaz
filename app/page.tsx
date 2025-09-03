@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
+import { RippleButton } from "@/components/ui/ripple-button"
 import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -95,7 +95,7 @@ export default function WibblyWobblazLanding() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
-            <Button
+            <RippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
                 currentPage === "links" ? "bg-black text-white" : ""
@@ -104,8 +104,8 @@ export default function WibblyWobblazLanding() {
               disabled={isTransitioning}
             >
               LINKS
-            </Button>
-            <Button
+            </RippleButton>
+            <RippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
                 currentPage === "parties" ? "bg-black text-white" : ""
@@ -114,20 +114,20 @@ export default function WibblyWobblazLanding() {
               disabled={isTransitioning}
             >
               PARTIES
-            </Button>
+            </RippleButton>
           </div>
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <RippleButton variant="ghost" className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+          </RippleButton>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 border-t-2 border-black pt-4">
             <div className="flex flex-col space-y-2">
-              <Button
+              <RippleButton
                 variant="ghost"
                 className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
                   currentPage === "links" ? "bg-black text-white" : ""
@@ -136,8 +136,8 @@ export default function WibblyWobblazLanding() {
                 disabled={isTransitioning}
               >
                 LINKS
-              </Button>
-              <Button
+              </RippleButton>
+              <RippleButton
                 variant="ghost"
                 className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
                   currentPage === "parties" ? "bg-black text-white" : ""
@@ -146,7 +146,7 @@ export default function WibblyWobblazLanding() {
                 disabled={isTransitioning}
               >
                 PARTIES
-              </Button>
+              </RippleButton>
             </div>
           </div>
         )}
@@ -184,17 +184,22 @@ export default function WibblyWobblazLanding() {
                   </h2>
                   <div className="space-y-3">
                     {socialLinks.map((social) => (
-                      <Link
+                      <RippleButton
                         key={social.name}
-                        href={social.url}
-                        className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        variant="ghost"
+                        className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
+                        asChild
                       >
-                        <social.icon size={24} />
-                        <span>{social.name.toUpperCase()}</span>
-                        <ExternalLink size={20} className="ml-auto" />
-                      </Link>
+                        <Link
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <social.icon size={24} />
+                          <span>{social.name.toUpperCase()}</span>
+                          <ExternalLink size={20} className="ml-auto" />
+                        </Link>
+                      </RippleButton>
                     ))}
                   </div>
                 </div>
@@ -204,16 +209,21 @@ export default function WibblyWobblazLanding() {
                   <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
                     GET TICKETS
                   </h2>
-                  <Link
-                    href="https://hdfst.uk/e132325"
-                    className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <RippleButton
+                    variant="ghost"
+                    className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
+                    asChild
                   >
-                    <Calendar size={24} />
-                    <span>HEADFIRST</span>
-                    <ExternalLink size={20} className="ml-auto" />
-                  </Link>
+                    <Link
+                      href="https://hdfst.uk/e132325"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Calendar size={24} />
+                      <span>HEADFIRST</span>
+                      <ExternalLink size={20} className="ml-auto" />
+                    </Link>
+                  </RippleButton>
                 </div>
 
                 {/* Merch */}
@@ -221,13 +231,20 @@ export default function WibblyWobblazLanding() {
                   <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
                     MERCH STORE
                   </h2>
-                  <Link
-                    href="https://merch.wibblywobblaz.xyz"
-                    className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                  <RippleButton
+                    variant="ghost"
+                    className="w-full justify-start text-left text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white text-white"
+                    asChild
                   >
-                    <span>SHOP NOW</span>
-                    <ExternalLink size={20} className="ml-auto" />
-                  </Link>
+                    <Link
+                      href="https://merch.wibblywobblaz.xyz"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>SHOP NOW</span>
+                      <ExternalLink size={20} className="ml-auto" />
+                    </Link>
+                  </RippleButton>
                 </div>
               </div>
             </div>
@@ -246,7 +263,7 @@ export default function WibblyWobblazLanding() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
-            <Button
+            <RippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 text-white border-white ${
                 currentPage === "links" ? "bg-white text-black" : ""
@@ -255,8 +272,8 @@ export default function WibblyWobblazLanding() {
               disabled={isTransitioning}
             >
               LINKS
-            </Button>
-            <Button
+            </RippleButton>
+            <RippleButton
               variant="ghost"
               className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 text-white border-white ${
                 currentPage === "parties" ? "bg-white text-black" : ""
@@ -265,24 +282,24 @@ export default function WibblyWobblazLanding() {
               disabled={isTransitioning}
             >
               PARTIES
-            </Button>
+            </RippleButton>
           </div>
 
           {/* Mobile Menu Button */}
-          <Button
+          <RippleButton
             variant="ghost"
             className="md:hidden p-2 text-white hover:bg-white hover:text-black"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+          </RippleButton>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 border-t-2 border-white pt-4">
             <div className="flex flex-col space-y-2">
-              <Button
+              <RippleButton
                 variant="ghost"
                 className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 justify-start text-white ${
                   currentPage === "links" ? "bg-white text-black" : ""
@@ -291,8 +308,8 @@ export default function WibblyWobblazLanding() {
                 disabled={isTransitioning}
               >
                 LINKS
-              </Button>
-              <Button
+              </RippleButton>
+              <RippleButton
                 variant="ghost"
                 className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 justify-start text-white ${
                   currentPage === "parties" ? "bg-white text-black" : ""
@@ -301,7 +318,7 @@ export default function WibblyWobblazLanding() {
                 disabled={isTransitioning}
               >
                 PARTIES
-              </Button>
+              </RippleButton>
             </div>
           </div>
         )}
@@ -390,14 +407,14 @@ export default function WibblyWobblazLanding() {
                     <div className="text-xs font-black tracking-wider">{party.location}</div>
                   </div>
 
-                  <Button
+                  <RippleButton
                     className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
                     asChild
                   >
                     <Link href="https://hdfst.uk/e132325" target="_blank" rel="noopener noreferrer">
                       GET TICKETS
                     </Link>
-                  </Button>
+                  </RippleButton>
                 </div>
               </div>
             ))}
