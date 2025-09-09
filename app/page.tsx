@@ -15,6 +15,10 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useStaggerReveal } from "@/hooks/use-stagger-reveal";
+import { useScrollFadeIn, useSimpleFadeIn } from "@/hooks/use-scroll-animations";
+import { useSimpleParallax } from "@/hooks/use-parallax";
+import { useHorizontalSwipeNavigation } from "@/hooks/use-swipe";
 
 interface PartyEvent {
   id: number;
@@ -36,10 +40,11 @@ export default function WibblyWobblazLanding() {
     "hidden" | "animating" | "visible"
   >("hidden");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const freeButtonRef = useRef<HTMLButtonElement>(null);
 
   const handlePageTransition = (targetPage: "links" | "parties") => {
-    if (targetPage === currentPage) return;
+    if (targetPage === currentPage || isTransitioning) return;
 
     setIsTransitioning(true);
     setMobileMenuOpen(false);
@@ -50,6 +55,32 @@ export default function WibblyWobblazLanding() {
       setIsTransitioning(false);
     }, 800);
   };
+
+  // Swipe navigation handlers
+  const handleSwipeLeft = () => {
+    if (currentPage === "links") {
+      handlePageTransition("parties");
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (currentPage === "parties") {
+      handlePageTransition("links");
+    }
+  };
+
+  // Setup gesture navigation
+  const { gestureHandlers } = useHorizontalSwipeNavigation(
+    handleSwipeLeft,
+    handleSwipeRight,
+    {
+      enabled: !isTransitioning,
+      swipeConfig: {
+        minSwipeDistance: 100,
+        minSwipeVelocity: 0.5
+      }
+    }
+  );
 
   // Reset shhh state when back on links page and transition is complete
   useEffect(() => {
@@ -88,29 +119,40 @@ export default function WibblyWobblazLanding() {
       date: "2025-08-30",
       time: "22:00",
       venue: "THE PACKHORSE SECRET CELLAR",
-      location: "BS5 0DN",
-      poster: "/images/2/posterflyer 4.png",
+      location: "BRISTOL",
+      poster: "/images/1/hot series dixies chicken3.png",
       ticketLink: "https://hdfst.uk/e132325",
     },
     {
       id: 2,
       title: "HOT ONES - EP01",
-      date: "2025-08-16",
-      time: "22:00",
+      date: "2025-09-15",
+      time: "19:00",
       venue: "DIXIES CHICKEN SHOP",
-      location: "BS1 3QU",
-      poster: "/images/1/output.gif",
+      location: "BRISTOL",
+      poster: "/images/2/posterflyer a4.png",
       hotOnes: true,
     },
     {
       id: 3,
       title: "HOT ONES - EP02",
-      date: "2025-09-20",
-      time: "22:00",
-      venue: "THE STAR AND GARTER",
-      location: "BS6 5LR",
+      date: "2025-09-22",
+      time: "20:00",
+      venue: "?????",
+      location: "BRISTOL",
       poster: "/images/3/STGARTER.png",
       hotOnes: true,
+    },
+    {
+      id: 4,
+      title: "BARBER SHOP BOILER ROOM",
+      date: "2025-10-01",
+      time: "21:00",
+      venue: "?????",
+      location: "BRISTOL",
+      poster: "/images/4/posterdayglo.png",
+      hotOnes: false,
+      ticketLink: "https://hdfst.uk/e132325",
     },
   ];
 
@@ -412,15 +454,14 @@ export default function WibblyWobblazLanding() {
         </div>
 
         {/* Party content overlay */}
-        {/* Poster */}
-        {/* Event Details */}
         <div className="relative z-10 parties-content p-4 md:p-8">
           <div className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
-            {upcomingParties.map((party, index) => (
+            {upcomingParties.map((party) => (
               <div
                 key={party.id}
                 className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
               >
+                {/* Poster */}
                 <div className="aspect-[3/4] border-b-4 border-white relative overflow-hidden">
                   <Image
                     src={party.poster || "/images/flyer4.png"}
@@ -430,6 +471,7 @@ export default function WibblyWobblazLanding() {
                   />
                 </div>
 
+                {/* Event Details */}
                 <div className="p-4 space-y-3">
                   <h3 className="text-lg md:text-xl font-black tracking-tighter">
                     {party.title}
@@ -500,7 +542,11 @@ export default function WibblyWobblazLanding() {
   );
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div 
+      ref={containerRef}
+      className="fixed inset-0 overflow-hidden"
+      {...gestureHandlers}
+    >
       {/* Pages Container */}
       <div
         className={`flex w-[200%] h-full transition-transform duration-700 ease-in-out ${
