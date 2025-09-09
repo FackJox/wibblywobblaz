@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X } from "lucide-react"
+import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X, ShoppingBag } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -81,9 +81,7 @@ export default function WibblyWobblazLanding() {
 
   const socialLinks = [
     { name: "Instagram", icon: Instagram, url: "https://instagram.com/wibblywobblaz" },
-    { name: "TikTok", icon: Music, url: "https://tiktok.com/@wibblywobblaz" },
     { name: "SoundCloud", icon: Music, url: "https://soundcloud.com/wibblywobblaz" },
-    { name: "YouTube", icon: Music, url: "https://youtube.com/@wibblywobblaztv" },
   ]
 
   const LinksPage = () => (
@@ -225,6 +223,7 @@ export default function WibblyWobblazLanding() {
                     href="https://merch.wibblywobblaz.xyz"
                     className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
                   >
+                    <ShoppingBag size={20} />
                     <span>SHOP NOW</span>
                     <ExternalLink size={20} className="ml-auto" />
                   </Link>

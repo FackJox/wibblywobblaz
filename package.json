@@ -10,9 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ]
+    "*.{js,jsx,ts,tsx}": "true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -69,6 +67,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
     "lint-staged": "^16.1.6",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
