@@ -40,8 +40,22 @@ if ! git worktree list | grep -q "epic-$ARGUMENTS"; then
   git pull origin main
   git worktree add ../epic-$ARGUMENTS -b epic/$ARGUMENTS
   echo "✅ Created worktree: ../epic-$ARGUMENTS"
+  
+  # Apply guardrails to prevent accidental commits to main
+  cd ../epic-$ARGUMENTS
+  git config --local claude.worktree true
+  echo "✅ Applied guardrails - agents cannot commit to main branch"
+  cd -
 else
   echo "✅ Using existing worktree: ../epic-$ARGUMENTS"
+  
+  # Ensure guardrails are set (in case of older worktrees)
+  cd ../epic-$ARGUMENTS
+  if [[ "$(git config --get claude.worktree)" != "true" ]]; then
+    git config --local claude.worktree true
+    echo "✅ Applied guardrails - agents cannot commit to main branch"
+  fi
+  cd -
 fi
 ```
 
