@@ -14,7 +14,7 @@ import { toast } from "./use-toast"
  * Demo component showcasing long-press and touch interactions
  * Demonstrates various use cases and configurations
  */
-export const LongPressDemo: React.FC = () => {
+const LongPressDemoComponent: React.FC = () => {
   const [hearts, setHearts] = React.useState(0)
   const [copied, setCopied] = React.useState(false)
   const [selectedItems, setSelectedItems] = React.useState<Set<string>>(new Set())
@@ -424,4 +424,4 @@ const RatingDemo: React.FC = () => {
   )
 }
 
-export { LongPressDemo }
+export const LongPressDemo = LongPressDemoComponent
