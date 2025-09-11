@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { willChangeHelpers } from "../lib/will-change-manager"
 
 /**
  * Animation states that components can be in
@@ -106,7 +107,7 @@ export function useAnimationState(
   } = config
 
   /**
-   * Update progress based on elapsed time
+   * Update progress based on elapsed time with frame rate optimization
    */
   const updateProgress = React.useCallback(() => {
     if (state !== "running" || !startTimeRef.current) return
@@ -120,6 +121,7 @@ export function useAnimationState(
     if (newProgress >= 1) {
       setState("finished")
     } else {
+      // Use requestAnimationFrame for smooth 60fps updates
       requestAnimationFrame(updateProgress)
     }
   }, [state, duration])

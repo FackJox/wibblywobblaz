@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { willChangeHelpers } from "../lib/will-change-manager"
+import { animationBudget } from "../lib/animation-frame-budget"
 import { 
   getCursorPosition, 
   getElementCenter, 
@@ -12,8 +14,8 @@ import {
   safeCancelAnimationFrame,
   type MagneticConfig,
   type Point 
-} from "@/lib/hover-utils"
-import { usePrefersReducedMotion } from "@/hooks/use-performance"
+} from "../lib/hover-utils"
+import { usePrefersReducedMotion } from "./use-performance"
 
 /**
  * Configuration for magnetic hover effect

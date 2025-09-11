@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { usePrefersReducedMotion } from "./use-performance"
+import { willChangeHelpers } from "../lib/will-change-manager"
+import { animationBudget } from "../lib/animation-frame-budget"
 import { 
   throttle, 
   calculateParallaxOffset, 
@@ -159,8 +161,8 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
         offset = clamp(offset, -maxOffset, maxOffset)
       }
 
-      // Generate transform string
-      let newTransform = 'none'
+      // Generate transform string using translate3d for GPU acceleration
+      let newTransform = 'translate3d(0, 0, 0)'
       
       if (transformFunction) {
         newTransform = transformFunction(offset, progress)
@@ -175,7 +177,16 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
           transforms.push(`translateX(${offset}px)`)
         }
         
-        newTransform = transforms.length > 0 ? transforms.join(' ') : 'none'
+        if (transforms.length > 0) {
+          // Use translate3d for better performance
+          if (direction === 'vertical') {
+            newTransform = `translate3d(0, ${offset}px, 0)`
+          } else if (direction === 'horizontal') {
+            newTransform = `translate3d(${offset}px, 0, 0)`
+          } else if (direction === 'both') {
+            newTransform = `translate3d(${offset}px, ${offset}px, 0)`
+          }
+        }
       }
 
       setState(prev => ({
@@ -189,7 +200,10 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
       }))
 
       setTransform(newTransform)
-      setStyles({ transform: newTransform })
+      setStyles({ 
+        transform: newTransform,
+        backfaceVisibility: 'hidden' // Prevent flickering
+      })
     }, throttleMs),
     [
       state.isInView,
@@ -206,17 +220,19 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
   )
 
   /**
-   * Handle scroll events
+   * Handle scroll events with frame budgeting
    */
   const handleScroll = React.useCallback(() => {
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current)
     }
     
-    rafRef.current = requestAnimationFrame(updateParallax)
+    // Use animation budget system for scroll-triggered parallax
+    const taskId = `parallax-${Math.random().toString(36).substr(2, 9)}`
+    animationBudget.schedule(taskId, updateParallax, 'low', 3) // Low priority, ~3ms estimated
   }, [updateParallax])
 
-  // Set up intersection observer
+  // Set up intersection observer and will-change management
   React.useEffect(() => {
     if (!ref.current) return
 
@@ -225,10 +241,22 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
     observerRef.current = createIntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const wasInView = state.isInView
+          const nowInView = entry.isIntersecting
+          
           setState(prev => ({
             ...prev,
-            isInView: entry.isIntersecting
+            isInView: nowInView
           }))
+          
+          // Manage will-change hints based on visibility
+          if (nowInView && !wasInView) {
+            // Element entering viewport - add will-change hints
+            willChangeHelpers.prepareParallax(element)
+          } else if (!nowInView && wasInView) {
+            // Element leaving viewport - clean up will-change hints
+            willChangeHelpers.cleanup(element)
+          }
         })
       },
       {
@@ -245,14 +273,20 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
       if (observerRef.current) {
         observerRef.current.disconnect()
       }
+      // Clean up will-change on unmount
+      willChangeHelpers.cleanup(element)
     }
   }, [threshold, rootMargin])
 
-  // Set up scroll listener
+  // Set up scroll listener with performance optimizations
   React.useEffect(() => {
     if (respectReducedMotion && prefersReducedMotion) {
-      setTransform('none')
-      setStyles({ transform: 'none' })
+      setTransform('translate3d(0, 0, 0)')
+      setStyles({ transform: 'translate3d(0, 0, 0)' })
+      // Clean up will-change for reduced motion
+      if (ref.current) {
+        willChangeHelpers.cleanup(ref.current)
+      }
       return
     }
 
@@ -268,6 +302,11 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
       
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
+      }
+      
+      // Clean up will-change hints on unmount
+      if (ref.current) {
+        willChangeHelpers.cleanup(ref.current)
       }
     }
   }, [handleScroll, updateParallax, respectReducedMotion, prefersReducedMotion])

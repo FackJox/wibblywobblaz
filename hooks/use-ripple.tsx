@@ -1,13 +1,14 @@
 "use client"
 
 import * as React from "react"
+import { willChangeHelpers } from "../lib/will-change-manager"
 import { 
   addRippleToElement, 
   cleanupRipples, 
   ripplePresets,
   type RippleConfig,
   type RipplePreset
-} from "@/lib/ripple-utils"
+} from "../lib/ripple-utils"
 import { usePrefersReducedMotion } from "./use-performance"
 
 /**

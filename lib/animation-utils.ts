@@ -190,7 +190,7 @@ export const requestAnimFrame = (
   callback: FrameRequestCallback
 ): number => {
   return (window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
+    (window as any).webkitRequestAnimationFrame ||
     function (callback: FrameRequestCallback) {
       return window.setTimeout(callback, 1000 / 60)
     })(callback)
@@ -201,7 +201,7 @@ export const requestAnimFrame = (
  */
 export const cancelAnimFrame = (id: number): void => {
   return (window.cancelAnimationFrame ||
-    window.webkitCancelAnimationFrame ||
+    (window as any).webkitCancelAnimationFrame ||
     function (id: number) {
       clearTimeout(id)
     })(id)
