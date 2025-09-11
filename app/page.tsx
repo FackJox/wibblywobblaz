@@ -15,6 +15,7 @@ interface PartyEvent {
   location: string
   poster: string
   hotOnes?: boolean
+  ticketLink?: string
 }
 
 export default function WibblyWobblazLanding() {
@@ -72,6 +73,7 @@ export default function WibblyWobblazLanding() {
       venue: "THE PACKHORSE SECRET CELLAR",
       location: "BRISTOL",
       poster: "/images/flyer4.png",
+      ticketLink: "https://hdfst.uk/e132325",
     },
     {
       id: 2,
@@ -102,6 +104,7 @@ export default function WibblyWobblazLanding() {
       location: "BRISTOL",
       poster: "/images/flyer4.png",
       hotOnes: false,
+      ticketLink: "https://hdfst.uk/e132325",
     },
   ]
 
@@ -347,6 +350,8 @@ export default function WibblyWobblazLanding() {
           onAnimationEnd={(e) => {
             if (e.animationName === 'slideUpBounce') {
               setShhhState('visible');
+              setCurrentPage('links');
+              window.open('https://instagram.com/wibblywobblaz', '_blank');
             }
           }}
         >
@@ -420,14 +425,26 @@ export default function WibblyWobblazLanding() {
                     <div className="text-xs font-black tracking-wider">{party.location}</div>
                   </div>
 
-                  <Button
-                    className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
-                    asChild
-                  >
-                    <Link href="https://hdfst.uk/e132325" target="_blank" rel="noopener noreferrer">
-                      GET TICKETS
-                    </Link>
-                  </Button>
+                  {party.hotOnes ? (
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShhhState('animating');
+                      }}
+                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
+                    >
+                      FREE
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
+                      asChild
+                    >
+                      <Link href={party.ticketLink || "https://hdfst.uk/e132325"} target="_blank" rel="noopener noreferrer">
+                        GET TICKETS
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}
