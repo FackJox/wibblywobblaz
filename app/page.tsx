@@ -37,33 +37,18 @@ export default function WibblyWobblazLanding() {
     }, 800)
   }
 
-  // // Handle parties page animation and bounce-back
-  // useEffect(() => {
-  //   if (currentPage === "parties" && shhhState === 'hidden' && !isTransitioning) {
-  //     // Start animation after page transition completes
-  //     const startAnimationTimer = setTimeout(() => {
-  //       setShhhState('animating')
-        
-  //       // After animation completes, bounce back to links
-  //       const bounceBackTimer = setTimeout(() => {
-  //         setShhhState('visible') // Keep visible but stop animating
-          
-  //         // Direct page transition back to links
-  //         setIsTransitioning(true)
-  //         setMobileMenuOpen(false)
-  //         setCurrentPage("links")
-          
-  //         setTimeout(() => {
-  //           setIsTransitioning(false)
-  //         }, 800)
-  //       }, 1000) // 900ms animation + small buffer
-        
-  //       return () => clearTimeout(bounceBackTimer)
-  //     }, 200)
+  // Handle parties page animation trigger
+  useEffect(() => {
+    if (currentPage === "parties" && shhhState === 'hidden' && !isTransitioning) {
+      // Start animation after page transition completes
+      const startAnimationTimer = setTimeout(() => {
+        setShhhState('animating')
+        // Animation completion is now handled by onAnimationEnd event
+      }, 200)
       
-  //     return () => clearTimeout(startAnimationTimer)
-  //   }
-  // }, [currentPage, shhhState, isTransitioning])
+      return () => clearTimeout(startAnimationTimer)
+    }
+  }, [currentPage, shhhState, isTransitioning])
 
   // Reset shhh state when back on links page and transition is complete
   useEffect(() => {
@@ -350,7 +335,7 @@ export default function WibblyWobblazLanding() {
       {/* Main Content Area with Shhh SVG */}
       <div className="flex-1 relative overflow-y-auto">
         {/* Shhh SVG - stays visible after first animation */}
-        {/* <div
+        <div
           className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated ${
             shhhState === 'animating' ? 'shhh-slide-up' : ''
           }`}
@@ -358,6 +343,11 @@ export default function WibblyWobblazLanding() {
             transform: (shhhState === 'animating' || shhhState === 'visible') ? 'translateY(0)' : 'translateY(100vh)',
             transition: shhhState === 'animating' ? 'none' : 'transform 0ms',
             opacity: (shhhState === 'animating' || shhhState === 'visible') ? 1 : 0,
+          }}
+          onAnimationEnd={(e) => {
+            if (e.animationName === 'slideUpBounce') {
+              setShhhState('visible');
+            }
           }}
         >
           <div className="bottom-aligned-responsive gpu-accelerated">
@@ -377,7 +367,7 @@ export default function WibblyWobblazLanding() {
               priority
             />
           </div>
-        </div> */}
+        </div>
 
         {/* Party content overlay */}
              {/* Poster */}
