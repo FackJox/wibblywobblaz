@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { usePrefersReducedMotion } from "./use-performance"
+import { willChangeHelpers } from "../lib/will-change-manager"
+import { animationBudget } from "../lib/animation-frame-budget"
 import { generateStaggerDelays, createIntersectionObserver } from "../lib/animation-utils"
 
 /**
