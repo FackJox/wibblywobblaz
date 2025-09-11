@@ -213,7 +213,7 @@ export function HapticDemo() {
         onMouseMove={(e) => swipeHandlers.onMouseMove?.(e.nativeEvent)}
         onMouseUp={(e) => swipeHandlers.onMouseUp?.(e.nativeEvent)}
         onMouseLeave={(e) => swipeHandlers.onMouseLeave?.(e.nativeEvent)}
-        onContextMenu={(e) => swipeHandlers.onContextMenu?.(e.nativeEvent)}
+        style={{ touchAction: 'none' }}
       >
         <CardHeader>
           <CardTitle>Swipe Gesture Demo</CardTitle>
