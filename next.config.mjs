@@ -12,24 +12,11 @@ const nextConfig = {
     unoptimized: true,
   },
   // Performance optimizations
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   // Code splitting and tree shaking optimizations
   webpack: (config, { dev, isServer }) => {
-    // Bundle analysis only in production builds with ANALYZE=true
-    if (!dev && !isServer && process.env.ANALYZE === 'true') {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'static',
-          reportFilename: 'bundle-report.html',
-          openAnalyzer: false,
-        })
-      )
-    }
-
     // Tree shaking optimization
     config.optimization = {
       ...config.optimization,
@@ -78,8 +65,6 @@ const nextConfig = {
   },
   // Performance monitoring
   experimental: {
-    // Enable performance monitoring
-    instrumentationHook: true,
     // Optimize for smaller bundles
     optimizeCss: true,
     // Reduce JavaScript bundle size
