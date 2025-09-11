@@ -2,6 +2,8 @@
  * Performance measurement and optimization utilities for animations
  */
 
+import * as React from "react"
+
 /**
  * Extended performance metrics for comprehensive animation profiling
  */
@@ -400,3 +402,197 @@ export const logPerformanceIssue = (() => {
     }
   };
 })();
+
+/**
+ * React hook for Intersection Observer with performance optimizations
+ */
+export function useIntersectionObserver(
+  elementRef: React.RefObject<Element | null>,
+  callback: (entries: IntersectionObserverEntry[]) => void,
+  options?: IntersectionObserverInit
+): void {
+  const observerRef = React.useRef<IntersectionObserver | null>(null)
+  const callbackRef = React.useRef(callback)
+
+  // Keep callback reference current
+  React.useEffect(() => {
+    callbackRef.current = callback
+  }, [callback])
+
+  React.useEffect(() => {
+    const element = elementRef.current
+    if (!element || typeof window === 'undefined') return
+
+    // Create observer with performance optimizations
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        // Batch callback execution to next frame to avoid blocking main thread
+        requestAnimationFrame(() => {
+          callbackRef.current(entries)
+        })
+      },
+      {
+        threshold: options?.threshold || 0.1,
+        rootMargin: options?.rootMargin || '0px',
+        root: options?.root || null
+      }
+    )
+
+    observerRef.current.observe(element)
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.unobserve(element)
+        observerRef.current.disconnect()
+        observerRef.current = null
+      }
+    }
+  }, [elementRef, options?.threshold, options?.rootMargin, options?.root])
+
+  // Cleanup on unmount
+  React.useEffect(() => {
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+        observerRef.current = null
+      }
+    }
+  }, [])
+}
+
+/**
+ * Get device information for performance optimization
+ */
+export function getDeviceInfo(): {
+  cpu: { cores: number }
+  memory: { deviceMemory: number }
+  gpu: { renderer: string }
+  connection: { effectiveType: string }
+} {
+  return {
+    cpu: {
+      cores: navigator.hardwareConcurrency || 1
+    },
+    memory: {
+      deviceMemory: (navigator as any).deviceMemory || 1
+    },
+    gpu: {
+      renderer: (() => {
+        try {
+          const canvas = document.createElement('canvas')
+          const gl = canvas.getContext('webgl') as WebGLRenderingContext | null
+          if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info')
+            if (debugInfo) {
+              const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+              return renderer || 'unknown'
+            }
+          }
+          return 'unknown'
+        } catch {
+          return 'software'
+        }
+      })()
+    },
+    connection: {
+      effectiveType: (navigator as any).connection?.effectiveType || '4g'
+    }
+  }
+}
+
+/**
+ * Check if device is low-end using comprehensive heuristics
+ */
+export function isLowEndDevice(): boolean {
+  if (typeof window === 'undefined') return false
+
+  const deviceInfo = getDeviceInfo()
+  
+  const indicators = [
+    // CPU cores
+    deviceInfo.cpu.cores <= 2,
+    
+    // Memory
+    deviceInfo.memory.deviceMemory <= 2,
+    
+    // Connection speed
+    ['slow-2g', '2g'].includes(deviceInfo.connection.effectiveType),
+    
+    // Reduced motion preference
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    
+    // Low pixel ratio
+    window.devicePixelRatio <= 1,
+    
+    // Software rendering
+    deviceInfo.gpu.renderer === 'software'
+  ]
+
+  // Consider low-end if 2 or more indicators are true
+  return indicators.filter(Boolean).length >= 2
+}
+
+/**
+ * Hook for viewport-based lazy loading with performance optimizations
+ */
+export function useViewportLazyLoading(
+  elementRef: React.RefObject<Element | null>,
+  options?: {
+    threshold?: number
+    rootMargin?: string
+    once?: boolean
+  }
+) {
+  const [isIntersecting, setIsIntersecting] = React.useState(false)
+  const [hasIntersected, setHasIntersected] = React.useState(false)
+  const observerRef = React.useRef<IntersectionObserver | null>(null)
+
+  React.useEffect(() => {
+    const element = elementRef.current
+    if (!element || typeof window === 'undefined') return
+
+    // Skip if already intersected and once=true
+    if (options?.once && hasIntersected) return
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        requestAnimationFrame(() => {
+          const entry = entries[0]
+          if (entry) {
+            const isVisible = entry.isIntersecting
+            setIsIntersecting(isVisible)
+            
+            if (isVisible && !hasIntersected) {
+              setHasIntersected(true)
+            }
+            
+            // Disconnect if once=true and now visible
+            if (options?.once && isVisible && observerRef.current) {
+              observerRef.current.disconnect()
+              observerRef.current = null
+            }
+          }
+        })
+      },
+      {
+        threshold: options?.threshold || 0.1,
+        rootMargin: options?.rootMargin || '50px'
+      }
+    )
+
+    observerRef.current.observe(element)
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+        observerRef.current = null
+      }
+    }
+  }, [elementRef, options?.threshold, options?.rootMargin, options?.once, hasIntersected])
+
+  return {
+    isIntersecting,
+    hasIntersected,
+    shouldLoad: options?.once ? hasIntersected : isIntersecting
+  }
+}
