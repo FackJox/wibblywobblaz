@@ -20,7 +20,8 @@ const nextConfig = {
     // Tree shaking optimization
     config.optimization = {
       ...config.optimization,
-      usedExports: true,
+      // Only enable usedExports in production to avoid caching conflicts
+      ...(dev ? {} : { usedExports: true }),
       sideEffects: false,
       providedExports: true,
       // Split chunks for better caching
