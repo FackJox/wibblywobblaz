@@ -1,3 +1,5 @@
+import withBundleAnalyzer from '@next/bundle-analyzer'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -9,6 +11,88 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Performance optimizations
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Code splitting and tree shaking optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Bundle analysis only in production builds with ANALYZE=true
+    if (!dev && !isServer && process.env.ANALYZE === 'true') {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          reportFilename: 'bundle-report.html',
+          openAnalyzer: false,
+        })
+      )
+    }
+
+    // Tree shaking optimization
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      sideEffects: false,
+      providedExports: true,
+      // Split chunks for better caching
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          // Separate vendor libraries
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          // Separate animation-related code
+          animations: {
+            test: /[\\/](hooks|components)[\\/].*animation.*[\\/]/,
+            name: 'animations',
+            chunks: 'async',
+            priority: 10,
+          },
+          // Separate UI components
+          ui: {
+            test: /[\\/]components[\\/]ui[\\/]/,
+            name: 'ui',
+            chunks: 'async',
+            priority: 5,
+          },
+        },
+      },
+    }
+
+    // Reduce bundle size by excluding unnecessary polyfills
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      }
+    }
+
+    return config
+  },
+  // Performance monitoring
+  experimental: {
+    // Enable performance monitoring
+    instrumentationHook: true,
+    // Optimize for smaller bundles
+    optimizeCss: true,
+    // Reduce JavaScript bundle size
+    swcTraceProfiling: process.env.NODE_ENV === 'development',
+  },
 }
 
-export default nextConfig
+// Conditionally wrap with bundle analyzer
+const configWithAnalyzer = process.env.ANALYZE === 'true'
+  ? withBundleAnalyzer({
+      enabled: true,
+      openAnalyzer: false,
+    })(nextConfig)
+  : nextConfig
+
+export default configWithAnalyzer
