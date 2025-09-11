@@ -6,6 +6,17 @@ import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X, Shopp
 import Image from "next/image"
 import Link from "next/link"
 
+interface PartyEvent {
+  id: number
+  title: string
+  date: string
+  time: string
+  venue: string
+  location: string
+  poster: string
+  hotOnes?: boolean
+}
+
 export default function WibblyWobblazLanding() {
   const [currentPage, setCurrentPage] = useState<"links" | "parties">("links")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -76,6 +87,36 @@ export default function WibblyWobblazLanding() {
       venue: "THE PACKHORSE SECRET CELLAR",
       location: "BRISTOL",
       poster: "/images/flyer4.png",
+    },
+    {
+      id: 2,
+      title: "HOT ONES - EP01",
+      date: "2025-09-15",
+      time: "19:00",
+      venue: "DIXIES CHICKEN SHOP",
+      location: "BRISTOL",
+      poster: "/images/flyer4.png",
+      hotOnes: true,
+    },
+    {
+      id: 3,
+      title: "HOT ONES - EP02",
+      date: "2025-09-22",
+      time: "20:00",
+      venue: "?????",
+      location: "BRISTOL",
+      poster: "/images/flyer4.png",
+      hotOnes: true,
+    },
+    {
+      id: 4,
+      title: "BARBER SHOP BOILER ROOM",
+      date: "2025-10-01",
+      time: "21:00",
+      venue: "?????",
+      location: "BRISTOL",
+      poster: "/images/flyer4.png",
+      hotOnes: false,
     },
   ]
 
