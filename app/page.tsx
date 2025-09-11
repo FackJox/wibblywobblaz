@@ -24,6 +24,7 @@ export default function WibblyWobblazLanding() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [shhhState, setShhhState] = useState<'hidden' | 'animating' | 'visible'>('hidden')
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const freeButtonRef = useRef<HTMLButtonElement>(null)
 
   const handlePageTransition = (targetPage: "links" | "parties") => {
     if (targetPage === currentPage) return
@@ -62,6 +63,24 @@ export default function WibblyWobblazLanding() {
       return () => clearTimeout(resetTimer)
     }
   }, [currentPage, isTransitioning, shhhState])
+
+  // Handle FREE button click with accessibility
+  const handleFreeClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault()
+    setShhhState('animating')
+    // Store reference to the button that triggered the animation for focus management
+    if (freeButtonRef.current) {
+      freeButtonRef.current.blur() // Remove focus during animation
+    }
+  }
+
+  // Handle keyboard events for FREE button
+  const handleFreeKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleFreeClick(e)
+    }
+  }
 
 
   const upcomingParties = [
@@ -337,8 +356,21 @@ export default function WibblyWobblazLanding() {
 
       {/* Main Content Area with Shhh SVG */}
       <div className="flex-1 relative overflow-y-auto">
+        {/* Accessibility live region for animation announcements */}
+        <div 
+          aria-live="polite" 
+          aria-atomic="true" 
+          className="sr-only"
+        >
+          {shhhState === 'animating' && "Animation started, opening Instagram..."}
+          {shhhState === 'visible' && "Animation completed, Instagram opening in new tab"}
+        </div>
+
         {/* Shhh SVG - stays visible after first animation */}
         <div
+          role="img"
+          aria-label="Shhh character animation"
+          aria-hidden={shhhState === 'hidden'}
           className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated ${
             shhhState === 'animating' ? 'shhh-slide-up' : ''
           }`}
@@ -427,13 +459,15 @@ export default function WibblyWobblazLanding() {
 
                   {party.hotOnes ? (
                     <Button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShhhState('animating');
-                      }}
-                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
+                      ref={freeButtonRef}
+                      onClick={handleFreeClick}
+                      onKeyDown={handleFreeKeyDown}
+                      aria-label="Free ticket - opens Instagram"
+                      aria-pressed={shhhState === 'animating'}
+                      disabled={shhhState === 'animating'}
+                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
                     >
-                      FREE
+                      {shhhState === 'animating' ? 'LOADING...' : 'FREE'}
                     </Button>
                   ) : (
                     <Button
