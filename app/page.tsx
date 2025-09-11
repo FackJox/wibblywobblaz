@@ -542,25 +542,113 @@ export default function WibblyWobblazLanding() {
   );
 
   return (
-    <div 
-      ref={containerRef}
-      className="fixed inset-0 overflow-hidden"
-      {...gestureHandlers}
-    >
-      {/* Pages Container */}
-      <div
-        className={`flex w-[200%] h-full transition-transform duration-700 ease-in-out ${
-          currentPage === "parties" ? "-translate-x-1/2" : "translate-x-0"
-        }`}
-      >
-        {/* Links Page */}
-        <div className="w-1/2 h-full">
-          <LinksPage />
+    <div className="fixed inset-0 overflow-hidden flex flex-col">
+      {/* Shared Navigation */}
+      <nav className={`sticky-nav border-b-4 ${currentPage === "parties" ? "border-white bg-black text-white" : "border-black bg-white text-black"} p-4 md:p-6 flex-shrink-0 z-50`}>
+        <div className="flex justify-between items-center">
+          <div className={`text-2xl md:text-7xl font-black tracking-tighter font-hegval ${currentPage === "parties" ? "text-white" : "text-black"}`}>
+            {currentPage === "parties" ? "UPCOMING PARTIES" : "WIBBLY WOBBLAZ"}
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-8">
+            <Button
+              variant="ghost"
+              className={`text-xl font-black transition-colors duration-200 ${
+                currentPage === "links" 
+                  ? "bg-black text-white hover:bg-gray-800" 
+                  : currentPage === "parties"
+                  ? "text-white hover:bg-white hover:text-black"
+                  : "hover:bg-black hover:text-white"
+              }`}
+              onClick={() => handlePageTransition("links")}
+              disabled={isTransitioning}
+            >
+              LINKS
+            </Button>
+            <Button
+              variant="ghost"
+              className={`text-xl font-black transition-colors duration-200 ${
+                currentPage === "parties" 
+                  ? "bg-white text-black hover:bg-gray-200" 
+                  : currentPage === "links"
+                  ? "text-black hover:bg-black hover:text-white"
+                  : "hover:bg-white hover:text-black"
+              }`}
+              onClick={() => handlePageTransition("parties")}
+              disabled={isTransitioning}
+            >
+              PARTIES
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <Button 
+            variant="ghost" 
+            className={`md:hidden p-2 ${currentPage === "parties" ? "text-white hover:bg-white hover:text-black" : ""}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </Button>
         </div>
 
-        {/* Parties Page */}
-        <div className="w-1/2 h-full">
-          <PartiesPage />
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className={`md:hidden mt-4 border-t-2 ${currentPage === "parties" ? "border-white" : "border-black"} pt-4`}>
+            <div className="flex flex-col space-y-2">
+              <Button
+                variant="ghost"
+                className={`text-xl font-black transition-colors duration-200 justify-start ${
+                  currentPage === "links" 
+                    ? "bg-black text-white" 
+                    : currentPage === "parties"
+                    ? "text-white hover:bg-white hover:text-black"
+                    : "hover:bg-black hover:text-white"
+                }`}
+                onClick={() => handlePageTransition("links")}
+                disabled={isTransitioning}
+              >
+                LINKS
+              </Button>
+              <Button
+                variant="ghost"
+                className={`text-xl font-black transition-colors duration-200 justify-start ${
+                  currentPage === "parties" 
+                    ? "bg-white text-black" 
+                    : currentPage === "links"
+                    ? "text-black hover:bg-black hover:text-white"
+                    : "hover:bg-white hover:text-black"
+                }`}
+                onClick={() => handlePageTransition("parties")}
+                disabled={isTransitioning}
+              >
+                PARTIES
+              </Button>
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Content Container with Sliding Pages */}
+      <div 
+        ref={containerRef}
+        className="flex-1 relative overflow-hidden"
+        {...gestureHandlers}
+      >
+        <div
+          className={`flex w-[200%] h-full transition-transform duration-700 ease-in-out ${
+            currentPage === "parties" ? "-translate-x-1/2" : "translate-x-0"
+          }`}
+        >
+          {/* Links Page */}
+          <div className="w-1/2 h-full">
+            <LinksPage />
+          </div>
+          
+          {/* Parties Page */}
+          <div className="w-1/2 h-full">
+            <PartiesPage />
+          </div>
         </div>
       </div>
     </div>
