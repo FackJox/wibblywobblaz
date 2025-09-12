@@ -39,18 +39,6 @@ export default function WibblyWobblazLanding() {
     }, 800)
   }
 
-  // Handle parties page animation trigger
-  useEffect(() => {
-    if (currentPage === "parties" && shhhState === 'hidden' && !isTransitioning) {
-      // Start animation after page transition completes
-      const startAnimationTimer = setTimeout(() => {
-        setShhhState('animating')
-        // Animation completion is now handled by onAnimationEnd event
-      }, 200)
-      
-      return () => clearTimeout(startAnimationTimer)
-    }
-  }, [currentPage, shhhState, isTransitioning])
 
   // Reset shhh state when back on links page and transition is complete
   useEffect(() => {
@@ -371,7 +359,7 @@ export default function WibblyWobblazLanding() {
           role="img"
           aria-label="Shhh character animation"
           aria-hidden={shhhState === 'hidden'}
-          className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated ${
+          className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated z-50 ${
             shhhState === 'animating' ? 'shhh-slide-up' : ''
           }`}
           style={{
