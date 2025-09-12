@@ -79,7 +79,7 @@ export default function WibblyWobblazLanding() {
       time: "22:00",
       venue: "THE PACKHORSE SECRET CELLAR",
       location: "BRISTOL",
-      poster: "/images/flyer4.png",
+      poster: "/images/1/hot series dixies chicken3.png",
       ticketLink: "https://hdfst.uk/e132325",
     },
     {
@@ -89,7 +89,7 @@ export default function WibblyWobblazLanding() {
       time: "19:00",
       venue: "DIXIES CHICKEN SHOP",
       location: "BRISTOL",
-      poster: "/images/flyer4.png",
+      poster: "/images/2/posterflyer a4.png",
       hotOnes: true,
     },
     {
@@ -99,7 +99,7 @@ export default function WibblyWobblazLanding() {
       time: "20:00",
       venue: "?????",
       location: "BRISTOL",
-      poster: "/images/flyer4.png",
+      poster: "/images/3/STGARTER.png",
       hotOnes: true,
     },
     {
@@ -109,7 +109,7 @@ export default function WibblyWobblazLanding() {
       time: "21:00",
       venue: "?????",
       location: "BRISTOL",
-      poster: "/images/flyer4.png",
+      poster: "/images/4/posterdayglo.png",
       hotOnes: false,
       ticketLink: "https://hdfst.uk/e132325",
     },
