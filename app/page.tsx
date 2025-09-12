@@ -89,7 +89,7 @@ export default function WibblyWobblazLanding() {
       time: "22:00",
       venue: "THE PACKHORSE SECRET CELLAR",
       location: "BRISTOL",
-      poster: "/images/flyer4.png",
+      poster: "/images/2/posterflyer 4.png",
       ticketLink: "https://hdfst.uk/e132325",
     },
     {
@@ -105,11 +105,11 @@ export default function WibblyWobblazLanding() {
     {
       id: 3,
       title: "HOT ONES - EP02",
-      date: "2025-09-22",
-      time: "20:00",
+      date: "2025-09-20",
+      time: "22:00",
       venue: "?????",
       location: "BRISTOL",
-      poster: "/images/flyer4.png",
+      poster: "/images/3/STGARTER.png",
       hotOnes: true,
     },
   ];
