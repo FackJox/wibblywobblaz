@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { PandaTestComponent } from "@/components/test-panda";
 
 interface PartyEvent {
   id: number;
@@ -501,6 +502,10 @@ export default function WibblyWobblazLanding() {
 
   return (
     <div className="fixed inset-0 overflow-hidden">
+      {/* PandaCSS Test Component - for hot reload testing */}
+      <div className="absolute top-0 right-0 z-50">
+        <PandaTestComponent />
+      </div>
       {/* Pages Container */}
       <div
         className={`flex w-[200%] h-full transition-transform duration-700 ease-in-out ${

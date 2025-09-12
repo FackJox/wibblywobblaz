@@ -14,7 +14,7 @@ export default defineConfig({
   // Files to exclude
   exclude: [],
 
-  // Comprehensive theme configuration migrated from Tailwind
+  // Comprehensive theme configuration
   theme: {
     extend: {
       tokens: {
@@ -236,14 +236,7 @@ export default defineConfig({
         }
       },
       
-      // Animations
-      animations: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'shhh-slide-up': 'slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
-        'shhh-slide-up-slow': 'slideUpFromBottom 1200ms cubic-bezier(0.16, 1, 0.3, 1) forwards',
-        'fade-in-reduced': 'fadeInReduced 400ms ease-out forwards'
-      }
+      // Note: Animations will be handled via utility patterns or CSS-in-JS
     },
     
     // Define semantic tokens for theme switching
