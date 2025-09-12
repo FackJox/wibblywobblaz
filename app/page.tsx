@@ -6,12 +6,25 @@ import { Instagram, Music, ExternalLink, Calendar, MapPin, Clock, Menu, X, Shopp
 import Image from "next/image"
 import Link from "next/link"
 
+interface PartyEvent {
+  id: number
+  title: string
+  date: string
+  time: string
+  venue: string
+  location: string
+  poster: string
+  hotOnes?: boolean
+  ticketLink?: string
+}
+
 export default function WibblyWobblazLanding() {
   const [currentPage, setCurrentPage] = useState<"links" | "parties">("links")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [shhhState, setShhhState] = useState<'hidden' | 'animating' | 'visible'>('hidden')
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const freeButtonRef = useRef<HTMLButtonElement>(null)
 
   const handlePageTransition = (targetPage: "links" | "parties") => {
     if (targetPage === currentPage) return
@@ -26,33 +39,6 @@ export default function WibblyWobblazLanding() {
     }, 800)
   }
 
-  // // Handle parties page animation and bounce-back
-  // useEffect(() => {
-  //   if (currentPage === "parties" && shhhState === 'hidden' && !isTransitioning) {
-  //     // Start animation after page transition completes
-  //     const startAnimationTimer = setTimeout(() => {
-  //       setShhhState('animating')
-        
-  //       // After animation completes, bounce back to links
-  //       const bounceBackTimer = setTimeout(() => {
-  //         setShhhState('visible') // Keep visible but stop animating
-          
-  //         // Direct page transition back to links
-  //         setIsTransitioning(true)
-  //         setMobileMenuOpen(false)
-  //         setCurrentPage("links")
-          
-  //         setTimeout(() => {
-  //           setIsTransitioning(false)
-  //         }, 800)
-  //       }, 1000) // 900ms animation + small buffer
-        
-  //       return () => clearTimeout(bounceBackTimer)
-  //     }, 200)
-      
-  //     return () => clearTimeout(startAnimationTimer)
-  //   }
-  // }, [currentPage, shhhState, isTransitioning])
 
   // Reset shhh state when back on links page and transition is complete
   useEffect(() => {
@@ -66,6 +52,24 @@ export default function WibblyWobblazLanding() {
     }
   }, [currentPage, isTransitioning, shhhState])
 
+  // Handle FREE button click with accessibility
+  const handleFreeClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault()
+    setShhhState('animating')
+    // Store reference to the button that triggered the animation for focus management
+    if (freeButtonRef.current) {
+      freeButtonRef.current.blur() // Remove focus during animation
+    }
+  }
+
+  // Handle keyboard events for FREE button
+  const handleFreeKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleFreeClick(e)
+    }
+  }
+
 
   const upcomingParties = [
     {
@@ -76,6 +80,38 @@ export default function WibblyWobblazLanding() {
       venue: "THE PACKHORSE SECRET CELLAR",
       location: "BRISTOL",
       poster: "/images/flyer4.png",
+      ticketLink: "https://hdfst.uk/e132325",
+    },
+    {
+      id: 2,
+      title: "HOT ONES - EP01",
+      date: "2025-09-15",
+      time: "19:00",
+      venue: "DIXIES CHICKEN SHOP",
+      location: "BRISTOL",
+      poster: "/images/flyer4.png",
+      hotOnes: true,
+    },
+    {
+      id: 3,
+      title: "HOT ONES - EP02",
+      date: "2025-09-22",
+      time: "20:00",
+      venue: "?????",
+      location: "BRISTOL",
+      poster: "/images/flyer4.png",
+      hotOnes: true,
+    },
+    {
+      id: 4,
+      title: "BARBER SHOP BOILER ROOM",
+      date: "2025-10-01",
+      time: "21:00",
+      venue: "?????",
+      location: "BRISTOL",
+      poster: "/images/flyer4.png",
+      hotOnes: false,
+      ticketLink: "https://hdfst.uk/e132325",
     },
   ]
 
@@ -308,15 +344,35 @@ export default function WibblyWobblazLanding() {
 
       {/* Main Content Area with Shhh SVG */}
       <div className="flex-1 relative overflow-y-auto">
+        {/* Accessibility live region for animation announcements */}
+        <div 
+          aria-live="polite" 
+          aria-atomic="true" 
+          className="sr-only"
+        >
+          {shhhState === 'animating' && "Animation started, opening Instagram..."}
+          {shhhState === 'visible' && "Animation completed, Instagram opening in new tab"}
+        </div>
+
         {/* Shhh SVG - stays visible after first animation */}
-        {/* <div
-          className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated ${
+        <div
+          role="img"
+          aria-label="Shhh character animation"
+          aria-hidden={shhhState === 'hidden'}
+          className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated z-50 ${
             shhhState === 'animating' ? 'shhh-slide-up' : ''
           }`}
           style={{
             transform: (shhhState === 'animating' || shhhState === 'visible') ? 'translateY(0)' : 'translateY(100vh)',
             transition: shhhState === 'animating' ? 'none' : 'transform 0ms',
             opacity: (shhhState === 'animating' || shhhState === 'visible') ? 1 : 0,
+          }}
+          onAnimationEnd={(e) => {
+            if (e.animationName === 'slideUpBounce') {
+              setShhhState('visible');
+              setCurrentPage('links');
+              window.open('https://instagram.com/wibblywobblaz', '_blank');
+            }
           }}
         >
           <div className="bottom-aligned-responsive gpu-accelerated">
@@ -336,7 +392,7 @@ export default function WibblyWobblazLanding() {
               priority
             />
           </div>
-        </div> */}
+        </div>
 
         {/* Party content overlay */}
              {/* Poster */}
@@ -389,14 +445,28 @@ export default function WibblyWobblazLanding() {
                     <div className="text-xs font-black tracking-wider">{party.location}</div>
                   </div>
 
-                  <Button
-                    className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
-                    asChild
-                  >
-                    <Link href="https://hdfst.uk/e132325" target="_blank" rel="noopener noreferrer">
-                      GET TICKETS
-                    </Link>
-                  </Button>
+                  {party.hotOnes ? (
+                    <Button
+                      ref={freeButtonRef}
+                      onClick={handleFreeClick}
+                      onKeyDown={handleFreeKeyDown}
+                      aria-label="Free ticket - opens Instagram"
+                      aria-pressed={shhhState === 'animating'}
+                      disabled={shhhState === 'animating'}
+                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
+                    >
+                      {shhhState === 'animating' ? 'LOADING...' : 'FREE'}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
+                      asChild
+                    >
+                      <Link href={party.ticketLink || "https://hdfst.uk/e132325"} target="_blank" rel="noopener noreferrer">
+                        GET TICKETS
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}
