@@ -220,8 +220,6 @@ export function calculateAnimationBudget(
   quality: 'low' | 'medium' | 'high'
   shouldDefer: boolean
 } {
-  const basePreset = animationPresets[animationType]
-  
   // Determine quality based on device capabilities
   let quality: 'low' | 'medium' | 'high' = 'medium'
   

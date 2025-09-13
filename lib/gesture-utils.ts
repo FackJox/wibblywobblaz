@@ -158,13 +158,13 @@ export function calculateGestureProgress(
 /**
  * Debounce gesture events to prevent rapid firing
  */
-export function debounceGesture<T extends (...args: any[]) => void>(
+export function debounceGesture<T extends (...args: unknown[]) => void>(
   func: T,
   wait: number
 ): T {
   let timeout: NodeJS.Timeout | null = null
   
-  return ((...args: any[]) => {
+  return ((...args: unknown[]) => {
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), wait)
   }) as T

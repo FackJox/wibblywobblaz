@@ -192,7 +192,7 @@ class AnimationFrameBudgetManager {
   private startBudgetLoop(): void {
     if (this.rafId) return
     
-    const processTasks = (timestamp: number) => {
+    const processTasks = () => {
       if (this.isProcessing) return
       this.isProcessing = true
       

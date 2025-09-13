@@ -264,9 +264,7 @@ export function animateTextReveal(
 ): void {
   const {
     type = 'slide',
-    stagger = 50,
-    duration = 300,
-    easing = 'ease'
+    stagger = 50
   } = config;
   
   spans.forEach((span, index) => {
@@ -381,7 +379,7 @@ export function safeCancelAnimationFrame(id: number): void {
 /**
  * Throttle function for performance optimization
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -418,7 +416,7 @@ export function createHoverHandler(
   const { onEnter, onLeave, onMove } = handlers;
   
   // Throttle move handler for performance
-  const throttledMove = onMove ? throttle(onMove, 16) : undefined; // 60fps
+  const throttledMove = onMove ? throttle(onMove as (...args: unknown[]) => unknown, 16) : undefined; // 60fps
   
   const handleMouseEnter = (event: MouseEvent) => {
     onEnter?.(event);

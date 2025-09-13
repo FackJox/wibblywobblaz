@@ -155,12 +155,12 @@ export function getVisibilityRatio(element: Element): number {
 /**
  * Throttle function to limit execution rate
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     if (!inThrottle) {
       func.apply(this, args)
       inThrottle = true
@@ -172,12 +172,12 @@ export function throttle<T extends (...args: any[]) => any>(
 /**
  * Debounce function to delay execution until after delay
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number
 ): (...args: Parameters<T>) => void {
   let timeoutId: NodeJS.Timeout
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     clearTimeout(timeoutId)
     timeoutId = setTimeout(() => func.apply(this, args), delay)
   }
@@ -190,7 +190,7 @@ export const requestAnimFrame = (
   callback: FrameRequestCallback
 ): number => {
   return (window.requestAnimationFrame ||
-    (window as any).webkitRequestAnimationFrame ||
+    (window as Window & { webkitRequestAnimationFrame?: typeof requestAnimationFrame }).webkitRequestAnimationFrame ||
     function (callback: FrameRequestCallback) {
       return window.setTimeout(callback, 1000 / 60)
     })(callback)
@@ -201,7 +201,7 @@ export const requestAnimFrame = (
  */
 export const cancelAnimFrame = (id: number): void => {
   return (window.cancelAnimationFrame ||
-    (window as any).webkitCancelAnimationFrame ||
+    (window as Window & { webkitCancelAnimationFrame?: typeof cancelAnimationFrame }).webkitCancelAnimationFrame ||
     function (id: number) {
       clearTimeout(id)
     })(id)

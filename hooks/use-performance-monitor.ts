@@ -266,7 +266,7 @@ export function usePerformanceMonitor(
 
     const type = targetAnimationType || animationType;
     profilerRef.current = new AnimationProfiler(maxSamples, updateInterval);
-    profilerRef.current.start(type);
+    profilerRef.current.start();
     
     setIsMonitoring(true);
     setIssues([]);

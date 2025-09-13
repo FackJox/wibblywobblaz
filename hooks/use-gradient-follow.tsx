@@ -211,7 +211,7 @@ export function useGradientFollow<T extends HTMLElement = HTMLElement>(
    * Throttled mouse move handler for performance
    */
   const handleMouseMove = React.useMemo(
-    () => throttle((event: MouseEvent) => {
+    () => throttle(((event: MouseEvent) => {
       if (!elementRef.current || !isActive) return;
 
       updateBounds();
@@ -224,7 +224,7 @@ export function useGradientFollow<T extends HTMLElement = HTMLElement>(
       } else {
         updateGradient();
       }
-    }, updateInterval),
+    }) as (...args: unknown[]) => unknown, updateInterval),
     [isActive, updateBounds, smooth, startAnimation, updateGradient, updateInterval]
   );
 

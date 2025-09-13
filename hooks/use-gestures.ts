@@ -76,9 +76,9 @@ export function useGestures(
   const isMouseTrackingRef = useRef(false)
 
   // Debounced handlers to prevent excessive calls
-  const debouncedOnSwipeMove = debounceGesture((currentPoint: TouchPoint, progress: number) => {
+  const debouncedOnSwipeMove = debounceGesture(((currentPoint: TouchPoint, progress: number) => {
     handlers.onSwipeMove?.(currentPoint, progress)
-  }, debounceMs)
+  }) as (...args: unknown[]) => void, debounceMs)
 
   const startGesture = useCallback((event: TouchEvent | MouseEvent) => {
     if (!enabled) return

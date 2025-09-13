@@ -424,7 +424,7 @@ export function useMouseParallax<T extends HTMLElement = HTMLElement>(
   })
 
   const handleMouseMove = React.useCallback(
-    throttle((event: MouseEvent) => {
+    throttle(((event: MouseEvent) => {
       if (!ref.current || (respectReducedMotion && prefersReducedMotion)) return
 
       const element = ref.current
@@ -451,7 +451,7 @@ export function useMouseParallax<T extends HTMLElement = HTMLElement>(
         offset: Math.sqrt(clampedX * clampedX + clampedY * clampedY),
         isActive: Math.abs(clampedX) > 0.1 || Math.abs(clampedY) > 0.1
       }))
-    }, throttleMs),
+    }) as (...args: unknown[]) => unknown, throttleMs),
     [intensity, respectReducedMotion, prefersReducedMotion, clampValues, maxOffset, throttleMs]
   )
 

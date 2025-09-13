@@ -101,9 +101,7 @@ export const GestureWrapper = React.forwardRef<HTMLDivElement, GestureWrapperPro
     // Initialize long press hook
     const {
       longPressState,
-      longPressHandlers: longPressEventHandlers,
-      cancelLongPress,
-      triggerLongPress
+      longPressHandlers: longPressEventHandlers
     } = useLongPress(
       longPress.enabled ? longPressHandlers : {},
       { enabled: enabled && longPress.enabled, ...longPress.options }
@@ -112,9 +110,7 @@ export const GestureWrapper = React.forwardRef<HTMLDivElement, GestureWrapperPro
     // Initialize gesture/swipe hook
     const {
       gestureState,
-      gestureHandlers: swipeEventHandlers,
-      cancelGesture,
-      resetGesture
+      gestureHandlers: swipeEventHandlers
     } = useGestures(
       swipe.enabled ? swipe.handlers : {},
       { enabled: enabled && swipe.enabled, ...swipe.options }
@@ -122,101 +118,135 @@ export const GestureWrapper = React.forwardRef<HTMLDivElement, GestureWrapperPro
 
     // Combine event handlers
     const eventHandlers = React.useMemo(() => {
-      const handlers: Record<string, any> = {}
+      const handlers: Record<string, (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => void> = {}
 
       if (longPress.enabled && enabled) {
-        handlers.onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onTouchStart(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onTouchStart(event.nativeEvent)
+        handlers.onTouchStart = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            longPressEventHandlers.onTouchStart((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onTouchStart((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
         
-        handlers.onTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onTouchMove(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onTouchMove(event.nativeEvent)
+        handlers.onTouchMove = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            longPressEventHandlers.onTouchMove((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onTouchMove((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
         
-        handlers.onTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onTouchEnd(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onTouchEnd(event.nativeEvent)
+        handlers.onTouchEnd = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            longPressEventHandlers.onTouchEnd((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onTouchEnd((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
         
-        handlers.onTouchCancel = (event: React.TouchEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onTouchCancel(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onTouchCancel(event.nativeEvent)
+        handlers.onTouchCancel = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            longPressEventHandlers.onTouchCancel((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onTouchCancel((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
 
-        handlers.onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onMouseDown(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onMouseDown(event.nativeEvent)
+        handlers.onMouseDown = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            longPressEventHandlers.onMouseDown((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onMouseDown((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
         
-        handlers.onMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onMouseMove(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onMouseMove(event.nativeEvent)
+        handlers.onMouseMove = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            longPressEventHandlers.onMouseMove((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onMouseMove((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
         
-        handlers.onMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onMouseUp(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onMouseUp(event.nativeEvent)
+        handlers.onMouseUp = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            longPressEventHandlers.onMouseUp((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onMouseUp((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
         
-        handlers.onMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onMouseLeave(event.nativeEvent)
-          if (swipe.enabled) {
-            swipeEventHandlers.onMouseLeave(event.nativeEvent)
+        handlers.onMouseLeave = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            longPressEventHandlers.onMouseLeave((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            if (swipe.enabled) {
+              swipeEventHandlers.onMouseLeave((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            }
           }
         }
 
-        handlers.onContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
-          longPressEventHandlers.onContextMenu(event.nativeEvent)
-          onContextMenu?.(event)
+        handlers.onContextMenu = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            longPressEventHandlers.onContextMenu((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+            onContextMenu?.(event as React.MouseEvent<HTMLDivElement>)
+          }
         }
       } else if (swipe.enabled && enabled) {
         // Only swipe handlers if long press is disabled
-        handlers.onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onTouchStart(event.nativeEvent)
+        handlers.onTouchStart = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            swipeEventHandlers.onTouchStart((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+          }
         }
         
-        handlers.onTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onTouchMove(event.nativeEvent)
+        handlers.onTouchMove = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            swipeEventHandlers.onTouchMove((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+          }
         }
         
-        handlers.onTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onTouchEnd(event.nativeEvent)
+        handlers.onTouchEnd = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            swipeEventHandlers.onTouchEnd((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+          }
         }
         
-        handlers.onTouchCancel = (event: React.TouchEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onTouchCancel(event.nativeEvent)
+        handlers.onTouchCancel = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if ('touches' in event) {
+            swipeEventHandlers.onTouchCancel((event as React.TouchEvent<HTMLDivElement>).nativeEvent)
+          }
         }
 
-        handlers.onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onMouseDown(event.nativeEvent)
+        handlers.onMouseDown = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            swipeEventHandlers.onMouseDown((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+          }
         }
         
-        handlers.onMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onMouseMove(event.nativeEvent)
+        handlers.onMouseMove = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            swipeEventHandlers.onMouseMove((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+          }
         }
         
-        handlers.onMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onMouseUp(event.nativeEvent)
+        handlers.onMouseUp = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            swipeEventHandlers.onMouseUp((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+          }
         }
         
-        handlers.onMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
-          swipeEventHandlers.onMouseLeave(event.nativeEvent)
+        handlers.onMouseLeave = (event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+          if (!('touches' in event)) {
+            swipeEventHandlers.onMouseLeave((event as React.MouseEvent<HTMLDivElement>).nativeEvent)
+          }
         }
       }
 

@@ -93,10 +93,10 @@ export function detectLowEndDevice(): boolean {
     navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2,
     
     // Device memory (if available)
-    (navigator as any).deviceMemory && (navigator as any).deviceMemory <= 2,
+    (navigator as Navigator & { deviceMemory?: number }).deviceMemory ? ((navigator as Navigator & { deviceMemory?: number }).deviceMemory! <= 2) : false,
     
     // Connection quality (if available)
-    (navigator as any).connection && (navigator as any).connection.effectiveType === 'slow-2g',
+    (navigator as Navigator & { connection?: { effectiveType: string } }).connection ? ((navigator as Navigator & { connection?: { effectiveType: string } }).connection!.effectiveType === 'slow-2g') : false,
     
     // Reduced motion preference
     window.matchMedia('(prefers-reduced-motion: reduce)').matches,
@@ -113,8 +113,8 @@ export function detectLowEndDevice(): boolean {
  * Measure memory usage if available
  */
 export function getMemoryUsage(): number {
-  if ('memory' in performance && (performance as any).memory) {
-    return (performance as any).memory.usedJSHeapSize / (1024 * 1024); // MB
+  if ('memory' in performance && (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory) {
+    return (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory!.usedJSHeapSize / (1024 * 1024); // MB
   }
   return 0;
 }
@@ -161,7 +161,7 @@ export class AnimationProfiler {
   /**
    * Start profiling
    */
-  start(animationType: string = 'default'): void {
+  start(): void {
     this.isActive = true;
     this.startTime = performance.now();
     this.lastFrameTime = this.startTime;
@@ -394,7 +394,7 @@ export const logPerformanceIssue = (() => {
   let lastLogTime = 0;
   const LOG_THROTTLE = 1000; // 1 second
   
-  return (message: string, data?: any) => {
+  return (message: string, data?: unknown) => {
     const now = performance.now();
     if (now - lastLogTime > LOG_THROTTLE) {
       console.warn('Performance Issue:', message, data);
@@ -474,7 +474,7 @@ export function getDeviceInfo(): {
       cores: navigator.hardwareConcurrency || 1
     },
     memory: {
-      deviceMemory: (navigator as any).deviceMemory || 1
+      deviceMemory: (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 1
     },
     gpu: {
       renderer: (() => {
@@ -495,7 +495,7 @@ export function getDeviceInfo(): {
       })()
     },
     connection: {
-      effectiveType: (navigator as any).connection?.effectiveType || '4g'
+      effectiveType: (navigator as Navigator & { connection?: { effectiveType: string } }).connection?.effectiveType || '4g'
     }
   }
 }

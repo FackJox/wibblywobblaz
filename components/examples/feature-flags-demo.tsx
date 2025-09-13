@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { useFeatureFlags, useFeatureFlagsDebug } from "../../hooks/use-feature-flags"
+import type { AnimationType } from "../../lib/feature-flags"
 import { LazyParallax, LazyTextReveal, LazyScrollAnimations } from "../lazy"
 import { useRipple } from "../../hooks/use-ripple"
 import { useMagneticHover } from "../../hooks/use-magnetic-hover"
@@ -40,10 +41,10 @@ export function FeatureFlagsDemo() {
         {Object.entries(flags).map(([type, config]) => (
           <FeatureFlagCard
             key={type}
-            animationType={type as any}
+            animationType={type}
             config={config}
-            isEnabled={isEnabled(type as any)}
-            quality={getQuality(type as any)}
+            isEnabled={isEnabled(type as AnimationType)}
+            quality={getQuality(type as AnimationType)}
             instanceCount={getInstanceCounts()[type as keyof ReturnType<typeof getInstanceCounts>]}
           />
         ))}
@@ -76,7 +77,12 @@ function FeatureFlagCard({
   instanceCount 
 }: {
   animationType: string
-  config: any
+  config: {
+    enabled: boolean
+    lazyLoad: boolean
+    maxInstances: number
+    quality: 'low' | 'medium' | 'high'
+  }
   isEnabled: boolean
   quality: string
   instanceCount: number
@@ -341,18 +347,22 @@ function DebugPanel({
   debugTools, 
   getDebugInfo 
 }: { 
-  debugTools: any
+  debugTools: ReturnType<typeof useFeatureFlagsDebug>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getDebugInfo: () => any 
 }) {
-  const [debugInfo, setDebugInfo] = React.useState<any>(null)
+  const [debugInfo, setDebugInfo] = React.useState<{
+    deviceCaps: Record<string, unknown>
+    instanceCounts: Record<string, number>
+  } | null>(null)
 
-  const refreshDebugInfo = () => {
+  const refreshDebugInfo = React.useCallback(() => {
     setDebugInfo(getDebugInfo())
-  }
+  }, [getDebugInfo])
 
   React.useEffect(() => {
     refreshDebugInfo()
-  }, [])
+  }, [refreshDebugInfo])
 
   if (!debugTools) return null
 

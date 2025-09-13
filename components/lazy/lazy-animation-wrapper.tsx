@@ -14,8 +14,9 @@ import { useIntersectionObserver } from "../../lib/performance-utils"
 interface LazyAnimationWrapperProps {
   children: React.ReactNode
   animationType: AnimationType
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   lazyComponent: React.LazyExoticComponent<React.ComponentType<any>>
-  componentProps?: Record<string, any>
+  componentProps?: Record<string, unknown>
   fallback?: React.ReactNode
   className?: string
   preload?: boolean
@@ -162,7 +163,7 @@ export function withLazyAnimation<P extends object>(
     Promise.resolve({ default: Component })
   )
 
-  const WrappedComponent = React.forwardRef<any, P & {
+  const WrappedComponent = React.forwardRef<unknown, P & {
     lazy?: boolean
     lazyOptions?: {
       preload?: boolean
@@ -180,7 +181,8 @@ export function withLazyAnimation<P extends object>(
     return (
       <LazyAnimationWrapper
         animationType={animationType}
-        lazyComponent={LazyAnimatedComponent}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        lazyComponent={LazyAnimatedComponent as React.LazyExoticComponent<React.ComponentType<any>>}
         componentProps={{ ...defaultProps, ...componentProps, ref }}
         fallback={fallback}
         preload={lazyOptions.preload}
@@ -213,7 +215,7 @@ export function createLazyAnimationFactory(
     lazyComponent: React.LazyExoticComponent<React.ComponentType<P>>,
     defaultProps?: Partial<P>
   ) {
-    return React.forwardRef<any, P & {
+    const LazyAnimationComponent = React.forwardRef<unknown, P & {
       children?: React.ReactNode
       fallback?: React.ReactNode
       preload?: boolean
@@ -224,7 +226,8 @@ export function createLazyAnimationFactory(
       return (
         <LazyAnimationWrapper
           animationType={animationType}
-          lazyComponent={lazyComponent}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          lazyComponent={lazyComponent as React.LazyExoticComponent<React.ComponentType<any>>}
           componentProps={{ ...defaultProps, ...componentProps, ref }}
           fallback={fallback}
           preload={preload}
@@ -235,6 +238,8 @@ export function createLazyAnimationFactory(
         </LazyAnimationWrapper>
       )
     })
+    LazyAnimationComponent.displayName = `LazyAnimation(${animationType})`
+    return LazyAnimationComponent
   }
 }
 
