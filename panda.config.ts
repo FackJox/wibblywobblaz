@@ -3058,6 +3058,488 @@ export default defineConfig({
         defaultVariants: {
           size: 'md'
         }
+      },
+
+      // PAGE STRUCTURE RECIPES
+      // Main page container recipe
+      pageContainer: {
+        className: 'pageContainer',
+        base: {
+          position: 'fixed',
+          inset: '0',
+          overflow: 'hidden'
+        }
+      },
+
+      // Page transition wrapper recipe
+      pageTransitionWrapper: {
+        className: 'pageTransitionWrapper',
+        base: {
+          display: 'flex',
+          width: '200%',
+          height: 'full',
+          transition: 'transform 0.7s ease-in-out'
+        },
+        variants: {
+          page: {
+            links: {
+              transform: 'translateX(0)'
+            },
+            parties: {
+              transform: 'translateX(-50%)'
+            }
+          }
+        },
+        defaultVariants: {
+          page: 'links'
+        }
+      },
+
+      // Individual page wrapper recipe
+      pageWrapper: {
+        className: 'pageWrapper',
+        base: {
+          width: '50%',
+          height: 'full'
+        }
+      },
+
+      // Page content layout recipe
+      pageContent: {
+        className: 'pageContent',
+        base: {
+          height: 'screen',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
+        },
+        variants: {
+          theme: {
+            light: {
+              backgroundColor: 'white',
+              color: 'black'
+            },
+            dark: {
+              backgroundColor: 'black',
+              color: 'white'
+            }
+          }
+        },
+        defaultVariants: {
+          theme: 'light'
+        }
+      },
+
+      // NAVIGATION RECIPES
+      // Main navigation recipe
+      navigation: {
+        className: 'navigation',
+        base: {
+          borderBottomWidth: '4px',
+          padding: 'fluid-md',
+          flexShrink: '0',
+          position: 'sticky',
+          top: '0',
+          zIndex: '50'
+        },
+        variants: {
+          theme: {
+            light: {
+              borderBottomColor: 'black',
+              backgroundColor: 'white'
+            },
+            dark: {
+              borderBottomColor: 'white',
+              backgroundColor: 'black'
+            }
+          }
+        },
+        defaultVariants: {
+          theme: 'light'
+        }
+      },
+
+      // Navigation container recipe
+      navigationContainer: {
+        className: 'navigationContainer',
+        base: {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }
+      },
+
+      // Brand text recipe
+      brandText: {
+        className: 'brandText',
+        base: {
+          fontSize: 'brand',
+          fontWeight: '900',
+          letterSpacing: 'tighter',
+          fontFamily: 'hegval',
+          whiteSpace: 'nowrap'
+        },
+        variants: {
+          theme: {
+            light: {
+              color: 'black'
+            },
+            dark: {
+              color: 'white'
+            }
+          },
+          size: {
+            sm: {
+              fontSize: 'fluid-lg'
+            },
+            md: {
+              fontSize: 'brand'
+            },
+            lg: {
+              fontSize: 'fluid-8xl'
+            }
+          }
+        },
+        defaultVariants: {
+          theme: 'light',
+          size: 'md'
+        }
+      },
+
+      // Desktop navigation buttons container recipe
+      desktopNavigation: {
+        className: 'desktopNavigation',
+        base: {
+          display: 'none',
+          gap: 'fluid-lg'
+        },
+        variants: {
+          responsive: {
+            hidden: {
+              display: 'none'
+            },
+            visible: {
+              display: 'flex',
+              md: {
+                display: 'flex'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'visible'
+        }
+      },
+
+      // Navigation button recipe
+      navigationButton: {
+        className: 'navigationButton',
+        base: {
+          fontSize: 'xl',
+          fontWeight: '900',
+          transition: 'colors 0.2s ease-in-out'
+        },
+        variants: {
+          theme: {
+            light: {
+              color: 'black',
+              _hover: {
+                backgroundColor: 'black',
+                color: 'white'
+              }
+            },
+            dark: {
+              color: 'white',
+              _hover: {
+                backgroundColor: 'white',
+                color: 'black'
+              }
+            }
+          },
+          active: {
+            true: {},
+            false: {}
+          }
+        },
+        compoundVariants: [
+          {
+            theme: 'light',
+            active: true,
+            css: {
+              backgroundColor: 'black',
+              color: 'white'
+            }
+          },
+          {
+            theme: 'dark',
+            active: true,
+            css: {
+              backgroundColor: 'white',
+              color: 'black'
+            }
+          }
+        ],
+        defaultVariants: {
+          theme: 'light',
+          active: false
+        }
+      },
+
+      // Mobile menu button recipe
+      mobileMenuButton: {
+        className: 'mobileMenuButton',
+        base: {
+          padding: '2',
+          display: 'block'
+        },
+        variants: {
+          responsive: {
+            hidden: {
+              display: 'block',
+              md: {
+                display: 'none'
+              }
+            },
+            visible: {
+              display: 'block'
+            }
+          },
+          theme: {
+            light: {
+              color: 'black'
+            },
+            dark: {
+              color: 'white',
+              _hover: {
+                backgroundColor: 'white',
+                color: 'black'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'hidden',
+          theme: 'light'
+        }
+      },
+
+      // Mobile navigation menu recipe
+      mobileNavigation: {
+        className: 'mobileNavigation',
+        base: {
+          marginTop: 'fluid-md',
+          borderTopWidth: '2px',
+          paddingTop: 'fluid-md',
+          display: 'none'
+        },
+        variants: {
+          visible: {
+            true: {
+              display: 'block',
+              md: {
+                display: 'none'
+              }
+            },
+            false: {
+              display: 'none'
+            }
+          },
+          theme: {
+            light: {
+              borderTopColor: 'black'
+            },
+            dark: {
+              borderTopColor: 'white'
+            }
+          }
+        },
+        defaultVariants: {
+          visible: false,
+          theme: 'light'
+        }
+      },
+
+      // Mobile navigation container recipe
+      mobileNavigationContainer: {
+        className: 'mobileNavigationContainer',
+        base: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '2'
+        }
+      },
+
+      // LAYOUT RECIPES
+      // Scrollable content container recipe
+      scrollableContent: {
+        className: 'scrollableContent',
+        base: {
+          flex: '1',
+          overflow: 'hidden'
+        },
+        variants: {
+          scrollable: {
+            true: {
+              overflowY: 'auto',
+              // Mobile scroll optimization
+              WebkitOverflowScrolling: 'touch'
+            },
+            false: {
+              overflow: 'hidden'
+            }
+          }
+        },
+        defaultVariants: {
+          scrollable: false
+        }
+      },
+
+      // Links page layout recipe
+      linksPageLayout: {
+        className: 'linksPageLayout',
+        base: {
+          display: 'flex',
+          flexDirection: 'column',
+          height: 'full'
+        },
+        variants: {
+          responsive: {
+            mobile: {
+              flexDirection: 'column'
+            },
+            desktop: {
+              flexDirection: 'column',
+              md: {
+                flexDirection: 'row'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'desktop'
+        }
+      },
+
+      // Logo section recipe
+      logoSection: {
+        className: 'logoSection',
+        base: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 'fluid-md',
+          backgroundColor: 'white',
+          flex: '1'
+        },
+        variants: {
+          responsive: {
+            mobile: {
+              padding: 'fluid-md'
+            },
+            desktop: {
+              padding: 'fluid-md',
+              md: {
+                padding: 'fluid-lg',
+                height: 'full'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'desktop'
+        }
+      },
+
+      // Links section recipe
+      linksSection: {
+        className: 'linksSection',
+        base: {
+          flex: '1',
+          backgroundColor: 'black',
+          color: 'white',
+          padding: 'fluid-md',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        },
+        variants: {
+          responsive: {
+            mobile: {
+              padding: 'fluid-md'
+            },
+            desktop: {
+              padding: 'fluid-md',
+              md: {
+                padding: 'fluid-lg',
+                height: 'full'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'desktop'
+        }
+      },
+
+      // Parties page content recipe
+      partiesPageContent: {
+        className: 'partiesPageContent',
+        base: {
+          position: 'relative',
+          zIndex: '10',
+          padding: 'fluid-md'
+        },
+        variants: {
+          responsive: {
+            mobile: {
+              padding: 'fluid-md'
+            },
+            desktop: {
+              padding: 'fluid-md',
+              md: {
+                padding: 'fluid-lg'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'desktop'
+        }
+      },
+
+      // Parties grid recipe
+      partiesGrid: {
+        className: 'partiesGrid',
+        base: {
+          display: 'grid',
+          gridTemplateColumns: '1',
+          gap: 'fluid-md',
+          maxWidth: '7xl',
+          marginX: 'auto'
+        },
+        variants: {
+          responsive: {
+            mobile: {
+              gridTemplateColumns: '1',
+              gap: 'fluid-md'
+            },
+            desktop: {
+              gridTemplateColumns: '1',
+              gap: 'fluid-md',
+              md: {
+                gridTemplateColumns: '2',
+                gap: 'fluid-lg'
+              },
+              lg: {
+                gridTemplateColumns: '4',
+                gap: 'fluid-lg'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          responsive: 'desktop'
+        }
       }
     }
   },

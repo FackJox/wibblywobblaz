@@ -16,7 +16,28 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { PandaTestComponent } from "@/components/test-panda";
-import { css } from "../styled-system/css/css";
+import { css } from "../styled-system/css";
+import { cx } from "../styled-system/css";
+import {
+  pageContainer,
+  pageTransitionWrapper,
+  pageWrapper,
+  pageContent,
+  navigation,
+  navigationContainer,
+  brandText,
+  desktopNavigation,
+  navigationButton,
+  mobileMenuButton,
+  mobileNavigation,
+  mobileNavigationContainer,
+  scrollableContent,
+  linksPageLayout,
+  logoSection,
+  linksSection,
+  partiesPageContent,
+  partiesGrid
+} from "../styled-system/recipes";
 
 interface PartyEvent {
   id: number;
@@ -130,27 +151,22 @@ export default function WibblyWobblazLanding() {
   ];
 
   const LinksPage = () => (
-    <div className="h-screen bg-white flex flex-col overflow-hidden">
+    <div className={pageContent({ theme: 'light' })}>
       {/* Sticky Navigation */}
-      <nav className="sticky-nav border-b-4 border-black p-4 md:p-6 bg-white flex-shrink-0">
-        <div className="flex justify-between items-center">
-          <div className={css({
-            fontSize: 'brand',
-            fontWeight: '900',
-            letterSpacing: 'tighter',
-            fontFamily: 'hegval',
-            whiteSpace: 'nowrap' // Prevent wrapping at all viewport sizes
-          })}>
+      <nav className={navigation({ theme: 'light' })}>
+        <div className={navigationContainer()}>
+          <div className={brandText({ theme: 'light', size: 'md' })}>
             WIBBLY WOBBLAZ
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className={desktopNavigation({ responsive: 'visible' })}>
             <Button
               variant="ghost"
-              className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
-                currentPage === "links" ? "bg-black text-white" : ""
-              }`}
+              className={navigationButton({ 
+                theme: 'light', 
+                active: currentPage === "links" 
+              })}
               onClick={() => handlePageTransition("links")}
               disabled={isTransitioning}
             >
@@ -158,9 +174,10 @@ export default function WibblyWobblazLanding() {
             </Button>
             <Button
               variant="ghost"
-              className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 ${
-                currentPage === "parties" ? "bg-black text-white" : ""
-              }`}
+              className={navigationButton({ 
+                theme: 'light', 
+                active: currentPage === "parties" 
+              })}
               onClick={() => handlePageTransition("parties")}
               disabled={isTransitioning}
             >
@@ -171,7 +188,7 @@ export default function WibblyWobblazLanding() {
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            className="md:hidden p-2"
+            className={mobileMenuButton({ responsive: 'hidden', theme: 'light' })}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -180,13 +197,17 @@ export default function WibblyWobblazLanding() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 border-t-2 border-black pt-4">
-            <div className="flex flex-col space-y-2">
+          <div className={mobileNavigation({ visible: true, theme: 'light' })}>
+            <div className={mobileNavigationContainer()}>
               <Button
                 variant="ghost"
-                className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
-                  currentPage === "links" ? "bg-black text-white" : ""
-                }`}
+                className={cx(
+                  navigationButton({ 
+                    theme: 'light', 
+                    active: currentPage === "links" 
+                  }),
+                  css({ justifyContent: 'flex-start' })
+                )}
                 onClick={() => handlePageTransition("links")}
                 disabled={isTransitioning}
               >
@@ -194,9 +215,13 @@ export default function WibblyWobblazLanding() {
               </Button>
               <Button
                 variant="ghost"
-                className={`text-xl font-black hover:bg-black hover:text-white transition-colors duration-200 justify-start ${
-                  currentPage === "parties" ? "bg-black text-white" : ""
-                }`}
+                className={cx(
+                  navigationButton({ 
+                    theme: 'light', 
+                    active: currentPage === "parties" 
+                  }),
+                  css({ justifyContent: 'flex-start' })
+                )}
                 onClick={() => handlePageTransition("parties")}
                 disabled={isTransitioning}
               >
@@ -210,79 +235,163 @@ export default function WibblyWobblazLanding() {
       {/* Main Content */}
       <div
         ref={scrollContainerRef}
-        className="flex-1 scrollable-content mobile-scroll-optimized"
+        className={scrollableContent({ scrollable: true })}
       >
-        <div className="links-container h-full">
+        <div className={css({ height: 'full' })}>
           {/* Responsive layout: desktop (no scroll) vs mobile (scrollable) */}
-          <div className="flex flex-col md:flex-row h-full">
+          <div className={linksPageLayout({ responsive: 'desktop' })}>
             {/* Left Side - Logo */}
-            <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full">
-              <div className="max-w-lg w-full">
+            <div className={logoSection({ responsive: 'desktop' })}>
+              <div className={css({ maxWidth: 'lg', width: 'full' })}>
                 <Image
                   src="/images/wibbly-wobblaz-logo.png"
                   alt="WIBBLY WOBBLAZ"
                   width={500}
                   height={400}
-                  className="w-full h-auto"
+                  className={css({ width: 'full', height: 'auto' })}
                   priority
                 />
               </div>
             </div>
 
             {/* Right Side - Links */}
-            <div className="flex-1 bg-black text-white p-4 md:p-8 flex flex-col justify-center md:h-full">
-              <div className="space-y-6 md:space-y-8">
+            <div className={linksSection({ responsive: 'desktop' })}>
+              <div className={css({ 
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'fluid-lg'
+              })}>
                 {/* Social Links */}
-                <div className="space-y-4">
-                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                <div className={css({ 
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 'fluid-md'
+                })}>
+                  <h2 className={css({
+                    fontSize: 'fluid-lg',
+                    fontWeight: '900',
+                    letterSpacing: 'tighter',
+                    borderBottomWidth: '2px',
+                    borderBottomColor: 'white',
+                    paddingBottom: '2'
+                  })}>
                     FOLLOW US
                   </h2>
-                  <div className="space-y-3">
+                  <div className={css({ 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '3'
+                  })}>
                     {socialLinks.map((social) => (
                       <Link
                         key={social.name}
                         href={social.url}
-                        className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                        className={css({
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '3',
+                          fontSize: 'fluid-base',
+                          fontWeight: '700',
+                          padding: '3',
+                          borderWidth: '2px',
+                          borderColor: 'white',
+                          transition: 'colors 0.2s ease-in-out',
+                          _hover: {
+                            backgroundColor: 'white',
+                            color: 'black'
+                          }
+                        })}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <social.icon size={24} />
                         <span>{social.name.toUpperCase()}</span>
-                        <ExternalLink size={20} className="ml-auto" />
+                        <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
                       </Link>
                     ))}
                   </div>
                 </div>
 
                 {/* Tickets */}
-                <div className="space-y-4">
-                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                <div className={css({ 
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 'fluid-md'
+                })}>
+                  <h2 className={css({
+                    fontSize: 'fluid-lg',
+                    fontWeight: '900',
+                    letterSpacing: 'tighter',
+                    borderBottomWidth: '2px',
+                    borderBottomColor: 'white',
+                    paddingBottom: '2'
+                  })}>
                     GET TICKETS
                   </h2>
                   <Link
                     href="https://hdfst.uk/e132325"
-                    className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                    className={css({
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3',
+                      fontSize: 'fluid-base',
+                      fontWeight: '700',
+                      padding: '3',
+                      borderWidth: '2px',
+                      borderColor: 'white',
+                      transition: 'colors 0.2s ease-in-out',
+                      _hover: {
+                        backgroundColor: 'white',
+                        color: 'black'
+                      }
+                    })}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Calendar size={24} />
                     <span>HEADFIRST</span>
-                    <ExternalLink size={20} className="ml-auto" />
+                    <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
                   </Link>
                 </div>
 
                 {/* Merch */}
-                <div className="space-y-4 pb-10">
-                  <h2 className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2">
+                <div className={css({ 
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 'fluid-md',
+                  paddingBottom: 'fluid-xl'
+                })}>
+                  <h2 className={css({
+                    fontSize: 'fluid-lg',
+                    fontWeight: '900',
+                    letterSpacing: 'tighter',
+                    borderBottomWidth: '2px',
+                    borderBottomColor: 'white',
+                    paddingBottom: '2'
+                  })}>
                     MERCH STORE
                   </h2>
                   <Link
                     href="https://merch.wibblywobblaz.xyz"
-                    className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-colors duration-200 p-3 border-2 border-white"
+                    className={css({
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '3',
+                      fontSize: 'fluid-base',
+                      fontWeight: '700',
+                      padding: '3',
+                      borderWidth: '2px',
+                      borderColor: 'white',
+                      transition: 'colors 0.2s ease-in-out',
+                      _hover: {
+                        backgroundColor: 'white',
+                        color: 'black'
+                      }
+                    })}
                   >
                     <ShoppingBag size={20} />
                     <span>SHOP NOW</span>
-                    <ExternalLink size={20} className="ml-auto" />
+                    <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
                   </Link>
                 </div>
               </div>
@@ -294,21 +403,22 @@ export default function WibblyWobblazLanding() {
   );
 
   const PartiesPage = () => (
-    <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
+    <div className={pageContent({ theme: 'dark' })}>
       {/* Navigation */}
-      <nav className="border-b-4 border-white p-4 md:p-6 flex-shrink-0">
-        <div className="flex justify-between items-center">
-          <div className="text-2xl md:text-3xl font-black tracking-tighter text-white">
+      <nav className={navigation({ theme: 'dark' })}>
+        <div className={navigationContainer()}>
+          <div className={brandText({ theme: 'dark', size: 'md' })}>
             UPCOMING PARTIES
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className={desktopNavigation({ responsive: 'visible' })}>
             <Button
               variant="ghost"
-              className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 text-white border-white ${
-                currentPage === "links" ? "bg-white text-black" : ""
-              }`}
+              className={navigationButton({ 
+                theme: 'dark', 
+                active: currentPage === "links" 
+              })}
               onClick={() => handlePageTransition("links")}
               disabled={isTransitioning}
             >
@@ -316,9 +426,10 @@ export default function WibblyWobblazLanding() {
             </Button>
             <Button
               variant="ghost"
-              className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 text-white border-white ${
-                currentPage === "parties" ? "bg-white text-black" : ""
-              }`}
+              className={navigationButton({ 
+                theme: 'dark', 
+                active: currentPage === "parties" 
+              })}
               onClick={() => handlePageTransition("parties")}
               disabled={isTransitioning}
             >
@@ -329,7 +440,7 @@ export default function WibblyWobblazLanding() {
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            className="md:hidden p-2 text-white hover:bg-white hover:text-black"
+            className={mobileMenuButton({ responsive: 'hidden', theme: 'dark' })}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -338,13 +449,17 @@ export default function WibblyWobblazLanding() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 border-t-2 border-white pt-4">
-            <div className="flex flex-col space-y-2">
+          <div className={mobileNavigation({ visible: true, theme: 'dark' })}>
+            <div className={mobileNavigationContainer()}>
               <Button
                 variant="ghost"
-                className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 justify-start text-white ${
-                  currentPage === "links" ? "bg-white text-black" : ""
-                }`}
+                className={cx(
+                  navigationButton({ 
+                    theme: 'dark', 
+                    active: currentPage === "links" 
+                  }),
+                  css({ justifyContent: 'flex-start' })
+                )}
                 onClick={() => handlePageTransition("links")}
                 disabled={isTransitioning}
               >
@@ -352,9 +467,13 @@ export default function WibblyWobblazLanding() {
               </Button>
               <Button
                 variant="ghost"
-                className={`text-xl font-black hover:bg-white hover:text-black transition-colors duration-200 justify-start text-white ${
-                  currentPage === "parties" ? "bg-white text-black" : ""
-                }`}
+                className={cx(
+                  navigationButton({ 
+                    theme: 'dark', 
+                    active: currentPage === "parties" 
+                  }),
+                  css({ justifyContent: 'flex-start' })
+                )}
                 onClick={() => handlePageTransition("parties")}
                 disabled={isTransitioning}
               >
@@ -366,9 +485,12 @@ export default function WibblyWobblazLanding() {
       </nav>
 
       {/* Main Content Area with Shhh SVG */}
-      <div className="flex-1 relative overflow-y-auto">
+      <div className={cx(
+        scrollableContent({ scrollable: true }),
+        css({ position: 'relative' })
+      )}>
         {/* Accessibility live region for animation announcements */}
-        <div aria-live="polite" aria-atomic="true" className="sr-only">
+        <div aria-live="polite" aria-atomic="true" className={css({ srOnly: true })}>
           {shhhState === "animating" &&
             "Animation started, opening Instagram..."}
           {shhhState === "visible" &&
@@ -380,9 +502,18 @@ export default function WibblyWobblazLanding() {
           role="img"
           aria-label="Shhh character animation"
           aria-hidden={shhhState === "hidden"}
-          className={`absolute inset-0 flex items-end justify-center will-change-transform gpu-accelerated z-50 ${
+          className={cx(
+            css({
+              position: 'absolute',
+              inset: '0',
+              display: 'flex',
+              alignItems: 'end',
+              justifyContent: 'center',
+              willChange: 'transform',
+              zIndex: '50'
+            }),
             shhhState === "animating" ? "shhh-slide-up" : ""
-          }`}
+          )}
           style={{
             transform:
               shhhState === "animating" || shhhState === "visible"
@@ -400,13 +531,17 @@ export default function WibblyWobblazLanding() {
             }
           }}
         >
-          <div className="bottom-aligned-responsive gpu-accelerated">
+          <div className={css({ /* bottom-aligned-responsive gpu-accelerated */ })}>
             <Image
               src="/images/shhh.svg"
               alt="Shhh"
               width={1024}
               height={1024}
-              className="w-auto h-auto object-contain"
+              className={css({ 
+                width: 'auto', 
+                height: 'auto', 
+                objectFit: 'contain' 
+              })}
               style={{
                 maxWidth: "90vw",
                 maxHeight: "90vh",
@@ -422,29 +557,72 @@ export default function WibblyWobblazLanding() {
         {/* Party content overlay */}
         {/* Poster */}
         {/* Event Details */}
-        <div className="relative z-10 parties-content p-4 md:p-8">
-          <div className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto">
+        <div className={partiesPageContent({ responsive: 'desktop' })}>
+          <div className={partiesGrid({ responsive: 'desktop' })}>
             {upcomingParties.map((party, index) => (
               <div
                 key={party.id}
-                className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
+                className={css({
+                  borderWidth: '4px',
+                  borderColor: 'white',
+                  backgroundColor: 'black',
+                  color: 'white',
+                  transition: 'all 0.3s ease',
+                  backdropBlur: 'sm',
+                  opacity: '0.9',
+                  _hover: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                  }
+                })}
               >
-                <div className="aspect-[3/4] border-b-4 border-white relative overflow-hidden">
+                <div className={css({
+                  aspectRatio: '3/4',
+                  borderBottomWidth: '4px',
+                  borderBottomColor: 'white',
+                  position: 'relative',
+                  overflow: 'hidden'
+                })}>
                   <Image
                     src={party.poster || "/images/flyer4.png"}
                     alt={party.title}
                     fill
-                    className="object-cover group-hover:invert transition-all duration-200"
+                    className={css({
+                      objectFit: 'cover',
+                      transition: 'all 0.2s ease',
+                      _groupHover: {
+                        filter: 'invert(1)'
+                      }
+                    })}
                   />
                 </div>
 
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg md:text-xl font-black tracking-tighter">
+                <div className={css({
+                  padding: 'fluid-md',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '3'
+                })}>
+                  <h3 className={css({
+                    fontSize: 'fluid-base',
+                    fontWeight: '900',
+                    letterSpacing: 'tighter'
+                  })}>
                     {party.title}
                   </h3>
 
-                  <div className="space-y-2 text-sm md:text-base font-bold">
-                    <div className="flex items-center space-x-2">
+                  <div className={css({
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2',
+                    fontSize: 'fluid-sm',
+                    fontWeight: '700'
+                  })}>
+                    <div className={css({
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '2'
+                    })}>
                       <Calendar size={16} />
                       <span>
                         {new Date(party.date)
@@ -457,17 +635,29 @@ export default function WibblyWobblazLanding() {
                       </span>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className={css({
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '2'
+                    })}>
                       <Clock size={16} />
                       <span>{party.time}</span>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className={css({
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '2'
+                    })}>
                       <MapPin size={16} />
                       <span>{party.venue}</span>
                     </div>
 
-                    <div className="text-xs font-black tracking-wider">
+                    <div className={css({
+                      fontSize: 'xs',
+                      fontWeight: '900',
+                      letterSpacing: 'wider'
+                    })}>
                       {party.location}
                     </div>
                   </div>
@@ -480,13 +670,51 @@ export default function WibblyWobblazLanding() {
                       aria-label="Free ticket - opens Instagram"
                       aria-pressed={shhhState === "animating"}
                       disabled={shhhState === "animating"}
-                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
+                      className={css({
+                        width: 'full',
+                        backgroundColor: 'transparent',
+                        borderWidth: '2px',
+                        borderColor: 'white',
+                        color: 'white',
+                        fontWeight: '900',
+                        transition: 'colors 0.2s ease',
+                        _hover: {
+                          backgroundColor: 'white',
+                          color: 'black'
+                        },
+                        _groupHover: {
+                          backgroundColor: 'black',
+                          color: 'white',
+                          borderColor: 'black'
+                        },
+                        _disabled: {
+                          opacity: '0.75',
+                          cursor: 'not-allowed'
+                        }
+                      })}
                     >
                       {shhhState === "animating" ? "LOADING..." : "FREE"}
                     </Button>
                   ) : (
                     <Button
-                      className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black transition-colors duration-200"
+                      className={css({
+                        width: 'full',
+                        backgroundColor: 'transparent',
+                        borderWidth: '2px',
+                        borderColor: 'white',
+                        color: 'white',
+                        fontWeight: '900',
+                        transition: 'colors 0.2s ease',
+                        _hover: {
+                          backgroundColor: 'white',
+                          color: 'black'
+                        },
+                        _groupHover: {
+                          backgroundColor: 'black',
+                          color: 'white',
+                          borderColor: 'black'
+                        }
+                      })}
                       asChild
                     >
                       <Link
@@ -508,24 +736,29 @@ export default function WibblyWobblazLanding() {
   );
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className={pageContainer()}>
       {/* PandaCSS Test Component - for hot reload testing */}
-      <div className="absolute top-0 right-0 z-50">
+      <div className={css({ 
+        position: 'absolute', 
+        top: '0', 
+        right: '0', 
+        zIndex: '50' 
+      })}>
         <PandaTestComponent />
       </div>
       {/* Pages Container */}
       <div
-        className={`flex w-[200%] h-full transition-transform duration-700 ease-in-out ${
-          currentPage === "parties" ? "-translate-x-1/2" : "translate-x-0"
-        }`}
+        className={pageTransitionWrapper({
+          page: currentPage === "parties" ? "parties" : "links"
+        })}
       >
         {/* Links Page */}
-        <div className="w-1/2 h-full">
+        <div className={pageWrapper()}>
           <LinksPage />
         </div>
 
         {/* Parties Page */}
-        <div className="w-1/2 h-full">
+        <div className={pageWrapper()}>
           <PartiesPage />
         </div>
       </div>
