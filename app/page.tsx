@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { PandaTestComponent } from "@/components/test-panda";
+import { css } from "../styled-system/css/css";
 
 interface PartyEvent {
   id: number;
@@ -133,7 +134,13 @@ export default function WibblyWobblazLanding() {
       {/* Sticky Navigation */}
       <nav className="sticky-nav border-b-4 border-black p-4 md:p-6 bg-white flex-shrink-0">
         <div className="flex justify-between items-center">
-          <div className="text-2xl md:text-7xl font-black tracking-tighter font-hegval">
+          <div className={css({
+            fontSize: 'brand',
+            fontWeight: '900',
+            letterSpacing: 'tighter',
+            fontFamily: 'hegval',
+            whiteSpace: 'nowrap' // Prevent wrapping at all viewport sizes
+          })}>
             WIBBLY WOBBLAZ
           </div>
 
