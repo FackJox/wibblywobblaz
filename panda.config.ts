@@ -1,4 +1,5 @@
 import { defineConfig } from "@pandacss/dev";
+import { FLUID_TYPOGRAPHY, FLUID_SPACING, FLUID_PAIRS } from "./utils/utopia";
 
 export default defineConfig({
   // Whether to use css reset
@@ -105,8 +106,9 @@ export default defineConfig({
           sm: { value: 'calc(var(--radius) - 4px)' }
         },
         
-        // Spacing Tokens (Tailwind defaults + custom)
+        // Spacing Tokens (Static + Fluid)
         spacing: {
+          // Static spacing (Tailwind defaults)
           0: { value: '0' },
           px: { value: '1px' },
           0.5: { value: '0.125rem' },
@@ -141,11 +143,41 @@ export default defineConfig({
           64: { value: '16rem' },
           72: { value: '18rem' },
           80: { value: '20rem' },
-          96: { value: '24rem' }
+          96: { value: '24rem' },
+          
+          // Fluid spacing scales
+          'fluid-xs': { value: FLUID_SPACING.xs.clamp },
+          'fluid-sm': { value: FLUID_SPACING.sm.clamp },
+          'fluid-md': { value: FLUID_SPACING.md.clamp },
+          'fluid-lg': { value: FLUID_SPACING.lg.clamp },
+          'fluid-xl': { value: FLUID_SPACING.xl.clamp },
+          'fluid-2xl': { value: FLUID_SPACING['2xl'].clamp },
+          'fluid-3xl': { value: FLUID_SPACING['3xl'].clamp },
+          'fluid-4xl': { value: FLUID_SPACING['4xl'].clamp },
+          'fluid-5xl': { value: FLUID_SPACING['5xl'].clamp },
+          'fluid-6xl': { value: FLUID_SPACING['6xl'].clamp },
+          'fluid-7xl': { value: FLUID_SPACING['7xl'].clamp },
+          'fluid-8xl': { value: FLUID_SPACING['8xl'].clamp },
+          'fluid-9xl': { value: FLUID_SPACING['9xl'].clamp },
+          
+          // Responsive pairs for advanced layouts
+          'fluid-xs-sm': { value: FLUID_PAIRS['xs-sm'].clamp },
+          'fluid-sm-md': { value: FLUID_PAIRS['sm-md'].clamp },
+          'fluid-md-lg': { value: FLUID_PAIRS['md-lg'].clamp },
+          'fluid-lg-xl': { value: FLUID_PAIRS['lg-xl'].clamp },
+          'fluid-xl-2xl': { value: FLUID_PAIRS['xl-2xl'].clamp },
+          'fluid-2xl-3xl': { value: FLUID_PAIRS['2xl-3xl'].clamp },
+          'fluid-3xl-4xl': { value: FLUID_PAIRS['3xl-4xl'].clamp },
+          'fluid-4xl-5xl': { value: FLUID_PAIRS['4xl-5xl'].clamp },
+          'fluid-5xl-6xl': { value: FLUID_PAIRS['5xl-6xl'].clamp },
+          'fluid-6xl-7xl': { value: FLUID_PAIRS['6xl-7xl'].clamp },
+          'fluid-7xl-8xl': { value: FLUID_PAIRS['7xl-8xl'].clamp },
+          'fluid-8xl-9xl': { value: FLUID_PAIRS['8xl-9xl'].clamp }
         },
         
-        // Typography Scale
+        // Fluid Typography Scale (Utopia.fyi)
         fontSizes: {
+          // Static fallback sizes
           xs: { value: '0.75rem' },
           sm: { value: '0.875rem' },
           base: { value: '1rem' },
@@ -158,7 +190,22 @@ export default defineConfig({
           '6xl': { value: '3.75rem' },
           '7xl': { value: '4.5rem' },
           '8xl': { value: '6rem' },
-          '9xl': { value: '8rem' }
+          '9xl': { value: '8rem' },
+          
+          // Fluid typography scales
+          'fluid-xs': { value: FLUID_TYPOGRAPHY.xs.clamp },
+          'fluid-sm': { value: FLUID_TYPOGRAPHY.sm.clamp },
+          'fluid-base': { value: FLUID_TYPOGRAPHY.base.clamp },
+          'fluid-lg': { value: FLUID_TYPOGRAPHY.lg.clamp },
+          'fluid-xl': { value: FLUID_TYPOGRAPHY.xl.clamp },
+          'fluid-2xl': { value: FLUID_TYPOGRAPHY['2xl'].clamp },
+          'fluid-3xl': { value: FLUID_TYPOGRAPHY['3xl'].clamp },
+          'fluid-4xl': { value: FLUID_TYPOGRAPHY['4xl'].clamp },
+          'fluid-5xl': { value: FLUID_TYPOGRAPHY['5xl'].clamp },
+          'fluid-6xl': { value: FLUID_TYPOGRAPHY['6xl'].clamp },
+          'fluid-7xl': { value: FLUID_TYPOGRAPHY['7xl'].clamp },
+          'fluid-8xl': { value: FLUID_TYPOGRAPHY['8xl'].clamp },
+          'fluid-9xl': { value: FLUID_TYPOGRAPHY['9xl'].clamp }
         },
         
         // Line Heights
