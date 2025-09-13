@@ -5,8 +5,8 @@
  * working across different viewport sizes without media queries.
  */
 
-import { css } from '@styled-system/css';
-import { FluidPresets } from '@/utils/fluid-helpers';
+import { css } from '../../styled-system/css';
+import { FluidPresets } from '../../utils/fluid-helpers';
 
 export default function FluidDemo() {
   return (

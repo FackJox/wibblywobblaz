@@ -288,6 +288,38 @@ export default defineConfig({
     
     // Define semantic tokens for theme switching
     semanticTokens: {
+      // Fluid design semantic tokens
+      fontSizes: {
+        // Semantic typography scales using fluid values
+        display: { value: '{fontSizes.fluid-8xl}' },
+        heading: { value: '{fontSizes.fluid-6xl}' },
+        title: { value: '{fontSizes.fluid-4xl}' },
+        subtitle: { value: '{fontSizes.fluid-2xl}' },
+        body: { value: '{fontSizes.fluid-base}' },
+        caption: { value: '{fontSizes.fluid-sm}' },
+        footnote: { value: '{fontSizes.fluid-xs}' },
+        
+        // Brand-specific semantic tokens
+        brand: { value: '{fontSizes.fluid-7xl}' }, // For "WIBBLY WOBBLAZ" text
+        hero: { value: '{fontSizes.fluid-6xl}' },
+        section: { value: '{fontSizes.fluid-4xl}' }
+      },
+      
+      spacing: {
+        // Semantic spacing scales using fluid values
+        section: { value: '{spacing.fluid-6xl}' },
+        container: { value: '{spacing.fluid-4xl}' },
+        component: { value: '{spacing.fluid-2xl}' },
+        element: { value: '{spacing.fluid-lg}' },
+        tight: { value: '{spacing.fluid-xs}' },
+        
+        // Layout-specific semantic tokens
+        heroGap: { value: '{spacing.fluid-5xl-6xl}' },
+        cardGap: { value: '{spacing.fluid-lg-xl}' },
+        listGap: { value: '{spacing.fluid-sm-md}' },
+        buttonPadding: { value: '{spacing.fluid-xs-sm}' }
+      },
+      
       colors: {
         // Light theme values
         background: {
