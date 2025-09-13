@@ -512,7 +512,12 @@ export default function WibblyWobblazLanding() {
               willChange: 'transform',
               zIndex: '50'
             }),
-            shhhState === "animating" ? "shhh-slide-up" : ""
+            shhhState === "animating" ? css({ 
+              animation: 'slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+              '@media (prefers-reduced-motion: reduce)': {
+                animation: 'fadeInReduced 400ms ease-out forwards'
+              }
+            }) : ""
           )}
           style={{
             transform:
@@ -531,7 +536,18 @@ export default function WibblyWobblazLanding() {
             }
           }}
         >
-          <div className={css({ /* bottom-aligned-responsive gpu-accelerated */ })}>
+          <div className={css({ 
+            position: 'absolute',
+            bottom: '0',
+            left: '50%',
+            transform: 'translateX(-50%) translateZ(0)',
+            maxWidth: '90vw',
+            maxHeight: '90vh',
+            width: 'auto',
+            height: 'auto',
+            backfaceVisibility: 'hidden',
+            perspective: '1000px'
+          })}>
             <Image
               src="/images/shhh.svg"
               alt="Shhh"
