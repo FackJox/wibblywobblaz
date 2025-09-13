@@ -209,6 +209,7 @@ export function useStaggerReveal<T extends HTMLElement = HTMLElement>(
    * Trigger all animations
    */
   const trigger = React.useCallback(() => {
+    console.log('[RND-002] Trigger called', { isTriggered, hasAnimated, once })
     if (isTriggered && once) return
     if (hasAnimated && once) return
 
@@ -225,6 +226,7 @@ export function useStaggerReveal<T extends HTMLElement = HTMLElement>(
    * Reset animations
    */
   const reset = React.useCallback(() => {
+    console.log('[RND-002] Reset called')
     // Clear all timeouts and animation frames
     timeoutRefs.current.forEach(id => {
       if (id) clearTimeout(id)
@@ -250,30 +252,43 @@ export function useStaggerReveal<T extends HTMLElement = HTMLElement>(
     })))
   }, [itemCount, delays, prefersReducedMotion, respectReducedMotion])
 
+  // Store trigger and reset in refs to avoid dependency issues
+  const triggerRef = React.useRef(trigger)
+  const resetRef = React.useRef(reset)
+  
+  React.useEffect(() => {
+    triggerRef.current = trigger
+  }, [trigger])
+  
+  React.useEffect(() => {
+    resetRef.current = reset
+  }, [reset])
+
   // Set up intersection observer
   React.useEffect(() => {
     if (!containerRef.current) return
 
     const element = containerRef.current
+    let wasInView = false
 
     observerRef.current = createIntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const wasInView = isInView
           const nowInView = entry.isIntersecting
 
           setIsInView(nowInView)
 
           if (nowInView && !wasInView) {
             // Element entered viewport
-            trigger()
-          } else if (!nowInView && once && hasAnimated) {
-            // Element left viewport but already animated once
-            return
+            console.log('[RND-002] Intersection: entering viewport, triggering')
+            triggerRef.current()
           } else if (!nowInView && !once) {
             // Element left viewport and we should reset for next time
-            reset()
+            console.log('[RND-002] Intersection: leaving viewport, resetting')
+            resetRef.current()
           }
+          
+          wasInView = nowInView
         })
       },
       {
@@ -291,7 +306,7 @@ export function useStaggerReveal<T extends HTMLElement = HTMLElement>(
         observerRef.current.disconnect()
       }
     }
-  }, [threshold, rootMargin, isInView, trigger, reset, once, hasAnimated])
+  }, [threshold, rootMargin, once])
 
   // Update items when itemCount changes
   React.useEffect(() => {
@@ -320,14 +335,15 @@ export function useStaggerReveal<T extends HTMLElement = HTMLElement>(
     }
   }, [])
 
-  return {
+  // Memoize the return object to prevent recreating it on every render
+  return React.useMemo(() => ({
     containerRef,
     items,
     isTriggered,
     trigger,
     reset,
     isInView
-  }
+  }), [items, isTriggered, trigger, reset, isInView])
 }
 
 /**

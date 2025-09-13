@@ -73,20 +73,37 @@ const LinksPage = ({
   // Create array of magnetic hooks for easier access
   const socialLinksMagnetic = [socialLink1Magnetic, socialLink2Magnetic];
 
+  // Store animation functions in refs to avoid dependency issues
+  const staggerTriggerRef = React.useRef(allButtonsStagger.trigger);
+  const staggerResetRef = React.useRef(allButtonsStagger.reset);
+  const fadeTriggerRef = React.useRef(logoFadeIn.trigger);
+  const fadeResetRef = React.useRef(logoFadeIn.reset);
+  
+  React.useEffect(() => {
+    staggerTriggerRef.current = allButtonsStagger.trigger;
+    staggerResetRef.current = allButtonsStagger.reset;
+  }, [allButtonsStagger.trigger, allButtonsStagger.reset]);
+  
+  React.useEffect(() => {
+    fadeTriggerRef.current = logoFadeIn.trigger;
+    fadeResetRef.current = logoFadeIn.reset;
+  }, [logoFadeIn.trigger, logoFadeIn.reset]);
+
   // Reset animations when page becomes hidden
   React.useEffect(() => {
+    console.log('[RND-PAGE] LinksPage visibility changed:', isVisible);
     if (!isVisible) {
       // Reset animations when page is hidden
-      allButtonsStagger.reset();
-      logoFadeIn.reset();
+      staggerResetRef.current();
+      fadeResetRef.current();
     } else {
       // Trigger animations when page becomes visible
       setTimeout(() => {
-        allButtonsStagger.trigger();
-        logoFadeIn.trigger();
+        staggerTriggerRef.current();
+        fadeTriggerRef.current();
       }, 100);
     }
-  }, [isVisible, allButtonsStagger, logoFadeIn]);
+  }, [isVisible]);
 
   return (
     <div className="h-full bg-white flex flex-col md:flex-row relative">
@@ -354,18 +371,28 @@ const PartiesPage = ({
   const cardsParallax = [card1Parallax, card2Parallax, card3Parallax];
   const ticketButtonsMagnetic = [ticket1Magnetic, ticket2Magnetic, ticket3Magnetic];
 
+  // Store animation functions in refs to avoid dependency issues
+  const partiesTriggerRef = React.useRef(partiesStagger.trigger);
+  const partiesResetRef = React.useRef(partiesStagger.reset);
+  
+  React.useEffect(() => {
+    partiesTriggerRef.current = partiesStagger.trigger;
+    partiesResetRef.current = partiesStagger.reset;
+  }, [partiesStagger.trigger, partiesStagger.reset]);
+
   // Reset animations when page becomes hidden
   React.useEffect(() => {
+    console.log('[RND-PAGE] PartiesPage visibility changed:', isVisible);
     if (!isVisible) {
       // Reset animations when page is hidden
-      partiesStagger.reset();
+      partiesResetRef.current();
     } else {
       // Trigger animations when page becomes visible
       setTimeout(() => {
-        partiesStagger.trigger();
+        partiesTriggerRef.current();
       }, 100);
     }
-  }, [isVisible, partiesStagger]);
+  }, [isVisible]);
 
   return (
     <div className="h-full bg-black text-white overflow-y-auto">

@@ -189,6 +189,7 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: Fad
    * Trigger animation
    */
   const trigger = React.useCallback(() => {
+    console.log('[RND-001] SimpleFadeIn trigger called')
     if (state.isTriggered && once) return
     if (respectReducedMotion && prefersReducedMotion) return
 
@@ -233,6 +234,7 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: Fad
    * Reset animation
    */
   const reset = React.useCallback(() => {
+    console.log('[RND-001] SimpleFadeIn reset called')
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
       timeoutRef.current = null
@@ -287,11 +289,24 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: Fad
     }
   }, [respectReducedMotion, prefersReducedMotion, direction, distance, scale])
 
+  // Store trigger and reset in refs to avoid dependency issues
+  const triggerRef = React.useRef(trigger)
+  const resetRef = React.useRef(reset)
+  
+  React.useEffect(() => {
+    triggerRef.current = trigger
+  }, [trigger])
+  
+  React.useEffect(() => {
+    resetRef.current = reset
+  }, [reset])
+
   // Set up intersection observer with will-change management
   React.useEffect(() => {
     if (!ref.current) return
 
     const element = ref.current
+    let wasInView = false
     
     // Prepare will-change hints for potential animation
     if (!respectReducedMotion || !prefersReducedMotion) {
@@ -301,22 +316,25 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: Fad
     observerRef.current = createIntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const wasInView = state.isInView
           const nowInView = entry.isIntersecting
 
           setState(prev => ({ ...prev, isInView: nowInView }))
 
           if (nowInView && !wasInView) {
             // Element entering viewport - trigger animation
-            trigger()
+            console.log('[RND-001] Intersection: entering viewport, triggering fade')
+            triggerRef.current()
           } else if (!nowInView && wasInView) {
             if (!once) {
-              reset()
+              console.log('[RND-001] Intersection: leaving viewport, resetting fade')
+              resetRef.current()
             } else {
               // Animation complete and won't run again - clean up
               setTimeout(() => willChangeHelpers.cleanup(element), duration + delay + 100)
             }
           }
+          
+          wasInView = nowInView
         })
       },
       {
@@ -342,7 +360,7 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: Fad
       // Clean up will-change on unmount
       willChangeHelpers.cleanup(element)
     }
-  }, [state.isInView, trigger, reset, once, threshold, rootMargin, updateProgress, duration, delay, respectReducedMotion, prefersReducedMotion])
+  }, [once, threshold, rootMargin, updateProgress, duration, delay, respectReducedMotion, prefersReducedMotion])
 
   // Cleanup on unmount
   React.useEffect(() => {
@@ -356,13 +374,14 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: Fad
     }
   }, [])
 
-  return {
+  // Memoize the return object to prevent recreating it on every render
+  return React.useMemo(() => ({
     ref,
     styles,
     trigger,
     reset,
     ...state
-  }
+  }), [styles, trigger, reset, state])
 }
 
 /**
