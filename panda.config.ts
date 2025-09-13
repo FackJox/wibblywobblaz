@@ -720,6 +720,437 @@ export default defineConfig({
           spacing: 'normal',
           alignment: 'start'
         }
+      },
+
+      // Form component recipes
+      formItem: {
+        className: 'formItem',
+        base: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'fluid-xs'
+        },
+        variants: {
+          spacing: {
+            tight: {
+              gap: 'fluid-xs'
+            },
+            normal: {
+              gap: '2'
+            },
+            loose: {
+              gap: 'fluid-sm'
+            }
+          }
+        },
+        defaultVariants: {
+          spacing: 'normal'
+        }
+      },
+
+      formLabel: {
+        className: 'formLabel',
+        base: {
+          fontSize: 'fluid-sm',
+          fontWeight: 'medium',
+          lineHeight: 'none',
+          // Base peer styles for form field associations
+          _peerDisabled: {
+            cursor: 'not-allowed',
+            opacity: 0.7
+          }
+        },
+        variants: {
+          state: {
+            default: {
+              color: 'foreground'
+            },
+            error: {
+              color: 'destructive'
+            },
+            success: {
+              color: 'green.600'
+            },
+            warning: {
+              color: 'amber.600'
+            }
+          },
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          }
+        },
+        defaultVariants: {
+          state: 'default',
+          size: 'md'
+        }
+      },
+
+      formControl: {
+        className: 'formControl',
+        base: {
+          // Base styles for form control wrapper
+          position: 'relative',
+          width: 'full'
+        }
+      },
+
+      formDescription: {
+        className: 'formDescription',
+        base: {
+          fontSize: 'fluid-sm',
+          color: 'muted.foreground',
+          lineHeight: 'relaxed'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      formMessage: {
+        className: 'formMessage',
+        base: {
+          fontSize: 'fluid-sm',
+          fontWeight: 'medium',
+          lineHeight: 'tight'
+        },
+        variants: {
+          state: {
+            error: {
+              color: 'destructive'
+            },
+            success: {
+              color: 'green.600'
+            },
+            warning: {
+              color: 'amber.600'
+            },
+            info: {
+              color: 'blue.600'
+            }
+          },
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          }
+        },
+        defaultVariants: {
+          state: 'error',
+          size: 'md'
+        }
+      },
+
+      // Input field recipe
+      input: {
+        className: 'input',
+        base: {
+          display: 'flex',
+          height: '10',
+          width: 'full',
+          borderRadius: 'md',
+          border: '1px solid {colors.input}',
+          backgroundColor: 'background',
+          paddingX: '3',
+          paddingY: '2',
+          fontSize: 'fluid-base',
+          ringOffsetColor: 'background',
+          transition: 'all 150ms ease-in-out',
+          
+          // File input styles
+          '&[type="file"]': {
+            '& input[type="file"]::-webkit-file-upload-button': {
+              border: 0,
+              backgroundColor: 'transparent',
+              fontSize: 'sm',
+              fontWeight: 'medium',
+              color: 'foreground'
+            }
+          },
+          
+          // Placeholder styles
+          _placeholder: {
+            color: 'muted.foreground'
+          },
+          
+          // Focus styles
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          // Disabled styles
+          _disabled: {
+            cursor: 'not-allowed',
+            opacity: 0.5
+          },
+          
+          // Responsive font size
+          '@media (min-width: 768px)': {
+            fontSize: 'sm'
+          }
+        },
+        variants: {
+          state: {
+            default: {
+              borderColor: 'input'
+            },
+            error: {
+              borderColor: 'destructive',
+              _focusVisible: {
+                ringColor: 'destructive'
+              }
+            },
+            success: {
+              borderColor: 'green.500',
+              _focusVisible: {
+                ringColor: 'green.500'
+              }
+            },
+            warning: {
+              borderColor: 'amber.500',
+              _focusVisible: {
+                ringColor: 'amber.500'
+              }
+            }
+          },
+          size: {
+            sm: {
+              height: '8',
+              paddingX: '2',
+              paddingY: '1',
+              fontSize: 'sm'
+            },
+            md: {
+              height: '10',
+              paddingX: '3',
+              paddingY: '2',
+              fontSize: 'fluid-base'
+            },
+            lg: {
+              height: '12',
+              paddingX: '4',
+              paddingY: '3',
+              fontSize: 'fluid-lg'
+            }
+          }
+        },
+        defaultVariants: {
+          state: 'default',
+          size: 'md'
+        }
+      },
+
+      // Textarea recipe
+      textarea: {
+        className: 'textarea',
+        base: {
+          display: 'flex',
+          minHeight: '20',
+          width: 'full',
+          borderRadius: 'md',
+          border: '1px solid {colors.input}',
+          backgroundColor: 'background',
+          paddingX: '3',
+          paddingY: '2',
+          fontSize: 'fluid-base',
+          ringOffsetColor: 'background',
+          transition: 'all 150ms ease-in-out',
+          resize: 'vertical',
+          
+          // Placeholder styles
+          _placeholder: {
+            color: 'muted.foreground'
+          },
+          
+          // Focus styles
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          // Disabled styles
+          _disabled: {
+            cursor: 'not-allowed',
+            opacity: 0.5
+          },
+          
+          // Responsive font size
+          '@media (min-width: 768px)': {
+            fontSize: 'sm'
+          }
+        },
+        variants: {
+          state: {
+            default: {
+              borderColor: 'input'
+            },
+            error: {
+              borderColor: 'destructive',
+              _focusVisible: {
+                ringColor: 'destructive'
+              }
+            },
+            success: {
+              borderColor: 'green.500',
+              _focusVisible: {
+                ringColor: 'green.500'
+              }
+            },
+            warning: {
+              borderColor: 'amber.500',
+              _focusVisible: {
+                ringColor: 'amber.500'
+              }
+            }
+          },
+          size: {
+            sm: {
+              minHeight: '16',
+              paddingX: '2',
+              paddingY: '1',
+              fontSize: 'sm'
+            },
+            md: {
+              minHeight: '20',
+              paddingX: '3',
+              paddingY: '2',
+              fontSize: 'fluid-base'
+            },
+            lg: {
+              minHeight: '24',
+              paddingX: '4',
+              paddingY: '3',
+              fontSize: 'fluid-lg'
+            }
+          }
+        },
+        defaultVariants: {
+          state: 'default',
+          size: 'md'
+        }
+      },
+
+      // Select trigger recipe
+      selectTrigger: {
+        className: 'selectTrigger',
+        base: {
+          display: 'flex',
+          height: '10',
+          width: 'full',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderRadius: 'md',
+          border: '1px solid {colors.input}',
+          backgroundColor: 'background',
+          paddingX: '3',
+          paddingY: '2',
+          fontSize: 'sm',
+          ringOffsetColor: 'background',
+          transition: 'all 150ms ease-in-out',
+          
+          // Placeholder styles
+          _placeholder: {
+            color: 'muted.foreground'
+          },
+          
+          // Focus styles
+          _focus: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          // Disabled styles
+          _disabled: {
+            cursor: 'not-allowed',
+            opacity: 0.5
+          },
+          
+          // Child span line clamp
+          '& > span': {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        },
+        variants: {
+          state: {
+            default: {
+              borderColor: 'input'
+            },
+            error: {
+              borderColor: 'destructive',
+              _focus: {
+                ringColor: 'destructive'
+              }
+            },
+            success: {
+              borderColor: 'green.500',
+              _focus: {
+                ringColor: 'green.500'
+              }
+            },
+            warning: {
+              borderColor: 'amber.500',
+              _focus: {
+                ringColor: 'amber.500'
+              }
+            }
+          },
+          size: {
+            sm: {
+              height: '8',
+              paddingX: '2',
+              fontSize: 'xs'
+            },
+            md: {
+              height: '10',
+              paddingX: '3',
+              fontSize: 'sm'
+            },
+            lg: {
+              height: '12',
+              paddingX: '4',
+              fontSize: 'base'
+            }
+          }
+        },
+        defaultVariants: {
+          state: 'default',
+          size: 'md'
+        }
       }
     }
   },
