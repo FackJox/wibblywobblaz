@@ -6,7 +6,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { css, cx } from "@/styled-system/css"
 import { Button } from "@/components/ui/button"
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -137,7 +137,7 @@ const Carousel = React.forwardRef<
         <div
           ref={ref}
           onKeyDownCapture={handleKeyDown}
-          className={cn("relative", className)}
+          className={cx(css({ position: "relative" }), className)}
           role="region"
           aria-roledescription="carousel"
           {...props}
@@ -157,12 +157,16 @@ const CarouselContent = React.forwardRef<
   const { carouselRef, orientation } = useCarousel()
 
   return (
-    <div ref={carouselRef} className="overflow-hidden">
+    <div ref={carouselRef} className={css({ overflow: "hidden" })}>
       <div
         ref={ref}
-        className={cn(
-          "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+        className={cx(
+          css({
+            display: "flex",
+            marginLeft: orientation === "horizontal" ? "-1rem" : "0",
+            marginTop: orientation === "horizontal" ? "0" : "-1rem",
+            flexDirection: orientation === "horizontal" ? "row" : "column",
+          }),
           className
         )}
         {...props}
@@ -183,9 +187,15 @@ const CarouselItem = React.forwardRef<
       ref={ref}
       role="group"
       aria-roledescription="slide"
-      className={cn(
-        "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
+      className={cx(
+        css({
+          minWidth: 0,
+          flexShrink: 0,
+          flexGrow: 0,
+          flexBasis: "100%",
+          paddingLeft: orientation === "horizontal" ? "1rem" : "0",
+          paddingTop: orientation === "horizontal" ? "0" : "1rem",
+        }),
         className
       )}
       {...props}
@@ -205,19 +215,26 @@ const CarouselPrevious = React.forwardRef<
       ref={ref}
       variant={variant}
       size={size}
-      className={cn(
-        "absolute  h-8 w-8 rounded-full",
-        orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+      className={cx(
+        css({
+          position: "absolute",
+          height: "2rem",
+          width: "2rem",
+          borderRadius: "50%",
+          left: orientation === "horizontal" ? "-3rem" : "50%",
+          top: orientation === "horizontal" ? "50%" : "-3rem",
+          transform: orientation === "horizontal" 
+            ? "translateY(-50%)" 
+            : "translateX(-50%) rotate(90deg)",
+        }),
         className
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="h-4 w-4" />
-      <span className="sr-only">Previous slide</span>
+      <ArrowLeft className={css({ height: "1rem", width: "1rem" })} />
+      <span className={css({ srOnly: true })}>Previous slide</span>
     </Button>
   )
 })
@@ -234,19 +251,28 @@ const CarouselNext = React.forwardRef<
       ref={ref}
       variant={variant}
       size={size}
-      className={cn(
-        "absolute h-8 w-8 rounded-full",
-        orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+      className={cx(
+        css({
+          position: "absolute",
+          height: "2rem",
+          width: "2rem",
+          borderRadius: "50%",
+          right: orientation === "horizontal" ? "-3rem" : "auto",
+          bottom: orientation === "horizontal" ? "auto" : "-3rem",
+          left: orientation === "horizontal" ? "auto" : "50%",
+          top: orientation === "horizontal" ? "50%" : "auto",
+          transform: orientation === "horizontal" 
+            ? "translateY(-50%)" 
+            : "translateX(-50%) rotate(90deg)",
+        }),
         className
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="h-4 w-4" />
-      <span className="sr-only">Next slide</span>
+      <ArrowRight className={css({ height: "1rem", width: "1rem" })} />
+      <span className={css({ srOnly: true })}>Next slide</span>
     </Button>
   )
 })
