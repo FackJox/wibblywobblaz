@@ -3,7 +3,7 @@
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
-import { cn } from "@/lib/utils"
+import { css, cx } from "@/styled-system/css"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
@@ -51,8 +51,51 @@ const ChartContainer = React.forwardRef<
       <div
         data-chart={chartId}
         ref={ref}
-        className={cn(
-          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+        className={cx(
+          css({
+            display: "flex",
+            aspectRatio: "16/9",
+            justifyContent: "center",
+            fontSize: "0.75rem",
+            // Recharts specific styles - using arbitrary selectors
+            '& .recharts-cartesian-axis-tick text': {
+              fill: 'token(colors.muted.foreground)'
+            },
+            '& .recharts-cartesian-grid line[stroke="#ccc"]': {
+              stroke: 'token(colors.border)',
+              opacity: '0.5'
+            },
+            '& .recharts-curve.recharts-tooltip-cursor': {
+              stroke: 'token(colors.border)'
+            },
+            '& .recharts-dot[stroke="#fff"]': {
+              stroke: 'transparent'
+            },
+            '& .recharts-layer': {
+              outline: 'none'
+            },
+            '& .recharts-polar-grid [stroke="#ccc"]': {
+              stroke: 'token(colors.border)'
+            },
+            '& .recharts-radial-bar-background-sector': {
+              fill: 'token(colors.muted)'
+            },
+            '& .recharts-rectangle.recharts-tooltip-cursor': {
+              fill: 'token(colors.muted)'
+            },
+            '& .recharts-reference-line [stroke="#ccc"]': {
+              stroke: 'token(colors.border)'
+            },
+            '& .recharts-sector[stroke="#fff"]': {
+              stroke: 'transparent'
+            },
+            '& .recharts-sector': {
+              outline: 'none'
+            },
+            '& .recharts-surface': {
+              outline: 'none'
+            }
+          }),
           className
         )}
         {...props}
@@ -148,7 +191,7 @@ const ChartTooltipContent = React.forwardRef<
 
       if (labelFormatter) {
         return (
-          <div className={cn("font-medium", labelClassName)}>
+          <div className={cx(css({ fontWeight: "500" }), labelClassName)}>
             {labelFormatter(value, payload)}
           </div>
         )
@@ -158,7 +201,7 @@ const ChartTooltipContent = React.forwardRef<
         return null
       }
 
-      return <div className={cn("font-medium", labelClassName)}>{value}</div>
+      return <div className={cx(css({ fontWeight: "500" }), labelClassName)}>{value}</div>
     }, [
       label,
       labelFormatter,
@@ -178,13 +221,27 @@ const ChartTooltipContent = React.forwardRef<
     return (
       <div
         ref={ref}
-        className={cn(
-          "grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
+        className={cx(
+          css({
+            display: "grid",
+            minWidth: "8rem",
+            alignItems: "start",
+            gap: "0.375rem",
+            borderRadius: "0.5rem",
+            border: "1px solid",
+            borderColor: "border",
+            opacity: "0.5",
+            backgroundColor: "background",
+            paddingX: "0.625rem",
+            paddingY: "0.375rem",
+            fontSize: "0.75rem",
+            boxShadow: "0 25px 50px -12px rgb(0 0 0 / 0.25)"
+          }),
           className
         )}
       >
         {!nestLabel ? tooltipLabel : null}
-        <div className="grid gap-1.5">
+        <div className={css({ display: "grid", gap: "0.375rem" })}>
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
@@ -193,9 +250,20 @@ const ChartTooltipContent = React.forwardRef<
             return (
               <div
                 key={item.dataKey}
-                className={cn(
-                  "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
-                  indicator === "dot" && "items-center"
+                className={cx(
+                  css({
+                    display: "flex",
+                    width: "100%",
+                    flexWrap: "wrap",
+                    alignItems: "stretch",
+                    gap: "0.5rem",
+                    '& > svg': {
+                      height: "0.625rem",
+                      width: "0.625rem",
+                      color: "muted.foreground"
+                    }
+                  }),
+                  indicator === "dot" && css({ alignItems: "center" })
                 )}
               >
                 {formatter && item?.value !== undefined && item.name ? (
@@ -207,15 +275,22 @@ const ChartTooltipContent = React.forwardRef<
                     ) : (
                       !hideIndicator && (
                         <div
-                          className={cn(
-                            "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
-                            {
-                              "h-2.5 w-2.5": indicator === "dot",
-                              "w-1": indicator === "line",
-                              "w-0 border-[1.5px] border-dashed bg-transparent":
-                                indicator === "dashed",
-                              "my-0.5": nestLabel && indicator === "dashed",
-                            }
+                          className={cx(
+                            css({
+                              flexShrink: 0,
+                              borderRadius: "2px",
+                              borderColor: "var(--color-border)",
+                              backgroundColor: "var(--color-bg)"
+                            }),
+                            indicator === "dot" && css({ height: "0.625rem", width: "0.625rem" }),
+                            indicator === "line" && css({ width: "0.25rem" }),
+                            indicator === "dashed" && css({
+                              width: "0",
+                              borderWidth: "1.5px",
+                              borderStyle: "dashed",
+                              backgroundColor: "transparent"
+                            }),
+                            nestLabel && indicator === "dashed" && css({ marginY: "0.125rem" })
                           )}
                           style={
                             {
@@ -227,19 +302,24 @@ const ChartTooltipContent = React.forwardRef<
                       )
                     )}
                     <div
-                      className={cn(
-                        "flex flex-1 justify-between leading-none",
-                        nestLabel ? "items-end" : "items-center"
+                      className={cx(
+                        css({
+                          display: "flex",
+                          flex: "1",
+                          justifyContent: "space-between",
+                          lineHeight: "1"
+                        }),
+                        nestLabel ? css({ alignItems: "end" }) : css({ alignItems: "center" })
                       )}
                     >
-                      <div className="grid gap-1.5">
+                      <div className={css({ display: "grid", gap: "0.375rem" })}>
                         {nestLabel ? tooltipLabel : null}
-                        <span className="text-muted-foreground">
+                        <span className={css({ color: "muted.foreground" })}>
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
                       {item.value && (
-                        <span className="font-mono font-medium tabular-nums text-foreground">
+                        <span className={css({ fontFamily: "mono", fontWeight: "500", fontVariantNumeric: "tabular-nums", color: "foreground" })}>
                           {item.value.toLocaleString()}
                         </span>
                       )}
@@ -279,9 +359,14 @@ const ChartLegendContent = React.forwardRef<
     return (
       <div
         ref={ref}
-        className={cn(
-          "flex items-center justify-center gap-4",
-          verticalAlign === "top" ? "pb-3" : "pt-3",
+        className={cx(
+          css({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1rem"
+          }),
+          verticalAlign === "top" ? css({ paddingBottom: "0.75rem" }) : css({ paddingTop: "0.75rem" }),
           className
         )}
       >
@@ -292,15 +377,22 @@ const ChartLegendContent = React.forwardRef<
           return (
             <div
               key={item.value}
-              className={cn(
-                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
-              )}
+              className={css({
+                display: "flex",
+                alignItems: "center",
+                gap: "0.375rem",
+                '& > svg': {
+                  height: "0.75rem",
+                  width: "0.75rem",
+                  color: "muted.foreground"
+                }
+              })}
             >
               {itemConfig?.icon && !hideIcon ? (
                 <itemConfig.icon />
               ) : (
                 <div
-                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  className={css({ height: "0.5rem", width: "0.5rem", flexShrink: 0, borderRadius: "2px" })}
                   style={{
                     backgroundColor: item.color,
                   }}
