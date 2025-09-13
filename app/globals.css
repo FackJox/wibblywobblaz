@@ -118,7 +118,7 @@ body {
   }
 }
 
-/* Shhh SVG slide-up animation styles */
+/* Shhh SVG slide-up animation styles - Updated to use PandaCSS keyframes */
 @layer utilities {
   .shhh-slide-up {
     animation: slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
@@ -126,54 +126,6 @@ body {
 
   .shhh-slide-up-slow {
     animation: slideUpFromBottom 1200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-}
-
-@keyframes slideUpBounce {
-  0% {
-    transform: translate3d(0, 100vh, 0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.6;
-  }
-  40% {
-    opacity: 1;
-    transform: translate3d(0, 10px, 0);
-  }
-  70% {
-    transform: translate3d(0, -10px, 0);
-  }
-  85% {
-    transform: translate3d(0, 5px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideUpFromBottom {
-  0% {
-    transform: translate3d(0, 100vh, 0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.3;
-  }
-  30% {
-    opacity: 0.8;
-  }
-  60% {
-    opacity: 1;
-    transform: translate3d(0, 20px, 0);
-  }
-  80% {
-    transform: translate3d(0, -5px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
   }
 }
 
