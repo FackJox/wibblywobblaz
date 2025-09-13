@@ -1,7 +1,7 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-08T19:17:52Z
-version: 1.0
+last_updated: 2025-09-12T20:02:22Z
+version: 1.1
 author: Claude Code PM System
 ---
 
@@ -22,6 +22,10 @@ wibbly-wobblaz-landing/
 │   └── utils.ts          # cn() utility for class merging
 ├── public/               # Static assets
 │   ├── images/          # Event posters and assets
+│   │   ├── 1/          # Hot Series Dixies Chicken artwork
+│   │   ├── 2/          # Poster/flyer designs
+│   │   ├── 3/          # STGARTER event assets
+│   │   └── 4/          # Dayglo poster variations
 │   └── fonts/           # Custom fonts (Hegval)
 ├── styles/              # Additional styles
 ├── .claude/             # Claude Code PM system

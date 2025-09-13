@@ -1,36 +1,42 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-08T19:17:52Z
-version: 1.0
+last_updated: 2025-09-12T20:02:22Z
+version: 1.1
 author: Claude Code PM System
 ---
 
 # Project Progress
 
 ## Current Status
-- **Branch**: `ccpm` (Claude Code Project Management branch)
+- **Branch**: `main`
 - **Repository**: https://github.com/FackJox/wibblywobblaz.git
 - **Last Activity**: Active development with recent commits
 
 ## Recent Work Completed
 ### Last 10 Commits
-1. `4fc86ab` - added eventto website
-2. `10ea82d` - added eventto website  
-3. `0ea3188` - fixed bits
-4. `ac13a47` - fixed bits
-5. `f936a5a` - fixed bits
-6. `06b5b2f` - fixed bits
-7. `72881eb` - first commit
+1. `1268cb2` - added analytics
+2. `dd1e8d0` - switched poster
+3. `3b81d0f` - switched poster
+4. `348cffb` - Merge pull request #44 from FackJox/feature/restore-artwork
+5. `234c1e7` - Restore event artwork and update image paths
+6. `5ac2379` - Merge pull request #43 from FackJox/feature/art-fixes
+7. `9284f5a` - Update dependencies with bundle analyzer
+8. `d477bc4` - Merge pull request #41 from FackJox/epic/shhh
+9. `53cd118` - fix: Remove auto-trigger and fix z-index for shhh animation
+10. `f9267c8` - Issue #40: Complete epic documentation and verification
 
 ### Key Changes
-- Event integration completed (eventto website integration)
-- Multiple bug fixes applied ("fixed bits")
+- Analytics integration added (@vercel/analytics)
+- Artwork restoration and image path updates completed
+- Multiple poster/artwork iterations
+- Shhh animation epic completed with z-index fixes
+- Bundle analyzer added for performance monitoring
 - Initial project setup complete
 
 ## Current Working State
 
 ### Modified Files
-- `app/page.tsx` - Main landing page component (modified, not staged)
+- No uncommitted changes (clean working directory)
 
 ### Added Documentation (Not Committed)
 Extensive documentation has been created but not yet committed:
