@@ -360,6 +360,367 @@ export default defineConfig({
         input: { value: { _light: '0 0% 89.8%', _dark: '0 0% 14.9%' } },
         ring: { value: { _light: '0 0% 3.9%', _dark: '0 0% 83.1%' } },
       }
+    },
+
+    // Component Recipes for consistent styling
+    recipes: {
+      // Button recipe (re-exported from existing implementation)
+      button: {
+        className: 'button',
+        base: {
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2',
+          whiteSpace: 'nowrap',
+          borderRadius: 'md',
+          fontSize: 'sm',
+          fontWeight: 'medium',
+          transitionProperty: 'colors',
+          transitionDuration: '150ms',
+          transitionTimingFunction: 'ease-in-out',
+          cursor: 'pointer',
+          outline: 'none',
+          
+          // Ring styles for focus
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px',
+            ringOffsetColor: 'background'
+          },
+          
+          // Disabled styles
+          _disabled: {
+            pointerEvents: 'none',
+            opacity: 0.5
+          },
+          
+          // SVG icon styles
+          '& svg': {
+            pointerEvents: 'none',
+            width: '4',
+            height: '4',
+            flexShrink: 0
+          }
+        },
+        variants: {
+          variant: {
+            default: {
+              backgroundColor: 'primary',
+              color: 'primary.foreground',
+              _hover: {
+                backgroundColor: 'primary',
+                opacity: 0.9
+              }
+            },
+            destructive: {
+              backgroundColor: 'destructive',
+              color: 'destructive.foreground',
+              _hover: {
+                backgroundColor: 'destructive',
+                opacity: 0.9
+              }
+            },
+            outline: {
+              borderWidth: '1px',
+              borderColor: 'input',
+              backgroundColor: 'background',
+              _hover: {
+                backgroundColor: 'accent',
+                color: 'accent.foreground'
+              }
+            },
+            secondary: {
+              backgroundColor: 'secondary',
+              color: 'secondary.foreground',
+              _hover: {
+                backgroundColor: 'secondary',
+                opacity: 0.8
+              }
+            },
+            ghost: {
+              backgroundColor: 'transparent',
+              _hover: {
+                backgroundColor: 'accent',
+                color: 'accent.foreground'
+              }
+            },
+            link: {
+              color: 'primary',
+              textUnderlineOffset: '4px',
+              backgroundColor: 'transparent',
+              _hover: {
+                textDecoration: 'underline'
+              }
+            }
+          },
+          size: {
+            default: {
+              height: '10',
+              paddingX: '4',
+              paddingY: '2'
+            },
+            sm: {
+              height: '9',
+              borderRadius: 'md',
+              paddingX: '3'
+            },
+            lg: {
+              height: '11',
+              borderRadius: 'md',
+              paddingX: '8'
+            },
+            icon: {
+              height: '10',
+              width: '10'
+            }
+          }
+        },
+        defaultVariants: {
+          variant: 'default',
+          size: 'default'
+        },
+        compoundVariants: [
+          {
+            variant: 'link',
+            size: 'sm',
+            css: {
+              paddingX: 0,
+              paddingY: 0,
+              height: 'auto'
+            }
+          },
+          {
+            variant: 'link',
+            size: 'lg',
+            css: {
+              paddingX: 0,
+              paddingY: 0,
+              height: 'auto'
+            }
+          },
+          {
+            variant: 'link',
+            size: 'icon',
+            css: {
+              paddingX: 0,
+              paddingY: 0,
+              width: 'auto',
+              height: 'auto'
+            }
+          }
+        ]
+      },
+
+      // Card container recipe
+      card: {
+        className: 'card',
+        base: {
+          borderRadius: 'lg',
+          border: '1px solid {colors.border}',
+          backgroundColor: 'card',
+          color: 'card.foreground',
+          boxShadow: 'sm'
+        },
+        variants: {
+          elevation: {
+            flat: {
+              boxShadow: 'none',
+              borderWidth: '1px'
+            },
+            low: {
+              boxShadow: 'sm'
+            },
+            medium: {
+              boxShadow: 'md'
+            },
+            high: {
+              boxShadow: 'lg'
+            }
+          },
+          padding: {
+            none: {
+              padding: '0'
+            },
+            sm: {
+              padding: 'fluid-sm'
+            },
+            md: {
+              padding: 'fluid-md'
+            },
+            lg: {
+              padding: 'fluid-lg'
+            }
+          }
+        },
+        defaultVariants: {
+          elevation: 'low',
+          padding: 'none'
+        }
+      },
+
+      // Card header recipe
+      cardHeader: {
+        className: 'cardHeader',
+        base: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'fluid-xs',
+          padding: 'fluid-lg'
+        },
+        variants: {
+          spacing: {
+            tight: {
+              gap: 'fluid-xs',
+              padding: 'fluid-sm'
+            },
+            normal: {
+              gap: 'fluid-xs',
+              padding: 'fluid-lg'
+            },
+            loose: {
+              gap: 'fluid-sm',
+              padding: 'fluid-xl'
+            }
+          }
+        },
+        defaultVariants: {
+          spacing: 'normal'
+        }
+      },
+
+      // Card title recipe
+      cardTitle: {
+        className: 'cardTitle',
+        base: {
+          fontSize: 'fluid-2xl',
+          fontWeight: 'semibold',
+          lineHeight: 'none',
+          letterSpacing: 'tight'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-lg'
+            },
+            md: {
+              fontSize: 'fluid-xl'
+            },
+            lg: {
+              fontSize: 'fluid-2xl'
+            },
+            xl: {
+              fontSize: 'fluid-3xl'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'lg'
+        }
+      },
+
+      // Card description recipe
+      cardDescription: {
+        className: 'cardDescription',
+        base: {
+          fontSize: 'fluid-sm',
+          color: 'muted.foreground'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Card content recipe
+      cardContent: {
+        className: 'cardContent',
+        base: {
+          padding: 'fluid-lg',
+          paddingTop: '0'
+        },
+        variants: {
+          spacing: {
+            tight: {
+              padding: 'fluid-sm',
+              paddingTop: '0'
+            },
+            normal: {
+              padding: 'fluid-lg',
+              paddingTop: '0'
+            },
+            loose: {
+              padding: 'fluid-xl',
+              paddingTop: '0'
+            }
+          }
+        },
+        defaultVariants: {
+          spacing: 'normal'
+        }
+      },
+
+      // Card footer recipe
+      cardFooter: {
+        className: 'cardFooter',
+        base: {
+          display: 'flex',
+          alignItems: 'center',
+          padding: 'fluid-lg',
+          paddingTop: '0'
+        },
+        variants: {
+          spacing: {
+            tight: {
+              padding: 'fluid-sm',
+              paddingTop: '0'
+            },
+            normal: {
+              padding: 'fluid-lg',
+              paddingTop: '0'
+            },
+            loose: {
+              padding: 'fluid-xl',
+              paddingTop: '0'
+            }
+          },
+          alignment: {
+            start: {
+              justifyContent: 'flex-start'
+            },
+            center: {
+              justifyContent: 'center'
+            },
+            end: {
+              justifyContent: 'flex-end'
+            },
+            between: {
+              justifyContent: 'space-between'
+            },
+            around: {
+              justifyContent: 'space-around'
+            }
+          }
+        },
+        defaultVariants: {
+          spacing: 'normal',
+          alignment: 'start'
+        }
+      }
     }
   },
 
