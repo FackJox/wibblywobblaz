@@ -193,10 +193,9 @@ function GradientFollowCard({ onAnimationStart, onAnimationEnd }: {
   onAnimationStart: () => void;
   onAnimationEnd: () => void;
 }) {
-  const gradientFollow = useGradientFollow({
-    size: 200,
-    opacity: 0.3,
-    blur: 20
+  const gradientFollow = useGradientFollow<HTMLDivElement>({
+    radius: 200,
+    opacity: 0.3
   });
 
   return (
@@ -227,9 +226,9 @@ function MagneticHoverCard({ onAnimationStart, onAnimationEnd }: {
   onAnimationStart: () => void;
   onAnimationEnd: () => void;
 }) {
-  const magneticHover = useMagneticHover({
+  const magneticHover = useMagneticHover<HTMLDivElement>({
     strength: 0.3,
-    radius: 100
+    maxDistance: 100
   });
 
   return (
@@ -260,19 +259,20 @@ function RippleCard({ onAnimationStart, onAnimationEnd }: {
   onAnimationStart: () => void;
   onAnimationEnd: () => void;
 }) {
-  const ripple = useRipple({
-    color: 'rgba(59, 130, 246, 0.5)',
-    duration: 600
+  const ripple = useRipple<HTMLDivElement>({
+    preset: 'button'
   });
 
   return (
     <Card 
       className="h-48 relative overflow-hidden cursor-pointer bg-gradient-to-br from-blue-500 to-purple-600 text-white"
-      onClick={(e) => {
+      onClick={() => {
         onAnimationStart();
-        ripple.createRipple(e);
+        ripple.triggerRipple();
         setTimeout(onAnimationEnd, 600);
       }}
+      ref={ripple.rippleRef}
+      {...ripple.getRippleProps()}
     >
       <CardContent className="h-full flex items-center justify-center relative z-10">
         <div className="text-center">
@@ -281,7 +281,6 @@ function RippleCard({ onAnimationStart, onAnimationEnd }: {
           <PerformanceIndicator animationType="micro" className="mt-2" />
         </div>
       </CardContent>
-      {ripple.ripples}
     </Card>
   );
 }
@@ -364,20 +363,32 @@ function MultiEffectCard({ onAnimationStart, onAnimationEnd }: {
   onAnimationStart: () => void;
   onAnimationEnd: () => void;
 }) {
-  const gradientFollow = useGradientFollow({ size: 150, opacity: 0.2 });
-  const magneticHover = useMagneticHover({ strength: 0.2, radius: 80 });
-  const ripple = useRipple({ color: 'rgba(139, 69, 19, 0.3)' });
+  const gradientFollow = useGradientFollow({ radius: 150, opacity: 0.2 });
+  const magneticHover = useMagneticHover<HTMLDivElement>({ strength: 0.2, maxDistance: 80 });
+  const ripple = useRipple({ preset: 'button' });
+  
+  const handleClick = () => {
+    ripple.triggerRipple();
+  };
 
   return (
     <Card
-      ref={gradientFollow.ref}
+      ref={(el) => {
+        if (gradientFollow.ref) {
+          (gradientFollow.ref as React.MutableRefObject<HTMLElement | null>).current = el;
+        }
+        if (ripple.rippleRef) {
+          (ripple.rippleRef as React.MutableRefObject<HTMLElement | null>).current = el;
+        }
+      }}
       className="h-48 relative overflow-hidden cursor-pointer"
       style={{
         background: gradientFollow.gradientValue || 'linear-gradient(45deg, #fef3c7, #fed7aa)'
       }}
       onMouseEnter={onAnimationStart}
       onMouseLeave={onAnimationEnd}
-      onClick={ripple.createRipple}
+      onClick={handleClick}
+      {...ripple.getRippleProps()}
     >
       <CardContent className="h-full flex items-center justify-center">
         <div
@@ -392,7 +403,6 @@ function MultiEffectCard({ onAnimationStart, onAnimationEnd }: {
           <PerformanceIndicator animationType="complex" className="mt-2" />
         </div>
       </CardContent>
-      {ripple.ripples}
     </Card>
   );
 }

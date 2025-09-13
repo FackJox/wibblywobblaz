@@ -36,9 +36,9 @@ export interface UseGradientFollowConfig extends GradientFollowConfig {
 /**
  * Return type for useGradientFollow hook
  */
-export interface UseGradientFollowReturn {
+export interface UseGradientFollowReturn<T extends HTMLElement = HTMLElement> {
   /** Ref to attach to the element */
-  ref: React.RefObject<HTMLElement>;
+  ref: React.RefObject<T | null>;
   /** Current cursor position relative to element */
   cursorPosition: Point;
   /** Current gradient CSS value */
@@ -80,9 +80,9 @@ export interface UseGradientFollowReturn {
  * );
  * ```
  */
-export function useGradientFollow(
+export function useGradientFollow<T extends HTMLElement = HTMLElement>(
   config: UseGradientFollowConfig = {}
-): UseGradientFollowReturn {
+): UseGradientFollowReturn<T> {
   const {
     radius = 200,
     colors = ['rgba(255, 255, 255, 0.1)', 'transparent'],
@@ -97,7 +97,7 @@ export function useGradientFollow(
   } = config;
 
   const prefersReducedMotion = usePrefersReducedMotion();
-  const elementRef = React.useRef<HTMLElement>(null);
+  const elementRef = React.useRef<T>(null);
   
   const [cursorPosition, setCursorPositionState] = React.useState<Point>({ x: 0, y: 0 });
   const [gradientValue, setGradientValue] = React.useState<string>('');
@@ -358,10 +358,10 @@ export function useGradientFollow(
  * );
  * ```
  */
-export function useSimpleGradientFollow(
+export function useSimpleGradientFollow<T extends HTMLElement = HTMLElement>(
   preset: 'subtle' | 'spotlight' | 'glow' | 'rainbow' = 'subtle',
   overrides: Partial<UseGradientFollowConfig> = {}
-): UseGradientFollowReturn {
+): UseGradientFollowReturn<T> {
   const presets: Record<string, UseGradientFollowConfig> = {
     subtle: {
       radius: 150,

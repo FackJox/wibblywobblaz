@@ -22,8 +22,8 @@ interface LazyTextRevealProps {
 
 // Dynamic import for text reveal component  
 const TextRevealComponent = React.lazy(() =>
-  import('./text-reveal-component').catch(() => ({
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>
+  import('./text-reveal-component').then(module => ({ default: module.default })).catch(() => ({
+    default: ({ text, className }: { text: string; className?: string }) => <span className={className}>{text}</span>
   }))
 )
 

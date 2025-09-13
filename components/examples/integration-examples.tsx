@@ -41,12 +41,13 @@ function FeatureGatedRippleButton() {
   const buttonRef = React.useRef<HTMLButtonElement>(null)
   
   // Only setup ripple if micro animations are enabled and instance is active
-  const rippleEvents = (isEnabled('micro') && isActive) 
-    ? useRipple(buttonRef, {
+  const rippleHook = (isEnabled('micro') && isActive) 
+    ? useRipple({
         color: 'rgba(255, 255, 255, 0.5)',
         duration: 600
       })
-    : {}
+    : null
+  const rippleEvents = rippleHook ? rippleHook.getRippleProps() : {}
 
   return (
     <Card>
@@ -59,7 +60,7 @@ function FeatureGatedRippleButton() {
       <CardContent>
         <div className="space-y-4">
           <Button
-            ref={buttonRef}
+            ref={rippleHook ? rippleHook.rippleRef as React.RefObject<HTMLButtonElement> : buttonRef}
             {...rippleEvents}
             className="relative overflow-hidden"
           >
@@ -94,13 +95,12 @@ function AdaptiveMagneticCard() {
     easing: 'ease-out'
   })
   
-  const magneticProps = (isEnabled('hover') && isActive)
-    ? useMagneticHover(cardRef, {
-        strength: config.enabled ? (config.complexity * 0.3) : 0,
-        radius: config.enabled ? (config.complexity * 100) : 0,
-        duration: config.duration
+  const magneticHook = (isEnabled('hover') && isActive)
+    ? useMagneticHover({
+        strength: config.enabled ? (config.complexity * 0.3) : 0
       })
-    : {}
+    : null
+  const magneticProps = magneticHook ? {} : {}
 
   const quality = getQuality('hover')
 
@@ -114,7 +114,7 @@ function AdaptiveMagneticCard() {
       </CardHeader>
       <CardContent>
         <Card
-          ref={cardRef}
+          ref={magneticHook ? magneticHook.ref as React.RefObject<HTMLDivElement> : cardRef}
           className={`p-6 text-center transition-all cursor-pointer ${
             isEnabled('hover') && isActive ? 'hover:shadow-lg' : ''
           }`}
@@ -157,13 +157,14 @@ function QualityAwareGradientFollow() {
   })
 
   // Only use gradient follow if enabled and appropriate quality
-  const gradientProps = (isEnabled('hover') && isActive && quality !== 'low')
-    ? useGradientFollow(containerRef, {
-        gradientSize: quality === 'high' ? 200 : 150,
-        intensity: config.complexity,
-        updateRate: quality === 'high' ? 16 : 32 // Lower update rate for medium quality
+  const gradientHook = (isEnabled('hover') && isActive && quality !== 'low')
+    ? useGradientFollow({
+        radius: quality === 'high' ? 200 : 150,
+        opacity: config.complexity,
+        // updateRate removed as it's not a valid prop
       })
-    : {}
+    : null
+  const gradientProps = gradientHook ? {} : {}
 
   return (
     <Card>
@@ -175,7 +176,7 @@ function QualityAwareGradientFollow() {
       </CardHeader>
       <CardContent>
         <div
-          ref={containerRef}
+          ref={gradientHook ? gradientHook.ref as React.RefObject<HTMLDivElement> : containerRef}
           className={`p-8 rounded-lg border-2 border-dashed border-muted-foreground/20 text-center relative overflow-hidden ${
             isEnabled('hover') && isActive && quality !== 'low' ? 'cursor-none' : ''
           }`}

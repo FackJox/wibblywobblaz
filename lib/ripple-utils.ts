@@ -84,16 +84,22 @@ export function createRippleElement(
   
   const ripple = document.createElement('span')
   ripple.className = `absolute rounded-full pointer-events-none animate-ripple ${className}`
+  
+  // Use rgba for better visibility
+  const rippleColor = color === 'currentColor' 
+    ? 'rgba(255, 255, 255, 0.5)' 
+    : color;
+    
   ripple.style.cssText = `
     left: ${position.x - position.size / 2}px;
     top: ${position.y - position.size / 2}px;
     width: ${position.size}px;
     height: ${position.size}px;
-    background-color: ${color === 'currentColor' ? 'currentColor' : color};
-    opacity: 0.3;
+    background: ${rippleColor};
     animation-duration: ${duration}ms;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     animation-fill-mode: forwards;
+    z-index: 1;
   `
   
   return ripple
@@ -107,12 +113,24 @@ export function addRippleToElement(
   event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | null,
   config: RippleConfig = {}
 ): () => void {
+  console.log('[RIPPLE-UTILS] addRippleToElement called', {
+    element,
+    disabled: config.disabled,
+    event: !!event
+  })
+  
   if (config.disabled) {
     return () => {}
   }
   
   const position = calculateRipplePosition(event, element, config)
   const ripple = createRippleElement(position, config)
+  
+  console.log('[RIPPLE-UTILS] Created ripple', {
+    position,
+    ripple,
+    styles: ripple.style.cssText
+  })
   
   // Ensure element has relative positioning for ripple positioning
   const originalPosition = element.style.position

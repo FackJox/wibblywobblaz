@@ -66,9 +66,9 @@ export interface ScrollAnimationState {
 /**
  * Return type for scroll animation hooks
  */
-export interface UseScrollAnimationReturn extends ScrollAnimationState {
+export interface UseScrollAnimationReturn<T extends HTMLElement = HTMLElement> extends ScrollAnimationState {
   /** Element ref */
-  ref: React.RefObject<HTMLElement>
+  ref: React.RefObject<T | null>
   /** CSS styles to apply */
   styles: React.CSSProperties
   /** Manually trigger animation */
@@ -98,7 +98,7 @@ export interface UseScrollAnimationReturn extends ScrollAnimationState {
  * )
  * ```
  */
-export function useScrollFadeIn(config: FadeInConfig = {}): UseScrollAnimationReturn {
+export function useScrollFadeIn<T extends HTMLElement = HTMLElement>(config: FadeInConfig = {}): UseScrollAnimationReturn<T> {
   const {
     threshold = 0.1,
     rootMargin = "0px 0px -10% 0px",
@@ -113,7 +113,7 @@ export function useScrollFadeIn(config: FadeInConfig = {}): UseScrollAnimationRe
     scale = 0.95
   } = config
 
-  const ref = React.useRef<HTMLElement>(null)
+  const ref = React.useRef<T>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
   const observerRef = React.useRef<IntersectionObserver | null>(null)
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null)
@@ -391,14 +391,14 @@ export function useScrollFadeIn(config: FadeInConfig = {}): UseScrollAnimationRe
  * )
  * ```
  */
-export function useScrollProgress(config: ScrollAnimationConfig = {}): UseScrollAnimationReturn {
+export function useScrollProgress<T extends HTMLElement = HTMLElement>(config: ScrollAnimationConfig = {}): UseScrollAnimationReturn<T> {
   const {
     threshold = 0,
     rootMargin = "0px",
     throttleMs = 16
   } = config
 
-  const ref = React.useRef<HTMLElement>(null)
+  const ref = React.useRef<T>(null)
   const observerRef = React.useRef<IntersectionObserver | null>(null)
 
   const [state, setState] = React.useState<ScrollAnimationState>({
@@ -494,7 +494,7 @@ export function useScrollProgress(config: ScrollAnimationConfig = {}): UseScroll
  * @param direction Direction to fade in from
  * @returns Simple fade in animation
  */
-export function useSimpleFadeIn(direction: FadeInConfig['direction'] = 'up') {
+export function useSimpleFadeIn<T extends HTMLElement = HTMLElement>(direction: FadeInConfig['direction'] = 'up') {
   return useScrollFadeIn({
     direction,
     distance: 20,

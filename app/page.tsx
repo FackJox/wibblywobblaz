@@ -20,7 +20,8 @@ import {
   useScrollFadeIn,
   useSimpleFadeIn,
 } from "@/hooks/use-scroll-animations";
-import { useSimpleParallax } from "@/hooks/use-parallax";
+import { useMouseParallax } from "@/hooks/use-parallax";
+import { useSimpleMagneticHover, useMagneticHover } from "@/hooks/use-magnetic-hover";
 import { useHorizontalSwipeNavigation } from "@/hooks/use-swipe";
 import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
@@ -48,12 +49,23 @@ const LinksPage = ({
 }) => {
   // Unified stagger animation for all elements (3 headers + 4 buttons = 7 total)
   const logoFadeIn = useSimpleFadeIn("left");
-  const allButtonsStagger = useStaggerReveal(7, {
+  const allButtonsStagger = useStaggerReveal<HTMLDivElement>(7, {
     staggerDelay: 150,
     duration: 600,
     threshold: 0.1,
     once: false,
   });
+  
+  // Mouse parallax for depth layers
+  const logoParallax = useMouseParallax<HTMLDivElement>(0.05, { maxOffset: 30 }); // Furthest layer - moves most
+  const linksParallax = useMouseParallax<HTMLDivElement>(0.02, { maxOffset: 15 }); // Middle layer - moderate movement
+  
+  // Magnetic effects for link buttons
+  const socialLinksMagnetic = socialLinks.map(() => 
+    useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 })
+  );
+  const ticketLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
+  const merchLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
 
   // Reset animations when page becomes hidden
   React.useEffect(() => {
@@ -71,13 +83,21 @@ const LinksPage = ({
   }, [isVisible]);
 
   return (
-    <div className="h-full bg-white flex flex-col md:flex-row">
+    <div className="h-full bg-white flex flex-col md:flex-row relative">
       {/* Left Side - Logo */}
-      <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full">
+      <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full" style={{ zIndex: 1 }}>
         <div
-          ref={logoFadeIn.ref}
+          ref={(el) => {
+            logoFadeIn.ref.current = el;
+            logoParallax.ref.current = el;
+          }}
           className="max-w-lg w-full"
-          style={logoFadeIn.styles}
+          style={{
+            ...logoFadeIn.styles,
+            ...logoParallax.styles,
+            transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            willChange: 'transform',
+          }}
         >
           <Image
             src="/images/wibbly-wobblaz-logo.png"
@@ -91,8 +111,16 @@ const LinksPage = ({
       </div>
 
       {/* Right Side - Links */}
-      <div className="flex-1 bg-black text-white p-4 md:p-8 flex flex-col justify-center md:h-full">
-        <div className="space-y-6 md:space-y-8">
+      <div className="flex-1 bg-black text-white p-4 md:p-8 flex flex-col justify-center md:h-full" style={{ zIndex: 2 }}>
+        <div 
+          ref={linksParallax.ref}
+          className="space-y-6 md:space-y-8"
+          style={{
+            ...linksParallax.styles,
+            transition: 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            willChange: 'transform',
+          }}
+        >
           {/* Social Links */}
           <div className="space-y-4" ref={allButtonsStagger.containerRef}>
             <h2 
@@ -143,16 +171,18 @@ const LinksPage = ({
                       allButtonsStagger.items[index + 1]?.transition ?? "none",
                   }}
                 >
-                  <Link
-                    href={social.url}
-                    className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white hover:scale-[1.02] active:scale-[0.98]"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Button
+                    ref={socialLinksMagnetic[index].ref}
+                    className="w-full flex items-center justify-start space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white bg-transparent text-white"
+                    onClick={() => window.open(social.url, '_blank')}
+                    ripple={true}
+                    magnetic={true}
+                    clickAnimation={true}
                   >
                     <social.icon size={24} />
                     <span>{social.name.toUpperCase()}</span>
                     <ExternalLink size={20} className="ml-auto" />
-                  </Link>
+                  </Button>
                 </GestureWrapper>
               ))}
             </div>
@@ -205,16 +235,18 @@ const LinksPage = ({
                   allButtonsStagger.items[4]?.transition ?? "none",
               }}
             >
-              <Link
-                href="https://hdfst.uk/e132325"
-                className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white hover:scale-[1.02] active:scale-[0.98]"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button
+                ref={ticketLinkMagnetic.ref}
+                className="w-full flex items-center justify-start space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white bg-transparent text-white"
+                onClick={() => window.open('https://hdfst.uk/e132325', '_blank')}
+                ripple={true}
+                magnetic={true}
+                clickAnimation={true}
               >
                 <Calendar size={24} />
                 <span>HEADFIRST</span>
                 <ExternalLink size={20} className="ml-auto" />
-              </Link>
+              </Button>
             </GestureWrapper>
           </div>
 
@@ -267,14 +299,18 @@ const LinksPage = ({
                   allButtonsStagger.items[6]?.transition ?? "none",
               }}
             >
-              <Link
-                href="https://merch.wibblywobblaz.xyz"
-                className="flex items-center space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white hover:scale-[1.02] active:scale-[0.98]"
+              <Button
+                ref={merchLinkMagnetic.ref}
+                className="w-full flex items-center justify-start space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white bg-transparent text-white"
+                onClick={() => window.open('https://merch.wibblywobblaz.xyz', '_blank')}
+                ripple={true}
+                magnetic={true}
+                clickAnimation={true}
               >
                 <ShoppingBag size={20} />
                 <span>SHOP NOW</span>
                 <ExternalLink size={20} className="ml-auto" />
-              </Link>
+              </Button>
             </GestureWrapper>
           </div>
         </div>
@@ -291,13 +327,22 @@ const PartiesPage = ({
   isVisible: boolean;
 }) => {
   // Scroll animations for parties page
-  const partiesStagger = useStaggerReveal(upcomingParties.length, {
+  const partiesStagger = useStaggerReveal<HTMLDivElement>(upcomingParties.length, {
     staggerDelay: 200,
     duration: 700,
     threshold: 0.1,
     once: false,
   });
-  const backgroundParallax = useSimpleParallax(0.3);
+  
+  // Mouse parallax for party cards with staggered depth
+  const cardsParallax = upcomingParties.map((_, index) => 
+    useMouseParallax<HTMLDivElement>(0.02 + (index * 0.005), { maxOffset: 20 + (index * 3) })
+  );
+  
+  // Magnetic hover for GET TICKETS buttons
+  const ticketButtonsMagnetic = upcomingParties.map(() => 
+    useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 })
+  );
 
   // Reset animations when page becomes hidden
   React.useEffect(() => {
@@ -319,18 +364,26 @@ const PartiesPage = ({
           ref={partiesStagger.containerRef}
           className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"
         >
-          {upcomingParties.map((party: any, index: number) => (
-            <div
-              key={party.id}
-              className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
-              style={{
-                opacity: partiesStagger.items[index]?.opacity ?? 0,
-                transform:
-                  partiesStagger.items[index]?.transform ??
-                  "translateY(30px) scale(0.9)",
-                transition: partiesStagger.items[index]?.transition ?? "none",
-              }}
-            >
+          {upcomingParties.map((party: any, index: number) => {
+            // Combine parallax and stagger transforms
+            const parallaxTransform = cardsParallax[index]?.transform || 'translate3d(0, 0, 0)';
+            const staggerTransform = partiesStagger.items[index]?.transform || '';
+            const combinedTransform = staggerTransform ? 
+              `${parallaxTransform} ${staggerTransform}` : 
+              parallaxTransform;
+            
+            return (
+              <div
+                key={party.id}
+                ref={cardsParallax[index]?.ref}
+                className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
+                style={{
+                  opacity: partiesStagger.items[index]?.opacity ?? 0,
+                  transform: combinedTransform,
+                  transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease-out',
+                  willChange: 'transform, opacity',
+                }}
+              >
               {/* Poster */}
               <div className="aspect-[3/4] border-b-4 border-white relative overflow-hidden">
                 <Image
@@ -377,22 +430,19 @@ const PartiesPage = ({
                 </div>
 
                 <Button
+                  ref={ticketButtonsMagnetic[index].ref}
                   className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black"
-                  asChild
+                  onClick={() => window.open('https://hdfst.uk/e132325', '_blank')}
                   ripple={true}
                   clickAnimation={true}
+                  magnetic={true}
                 >
-                  <Link
-                    href="https://hdfst.uk/e132325"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    GET TICKETS
-                  </Link>
+                  GET TICKETS
                 </Button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
@@ -409,6 +459,15 @@ export default function WibblyWobblazLanding() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const freeButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // Magnetic effect for navigation header text
+  const magnetic = useSimpleMagneticHover<HTMLDivElement>('strong');
+  
+  // Mouse parallax for header (closest layer - minimal movement)
+  const headerParallax = useMouseParallax<HTMLDivElement>(0.01, { maxOffset: 10 });
+  
+  // Mouse parallax for navigation buttons (slightly more movement than header)
+  const navButtonsParallax = useMouseParallax<HTMLDivElement>(0.015, { maxOffset: 12 });
 
   const handlePageTransition = (targetPage: "links" | "parties") => {
     if (targetPage === currentPage || isTransitioning) return;
@@ -511,17 +570,37 @@ export default function WibblyWobblazLanding() {
     <div className="fixed inset-0 overflow-hidden flex flex-col">
       {/* Shared Navigation */}
       <nav
-        className={`sticky-nav border-b-4 ${currentPage === "parties" ? "border-white bg-black text-white" : "border-black bg-white text-black"} p-4 md:p-6 flex-shrink-0 z-50`}
+        className={`sticky-nav border-b-4 ${currentPage === "parties" ? "border-white bg-black text-white" : "border-black bg-white text-black"} p-4 md:p-6 flex-shrink-0`}
+        style={{ zIndex: 50 }}
       >
         <div className="flex justify-between items-center">
           <div
-            className={`text-2xl md:text-7xl font-black tracking-tighter font-hegval ${currentPage === "parties" ? "text-white" : "text-black"}`}
+            ref={(el) => {
+              magnetic.ref.current = el;
+              headerParallax.ref.current = el;
+            }}
+            className={`text-2xl md:text-7xl font-black tracking-tighter font-hegval cursor-pointer select-none ${currentPage === "parties" ? "text-white" : "text-black"}`}
+            style={{ 
+              ...headerParallax.styles,
+              position: 'relative',
+              zIndex: 10,
+              transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              willChange: 'transform',
+            }}
           >
-            {currentPage === "parties" ? "UPCOMING PARTIES" : "WIBBLY WOBBLAZ"}
+            WIBBLY WOBBLAZ
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div 
+            ref={navButtonsParallax.ref}
+            className="hidden md:flex space-x-8"
+            style={{
+              ...navButtonsParallax.styles,
+              transition: 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              willChange: 'transform',
+            }}
+          >
             <Button
               variant="ghost"
               className={`text-xl font-black ${
@@ -535,6 +614,7 @@ export default function WibblyWobblazLanding() {
               disabled={isTransitioning}
               ripple={true}
               clickAnimation={true}
+              magnetic={true}
             >
               LINKS
             </Button>
@@ -551,6 +631,7 @@ export default function WibblyWobblazLanding() {
               disabled={isTransitioning}
               ripple={true}
               clickAnimation={true}
+              magnetic={true}
             >
               PARTIES
             </Button>
@@ -587,6 +668,7 @@ export default function WibblyWobblazLanding() {
                 disabled={isTransitioning}
                 ripple={true}
                 clickAnimation={true}
+                magnetic={true}
               >
                 LINKS
               </Button>
@@ -603,6 +685,7 @@ export default function WibblyWobblazLanding() {
                 disabled={isTransitioning}
                 ripple={true}
                 clickAnimation={true}
+                magnetic={true}
               >
                 PARTIES
               </Button>
@@ -615,7 +698,14 @@ export default function WibblyWobblazLanding() {
       <div
         ref={containerRef}
         className="flex-1 relative overflow-hidden"
-        {...gestureHandlers}
+        onTouchStart={(e) => gestureHandlers.onTouchStart(e.nativeEvent)}
+        onTouchMove={(e) => gestureHandlers.onTouchMove(e.nativeEvent)}
+        onTouchEnd={(e) => gestureHandlers.onTouchEnd(e.nativeEvent)}
+        onTouchCancel={(e) => gestureHandlers.onTouchCancel(e.nativeEvent)}
+        onMouseDown={(e) => gestureHandlers.onMouseDown(e.nativeEvent)}
+        onMouseMove={(e) => gestureHandlers.onMouseMove(e.nativeEvent)}
+        onMouseUp={(e) => gestureHandlers.onMouseUp(e.nativeEvent)}
+        onMouseLeave={(e) => gestureHandlers.onMouseLeave(e.nativeEvent)}
       >
         <div className="relative w-full h-full">
           {/* Links Page */}

@@ -26,18 +26,38 @@ export default function TextRevealComponent({
 }: TextRevealComponentProps) {
   const elementRef = React.useRef<HTMLSpanElement>(null)
   
-  const { animatedText, isComplete, restart } = useTextReveal(text, {
-    animation: config.animation,
+  const textReveal = useTextReveal<HTMLSpanElement>({
+    type: config.animation === 'typewriter' ? 'fade' : 'slide',
+    by: config.useSimpleChars ? 'word' : 'character',
+    stagger: config.characterDelay,
     duration: config.duration,
-    characterDelay: config.characterDelay,
-    delay: delay,
-    // Optimization: use simpler character processing on low-end devices
-    splitByWords: config.useSimpleChars
+    triggerOn: 'manual',
+    preserveContent: true
   })
 
+  // Set the text content and trigger reveal after delay
+  React.useEffect(() => {
+    if (elementRef.current) {
+      elementRef.current.textContent = text
+      
+      const timer = setTimeout(() => {
+        textReveal.reveal()
+      }, delay)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [text, delay, textReveal])
+
   return (
-    <span ref={elementRef} className={className}>
-      {animatedText}
+    <span ref={(el) => {
+      if (elementRef.current !== el) {
+        elementRef.current = el
+        if (textReveal.ref) {
+          (textReveal.ref as React.MutableRefObject<HTMLSpanElement | null>).current = el
+        }
+      }
+    }} className={className}>
+      {text}
     </span>
   )
 }

@@ -31,9 +31,9 @@ export interface UseTextRevealConfig extends TextRevealConfig {
 /**
  * Return type for useTextReveal hook
  */
-export interface UseTextRevealReturn {
+export interface UseTextRevealReturn<T extends HTMLElement = HTMLElement> {
   /** Ref to attach to the text element */
-  ref: React.RefObject<HTMLElement>;
+  ref: React.RefObject<T | null>;
   /** Array of span elements for each character/word */
   spans: HTMLElement[];
   /** Whether the text is currently revealed */
@@ -74,9 +74,9 @@ export interface UseTextRevealReturn {
  * );
  * ```
  */
-export function useTextReveal(
+export function useTextReveal<T extends HTMLElement = HTMLElement>(
   config: UseTextRevealConfig = {}
-): UseTextRevealReturn {
+): UseTextRevealReturn<T> {
   const {
     type = 'slide',
     stagger = 50,
@@ -91,7 +91,7 @@ export function useTextReveal(
   } = config;
 
   const prefersReducedMotion = usePrefersReducedMotion();
-  const elementRef = React.useRef<HTMLElement>(null);
+  const elementRef = React.useRef<T>(null);
   
   const [spans, setSpans] = React.useState<HTMLElement[]>([]);
   const [isRevealed, setIsRevealed] = React.useState(false);
@@ -313,10 +313,10 @@ export function useTextReveal(
  * );
  * ```
  */
-export function useSimpleTextReveal(
+export function useSimpleTextReveal<T extends HTMLElement = HTMLElement>(
   preset: 'fade' | 'slide' | 'typewriter' | 'wave' | 'bounce' = 'slide',
   overrides: Partial<UseTextRevealConfig> = {}
-): UseTextRevealReturn {
+): UseTextRevealReturn<T> {
   const presets: Record<string, UseTextRevealConfig> = {
     fade: {
       type: 'fade',

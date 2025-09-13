@@ -4,6 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 import { useRipple, useClickAnimation, type UseRippleProps } from "@/hooks/use-ripple"
+import { useMagneticHover, type UseMagneticHoverConfig } from "@/hooks/use-magnetic-hover"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 ripple-container relative overflow-hidden",
@@ -46,6 +47,10 @@ export interface ButtonProps
   clickAnimation?: boolean
   /** Show success bounce animation */
   success?: boolean
+  /** Enable magnetic hover effect */
+  magnetic?: boolean
+  /** Magnetic hover configuration */
+  magneticConfig?: UseMagneticHoverConfig
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -58,6 +63,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     rippleConfig,
     clickAnimation = true,
     success = false,
+    magnetic = false,
+    magneticConfig,
     onClick,
     disabled,
     ...props 
@@ -91,6 +98,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled: disabled || !clickAnimation
     })
     
+    // Setup magnetic hover effect
+    const magneticHook = useMagneticHover({
+      strength: 0.25,
+      maxDistance: 100,
+      boundaries: { x: 0.4, y: 0.4 },
+      lerp: 0.12,
+      returnToCenter: true,
+      disabled: disabled || !magnetic,
+      ...magneticConfig
+    })
+    
     // Success animation effect
     React.useEffect(() => {
       if (success && rippleHook.rippleRef.current) {
@@ -116,12 +134,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     // Merge refs
     const mergedRef = React.useCallback((element: HTMLButtonElement | null) => {
-      // Set both hook refs
+      // Set all hook refs
       if (rippleHook.rippleRef) {
-        ;(rippleHook.rippleRef as any).current = element
+        (rippleHook.rippleRef as React.MutableRefObject<HTMLButtonElement | null>).current = element
       }
       if (clickAnimationHook.clickRef) {
-        ;(clickAnimationHook.clickRef as any).current = element
+        (clickAnimationHook.clickRef as React.MutableRefObject<HTMLButtonElement | null>).current = element
+      }
+      if (magneticHook.ref) {
+        (magneticHook.ref as React.MutableRefObject<HTMLButtonElement | null>).current = element
       }
       
       // Set external ref
@@ -130,16 +151,53 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       } else if (ref) {
         ref.current = element
       }
-    }, [rippleHook.rippleRef, clickAnimationHook.clickRef, ref])
+    }, [rippleHook.rippleRef, clickAnimationHook.clickRef, magneticHook.ref, ref])
+    
+    // Merge all event handlers
+    const handleMouseDown = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+      console.log('[BUTTON] handleMouseDown triggered')
+      if (!disabled) {
+        // Call ripple handler
+        if (ripple) {
+          const rippleProps = rippleHook.getRippleProps()
+          console.log('[BUTTON] Calling ripple onMouseDown', rippleProps)
+          rippleProps.onMouseDown?.(event as any)
+        }
+        // Call click animation handler
+        if (clickAnimation) {
+          const clickProps = clickAnimationHook.getClickProps()
+          clickProps.onMouseDown?.()
+        }
+      }
+      // Call parent's handler if exists
+      props.onMouseDown?.(event)
+    }, [disabled, ripple, clickAnimation, rippleHook, clickAnimationHook, props])
+    
+    const handleTouchStart = React.useCallback((event: React.TouchEvent<HTMLButtonElement>) => {
+      if (!disabled) {
+        // Call ripple handler
+        if (ripple) {
+          const rippleProps = rippleHook.getRippleProps()
+          rippleProps.onTouchStart?.(event as any)
+        }
+        // Call click animation handler
+        if (clickAnimation) {
+          const clickProps = clickAnimationHook.getClickProps()
+          clickProps.onTouchStart?.()
+        }
+      }
+      // Call parent's handler if exists
+      props.onTouchStart?.(event)
+    }, [disabled, ripple, clickAnimation, rippleHook, clickAnimationHook, props])
     
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={mergedRef}
         onClick={handleClick}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
         disabled={disabled}
-        {...(ripple && !disabled ? rippleHook.getRippleProps() : {})}
-        {...(clickAnimation && !disabled ? clickAnimationHook.getClickProps() : {})}
         {...props}
       />
     )

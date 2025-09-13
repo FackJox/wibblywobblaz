@@ -129,7 +129,7 @@ function FeatureFlagCard({
 function MicroAnimationExamples() {
   const { isEnabled } = useFeatureFlags()
   const buttonRef = React.useRef<HTMLButtonElement>(null)
-  const rippleEvents = useRipple(buttonRef)
+  const { getRippleProps, rippleRef } = useRipple()
 
   if (!isEnabled('micro')) {
     return (
@@ -157,8 +157,8 @@ function MicroAnimationExamples() {
       <CardContent>
         <div className="space-x-4">
           <Button 
-            ref={buttonRef}
-            {...rippleEvents}
+            ref={rippleRef as React.RefObject<HTMLButtonElement>}
+            {...getRippleProps()}
             className="relative overflow-hidden"
           >
             Ripple Button
@@ -180,9 +180,9 @@ function HoverAnimationExamples() {
   
   // Only use magnetic hover if enabled
   const magneticProps = isEnabled('hover') 
-    ? useMagneticHover(cardRef, { 
+    ? useMagneticHover<HTMLDivElement>({ 
         strength: getQuality('hover') === 'high' ? 0.3 : 0.1,
-        radius: getQuality('hover') === 'low' ? 50 : 100 
+        maxDistance: getQuality('hover') === 'low' ? 50 : 100 
       })
     : {}
 

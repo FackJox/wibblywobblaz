@@ -61,9 +61,9 @@ export interface ParallaxState {
 /**
  * Return type for parallax hooks
  */
-export interface UseParallaxReturn extends ParallaxState {
+export interface UseParallaxReturn<T extends HTMLElement = HTMLElement> extends ParallaxState {
   /** Element ref */
-  ref: React.RefObject<HTMLElement>
+  ref: React.RefObject<T | null>
   /** CSS styles to apply */
   styles: React.CSSProperties
   /** CSS transform string */
@@ -90,7 +90,7 @@ export interface UseParallaxReturn extends ParallaxState {
  * )
  * ```
  */
-export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
+export function useParallax<T extends HTMLElement = HTMLElement>(config: ParallaxConfig = {}): UseParallaxReturn<T> {
   const {
     speed = 0.5,
     direction = 'vertical',
@@ -104,7 +104,7 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
     transformFunction
   } = config
 
-  const ref = React.useRef<HTMLElement>(null)
+  const ref = React.useRef<T>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
   const observerRef = React.useRef<IntersectionObserver | null>(null)
   const rafRef = React.useRef<number | null>(null)
@@ -346,7 +346,7 @@ export function useParallax(config: ParallaxConfig = {}): UseParallaxReturn {
  * )
  * ```
  */
-export function useBackgroundParallax(speed: number = 0.5) {
+export function useBackgroundParallax<T extends HTMLElement = HTMLElement>(speed: number = 0.5) {
   return useParallax({
     speed,
     direction: 'vertical',
@@ -377,7 +377,7 @@ export function useBackgroundParallax(speed: number = 0.5) {
  * )
  * ```
  */
-export function useElementParallax(
+export function useElementParallax<T extends HTMLElement = HTMLElement>(
   transformFn: (offset: number, progress: number) => string,
   config: Omit<ParallaxConfig, 'transformFunction'> = {}
 ) {
@@ -394,10 +394,10 @@ export function useElementParallax(
  * @param config Additional parallax config
  * @returns Mouse-following parallax effect
  */
-export function useMouseParallax(
+export function useMouseParallax<T extends HTMLElement = HTMLElement>(
   intensity: number = 0.1,
   config: Omit<ParallaxConfig, 'transformFunction' | 'direction'> = {}
-): UseParallaxReturn {
+): UseParallaxReturn<T> {
   const {
     respectReducedMotion = true,
     throttleMs = 16,
@@ -405,7 +405,7 @@ export function useMouseParallax(
     maxOffset = 50
   } = config
 
-  const ref = React.useRef<HTMLElement>(null)
+  const ref = React.useRef<T>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
 
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 })
@@ -483,7 +483,7 @@ export function useMouseParallax(
  * @param speed Parallax speed (0-1)
  * @returns Simple vertical parallax
  */
-export function useSimpleParallax(speed: number = 0.5) {
+export function useSimpleParallax<T extends HTMLElement = HTMLElement>(speed: number = 0.5) {
   return useParallax({
     speed,
     direction: 'vertical',

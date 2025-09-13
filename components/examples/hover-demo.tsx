@@ -113,7 +113,7 @@ export function HoverDemo() {
             className="h-64"
           >
             <CardHeader>
-              <CardTitle textReveal textRevealConfig={{ type: 'bounce' }}>
+              <CardTitle>
                 Custom Effects
               </CardTitle>
               <CardDescription>
@@ -143,7 +143,7 @@ export function HoverDemo() {
  * Demo of standalone magnetic hover hook
  */
 function MagneticButtonDemo() {
-  const magnetic = useMagneticHover({
+  const magnetic = useMagneticHover<HTMLButtonElement>({
     strength: 0.4,
     maxDistance: 100,
     boundaries: { x: 0.6, y: 0.6 }
@@ -175,7 +175,7 @@ function MagneticButtonDemo() {
  * Demo of gradient following hook
  */
 function GradientTrackingDemo() {
-  const gradient = useGradientFollow({
+  const gradient = useGradientFollow<HTMLDivElement>({
     colors: ['rgba(236, 72, 153, 0.3)', 'rgba(59, 130, 246, 0.2)', 'transparent'],
     radius: 200,
     smooth: true,
@@ -207,7 +207,7 @@ function GradientTrackingDemo() {
  * Demo of text reveal hook
  */
 function TextRevealDemo() {
-  const textReveal = useTextReveal({
+  const textReveal = useTextReveal<HTMLHeadingElement>({
     type: 'slide',
     by: 'character',
     stagger: 40,

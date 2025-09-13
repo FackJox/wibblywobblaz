@@ -268,7 +268,7 @@ export const scrollAnimationPresets = {
 export function LazyFadeInOnScroll({ children, ...props }: Omit<LazyScrollAnimationsProps, 'animations'>) {
   return (
     <LazyScrollAnimations 
-      animations={scrollAnimationPresets.fadeIn}
+      animations={[...scrollAnimationPresets.fadeIn]}
       {...props}
     >
       {children}
@@ -279,7 +279,7 @@ export function LazyFadeInOnScroll({ children, ...props }: Omit<LazyScrollAnimat
 export function LazySlideUpOnScroll({ children, ...props }: Omit<LazyScrollAnimationsProps, 'animations'>) {
   return (
     <LazyScrollAnimations 
-      animations={scrollAnimationPresets.slideUp}
+      animations={[...scrollAnimationPresets.slideUp]}
       {...props}
     >
       {children}

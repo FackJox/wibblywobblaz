@@ -26,7 +26,7 @@ export interface UseRippleProps extends RippleConfig {
 /**
  * Return type for useRipple hook
  */
-export interface UseRippleReturn {
+export interface UseRippleReturn<T extends HTMLElement = HTMLElement> {
   /** Add ripple event handlers to props */
   getRippleProps: () => {
     onMouseDown: (event: React.MouseEvent<HTMLElement>) => void
@@ -38,7 +38,7 @@ export interface UseRippleReturn {
   /** Clear all ripples */
   clearRipples: () => void
   /** Reference to attach to the element */
-  rippleRef: React.RefObject<HTMLElement>
+  rippleRef: React.RefObject<T | null>
 }
 
 /**
@@ -62,7 +62,7 @@ export interface UseRippleReturn {
  * )
  * ```
  */
-export function useRipple(props: UseRippleProps = {}): UseRippleReturn {
+export function useRipple<T extends HTMLElement = HTMLElement>(props: UseRippleProps = {}): UseRippleReturn<T> {
   const {
     preset,
     disabled = false,
@@ -70,7 +70,7 @@ export function useRipple(props: UseRippleProps = {}): UseRippleReturn {
     ...rippleConfig
   } = props
 
-  const rippleRef = React.useRef<HTMLElement>(null)
+  const rippleRef = React.useRef<T>(null)
   const cleanupFunctionsRef = React.useRef<(() => void)[]>([])
   const prefersReducedMotion = usePrefersReducedMotion()
 
@@ -90,6 +90,12 @@ export function useRipple(props: UseRippleProps = {}): UseRippleReturn {
   const addRipple = React.useCallback((
     event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | null
   ) => {
+    console.log('[RIPPLE] addRipple called', { 
+      hasRef: !!rippleRef.current, 
+      disabled: finalConfig.disabled,
+      element: rippleRef.current
+    })
+    
     if (!rippleRef.current || finalConfig.disabled) return
 
     // Call onRipple callback if provided
@@ -194,10 +200,10 @@ export function useRipple(props: UseRippleProps = {}): UseRippleReturn {
  * )
  * ```
  */
-export function useSimpleRipple(
+export function useSimpleRipple<T extends HTMLElement = HTMLElement>(
   preset: RipplePreset = 'default'
-): [React.RefObject<HTMLElement>, (event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => void] {
-  const ripple = useRipple({ preset })
+): [React.RefObject<T | null>, (event?: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>) => void] {
+  const ripple = useRipple<T>({ preset })
   
   return [ripple.rippleRef, ripple.triggerRipple]
 }
@@ -214,14 +220,14 @@ export interface UseClickAnimationProps {
   disabled?: boolean
 }
 
-export function useClickAnimation(props: UseClickAnimationProps = {}) {
+export function useClickAnimation<T extends HTMLElement = HTMLElement>(props: UseClickAnimationProps = {}) {
   const {
     scaleDown = 0.95,
     duration = 150,
     disabled = false
   } = props
 
-  const elementRef = React.useRef<HTMLElement>(null)
+  const elementRef = React.useRef<T>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
   const isAnimatingRef = React.useRef(false)
 
@@ -260,5 +266,9 @@ export function useClickAnimation(props: UseClickAnimationProps = {}) {
     clickRef: elementRef,
     triggerClick: animate,
     getClickProps
+  } as {
+    clickRef: React.RefObject<T | null>
+    triggerClick: () => void
+    getClickProps: () => { onMouseDown: () => void; onTouchStart: () => void }
   }
 }

@@ -89,20 +89,13 @@ export function DevProviders({ children }: { children: React.ReactNode }) {
       {/* Performance Overlays */}
       {showPerformanceOverlay && (
         <React.Suspense fallback={null}>
-          <PerformanceOverlay 
-            visible={showPerformanceOverlay}
-            position="top-right"
-            showDetailed={true}
-          />
+          <PerformanceOverlay />
         </React.Suspense>
       )}
       
       {showAnimationOverlay && (
         <React.Suspense fallback={null}>
-          <AnimationPerformanceOverlay 
-            visible={showAnimationOverlay}
-            position="top-left"
-          />
+          <AnimationPerformanceOverlay />
         </React.Suspense>
       )}
 

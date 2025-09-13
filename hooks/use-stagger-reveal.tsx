@@ -51,9 +51,9 @@ export interface StaggerItem {
 /**
  * Return type for useStaggerReveal hook
  */
-export interface UseStaggerRevealReturn {
+export interface UseStaggerRevealReturn<T extends HTMLElement = HTMLElement> {
   /** Container ref to attach to parent element */
-  containerRef: React.RefObject<HTMLElement>
+  containerRef: React.RefObject<T | null>
   /** Array of animation states for each item */
   items: StaggerItem[]
   /** Whether the animation has been triggered */
@@ -98,10 +98,10 @@ export interface UseStaggerRevealReturn {
  * )
  * ```
  */
-export function useStaggerReveal(
+export function useStaggerReveal<T extends HTMLElement = HTMLElement>(
   itemCount: number,
   config: StaggerRevealConfig = {}
-): UseStaggerRevealReturn {
+): UseStaggerRevealReturn<T> {
   const {
     baseDelay = 0,
     staggerDelay = 100,
@@ -113,7 +113,7 @@ export function useStaggerReveal(
     respectReducedMotion = true
   } = config
 
-  const containerRef = React.useRef<HTMLElement>(null)
+  const containerRef = React.useRef<T>(null)
   const [isInView, setIsInView] = React.useState(false)
   const [isTriggered, setIsTriggered] = React.useState(false)
   const [hasAnimated, setHasAnimated] = React.useState(false)
@@ -359,7 +359,7 @@ export function useStaggerReveal(
  * )
  * ```
  */
-export function useSimpleStaggerReveal(itemCount: number, staggerDelay: number = 100) {
+export function useSimpleStaggerReveal<T extends HTMLElement = HTMLElement>(itemCount: number, staggerDelay: number = 100) {
   return useStaggerReveal(itemCount, {
     staggerDelay,
     duration: 500,

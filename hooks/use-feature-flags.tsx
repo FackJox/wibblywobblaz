@@ -278,3 +278,6 @@ export function useFeatureFlagsDebug() {
     }
   }, [flags])
 }
+
+// Export AnimationType for external use
+export type { AnimationType }

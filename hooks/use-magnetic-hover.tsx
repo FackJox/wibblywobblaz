@@ -34,9 +34,9 @@ export interface UseMagneticHoverConfig extends MagneticConfig {
 /**
  * Return type for useMagneticHover hook
  */
-export interface UseMagneticHoverReturn {
+export interface UseMagneticHoverReturn<T extends HTMLElement = HTMLElement> {
   /** Ref to attach to the magnetic element */
-  ref: React.RefObject<HTMLElement>;
+  ref: React.RefObject<T | null>;
   /** Current transform values */
   transform: Point;
   /** Whether the element is currently being hovered */
@@ -70,9 +70,9 @@ export interface UseMagneticHoverReturn {
  * );
  * ```
  */
-export function useMagneticHover(
+export function useMagneticHover<T extends HTMLElement = HTMLElement>(
   config: UseMagneticHoverConfig = {}
-): UseMagneticHoverReturn {
+): UseMagneticHoverReturn<T> {
   const {
     strength = 0.3,
     maxDistance = 100,
@@ -86,7 +86,7 @@ export function useMagneticHover(
   } = config;
 
   const prefersReducedMotion = usePrefersReducedMotion();
-  const elementRef = React.useRef<HTMLElement>(null);
+  const elementRef = React.useRef<T>(null);
   
   const [transform, setTransform] = React.useState<Point>({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = React.useState(false);
@@ -313,10 +313,10 @@ export function useMagneticHover(
  * );
  * ```
  */
-export function useSimpleMagneticHover(
+export function useSimpleMagneticHover<T extends HTMLElement = HTMLElement>(
   preset: 'subtle' | 'normal' | 'strong' = 'normal',
   overrides: Partial<UseMagneticHoverConfig> = {}
-): UseMagneticHoverReturn {
+): UseMagneticHoverReturn<T> {
   const presets: Record<string, UseMagneticHoverConfig> = {
     subtle: {
       strength: 0.15,

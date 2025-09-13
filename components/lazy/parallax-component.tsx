@@ -19,9 +19,7 @@ interface ParallaxComponentProps {
  * This component is only loaded when parallax is needed and enabled
  */
 export default function ParallaxComponent({ children, config }: ParallaxComponentProps) {
-  const elementRef = React.useRef<HTMLDivElement>(null)
-  
-  const { bind, progress } = useParallax(elementRef, {
+  const parallax = useParallax<HTMLDivElement>({
     speed: config.speed,
     direction: config.direction,
     threshold: config.threshold,
@@ -30,7 +28,7 @@ export default function ParallaxComponent({ children, config }: ParallaxComponen
   })
 
   return (
-    <div ref={elementRef} {...bind}>
+    <div ref={parallax.ref} style={parallax.styles}>
       {children}
     </div>
   )
