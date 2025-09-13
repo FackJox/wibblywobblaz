@@ -781,33 +781,13 @@ export default function WibblyWobblazLanding() {
         </div>
       </div>
 
-<<<<<<< HEAD
-      {/* Performance Overlay (Development Only) */}
-      <AnimationPerformanceOverlay />
-=======
-  return (
-    <div className="fixed inset-0 overflow-hidden">
       {/* PandaCSS Test Component - for hot reload testing */}
       <div className="absolute top-0 right-0 z-50">
         <PandaTestComponent />
       </div>
-      {/* Pages Container */}
-      <div
-        className={`flex w-[200%] h-full transition-transform duration-700 ease-in-out ${
-          currentPage === "parties" ? "-translate-x-1/2" : "translate-x-0"
-        }`}
-      >
-        {/* Links Page */}
-        <div className="w-1/2 h-full">
-          <LinksPage />
-        </div>
 
-        {/* Parties Page */}
-        <div className="w-1/2 h-full">
-          <PartiesPage />
-        </div>
-      </div>
->>>>>>> 1ee3d35 (Update comments to be evergreen (remove migration references))
+      {/* Performance Overlay (Development Only) */}
+      <AnimationPerformanceOverlay />
     </div>
   );
 }
