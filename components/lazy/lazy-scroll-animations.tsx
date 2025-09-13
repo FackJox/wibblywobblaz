@@ -16,7 +16,7 @@ interface LazyScrollAnimationsProps {
     trigger: 'enter' | 'exit' | 'progress'
     start?: number
     end?: number
-    properties: Record<string, any>
+    properties: Record<string, string | number | { from: number; to: number }>
   }>
   className?: string
   fallback?: React.ReactNode
@@ -74,6 +74,45 @@ export function LazyScrollAnimations({
     }
   }, [isEnabled, shouldLazyLoad, isActive, isIntersecting, preload])
 
+  // Always call hooks at the top level
+  const quality = getQuality('scroll')
+  const optimizedAnimations = React.useMemo(() => {
+    return animations.map(animation => {
+      switch (quality) {
+        case 'low':
+          // Simplify animations for low-end devices
+          return {
+            ...animation,
+            properties: Object.keys(animation.properties).reduce((acc, key) => {
+              // Only allow basic transform properties
+              if (['translateY', 'scale', 'opacity'].includes(key)) {
+                acc[key] = animation.properties[key]
+              }
+              return acc
+            }, {} as Record<string, string | number | { from: number; to: number }>)
+          }
+        
+        case 'medium':
+          // Moderate complexity
+          return {
+            ...animation,
+            properties: Object.keys(animation.properties).reduce((acc, key) => {
+              // Allow most transform properties, limit complex ones
+              if (!['filter', 'backdrop-filter'].includes(key)) {
+                acc[key] = animation.properties[key]
+              }
+              return acc
+            }, {} as Record<string, string | number | { from: number; to: number }>)
+          }
+        
+        case 'high':
+        default:
+          // Full animation fidelity
+          return animation
+      }
+    })
+  }, [animations, quality])
+
   // If disabled, show static content
   if (!isEnabled('scroll') || !isActive) {
     return (
@@ -91,45 +130,6 @@ export function LazyScrollAnimations({
       </div>
     )
   }
-
-  // Optimize animations based on quality level
-  const quality = getQuality('scroll')
-  const optimizedAnimations = React.useMemo(() => {
-    return animations.map(animation => {
-      switch (quality) {
-        case 'low':
-          // Simplify animations for low-end devices
-          return {
-            ...animation,
-            properties: Object.keys(animation.properties).reduce((acc, key) => {
-              // Only allow basic transform properties
-              if (['translateY', 'scale', 'opacity'].includes(key)) {
-                acc[key] = animation.properties[key]
-              }
-              return acc
-            }, {} as Record<string, any>)
-          }
-        
-        case 'medium':
-          // Moderate complexity
-          return {
-            ...animation,
-            properties: Object.keys(animation.properties).reduce((acc, key) => {
-              // Allow most transform properties, limit complex ones
-              if (!['filter', 'backdrop-filter'].includes(key)) {
-                acc[key] = animation.properties[key]
-              }
-              return acc
-            }, {} as Record<string, any>)
-          }
-        
-        case 'high':
-        default:
-          // Full animation fidelity
-          return animation
-      }
-    })
-  }, [animations, quality])
 
   return (
     <div ref={containerRef} className={className}>
@@ -183,7 +183,7 @@ export function useLazyScrollAnimations(
                 acc[key] = animation.properties[key]
               }
               return acc
-            }, {} as Record<string, any>)
+            }, {} as Record<string, string | number | { from: number; to: number }>)
           }
         case 'medium':
           return {
@@ -193,7 +193,7 @@ export function useLazyScrollAnimations(
                 acc[key] = animation.properties[key]
               }
               return acc
-            }, {} as Record<string, any>)
+            }, {} as Record<string, string | number | { from: number; to: number }>)
           }
         default:
           return animation

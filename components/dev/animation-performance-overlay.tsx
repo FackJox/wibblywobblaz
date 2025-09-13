@@ -222,7 +222,7 @@ export function useAnimationPerformanceStats() {
           isUnderPressure: budgetManager.isUnderPressure(),
           quality: budgetManager.getRecommendedQuality() as 'high'
         })
-      } catch (error) {
+      } catch {
         // Silently fail
       }
     }

@@ -14,10 +14,8 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useStaggerReveal } from "@/hooks/use-stagger-reveal";
 import {
-  useScrollFadeIn,
   useSimpleFadeIn,
 } from "@/hooks/use-scroll-animations";
 import { useMouseParallax } from "@/hooks/use-parallax";
@@ -39,12 +37,18 @@ interface PartyEvent {
   ticketLink?: string;
 }
 
+interface SocialLink {
+  name: string;
+  icon: React.ComponentType<{ size: number }>;
+  url: string;
+}
+
 // Define page components outside to prevent recreation
 const LinksPage = ({
   socialLinks,
   isVisible,
 }: {
-  socialLinks: Array<{ name: string; icon: any; url: string }>;
+  socialLinks: Array<SocialLink>;
   isVisible: boolean;
 }) => {
   // Unified stagger animation for all elements (3 headers + 4 buttons = 7 total)
@@ -60,12 +64,14 @@ const LinksPage = ({
   const logoParallax = useMouseParallax<HTMLDivElement>(0.05, { maxOffset: 30 }); // Furthest layer - moves most
   const linksParallax = useMouseParallax<HTMLDivElement>(0.02, { maxOffset: 15 }); // Middle layer - moderate movement
   
-  // Magnetic effects for link buttons
-  const socialLinksMagnetic = socialLinks.map(() => 
-    useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 })
-  );
+  // Magnetic effects for link buttons - create individual hooks
+  const socialLink1Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
+  const socialLink2Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
   const ticketLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
   const merchLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
+  
+  // Create array of magnetic hooks for easier access
+  const socialLinksMagnetic = [socialLink1Magnetic, socialLink2Magnetic];
 
   // Reset animations when page becomes hidden
   React.useEffect(() => {
@@ -80,7 +86,7 @@ const LinksPage = ({
         logoFadeIn.trigger();
       }, 100);
     }
-  }, [isVisible]);
+  }, [isVisible, allButtonsStagger, logoFadeIn]);
 
   return (
     <div className="h-full bg-white flex flex-col md:flex-row relative">
@@ -323,7 +329,7 @@ const PartiesPage = ({
   upcomingParties,
   isVisible,
 }: {
-  upcomingParties: Array<any>;
+  upcomingParties: Array<PartyEvent>;
   isVisible: boolean;
 }) => {
   // Scroll animations for parties page
@@ -334,15 +340,19 @@ const PartiesPage = ({
     once: false,
   });
   
-  // Mouse parallax for party cards with staggered depth
-  const cardsParallax = upcomingParties.map((_, index) => 
-    useMouseParallax<HTMLDivElement>(0.02 + (index * 0.005), { maxOffset: 20 + (index * 3) })
-  );
+  // Mouse parallax for party cards with staggered depth - create individual hooks
+  const card1Parallax = useMouseParallax<HTMLDivElement>(0.02, { maxOffset: 20 });
+  const card2Parallax = useMouseParallax<HTMLDivElement>(0.025, { maxOffset: 23 });
+  const card3Parallax = useMouseParallax<HTMLDivElement>(0.03, { maxOffset: 26 });
   
-  // Magnetic hover for GET TICKETS buttons
-  const ticketButtonsMagnetic = upcomingParties.map(() => 
-    useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 })
-  );
+  // Magnetic hover for GET TICKETS buttons - create individual hooks
+  const ticket1Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 });
+  const ticket2Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 });
+  const ticket3Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 });
+  
+  // Create arrays for easier access
+  const cardsParallax = [card1Parallax, card2Parallax, card3Parallax];
+  const ticketButtonsMagnetic = [ticket1Magnetic, ticket2Magnetic, ticket3Magnetic];
 
   // Reset animations when page becomes hidden
   React.useEffect(() => {
@@ -355,7 +365,7 @@ const PartiesPage = ({
         partiesStagger.trigger();
       }, 100);
     }
-  }, [isVisible]);
+  }, [isVisible, partiesStagger]);
 
   return (
     <div className="h-full bg-black text-white overflow-y-auto">
@@ -364,9 +374,9 @@ const PartiesPage = ({
           ref={partiesStagger.containerRef}
           className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"
         >
-          {upcomingParties.map((party: any, index: number) => {
+          {upcomingParties.map((party: PartyEvent, index: number) => {
             // Combine parallax and stagger transforms
-            const parallaxTransform = cardsParallax[index]?.transform || 'translate3d(0, 0, 0)';
+            const parallaxTransform = cardsParallax[index]?.styles?.transform || 'translate3d(0, 0, 0)';
             const staggerTransform = partiesStagger.items[index]?.transform || '';
             const combinedTransform = staggerTransform ? 
               `${parallaxTransform} ${staggerTransform}` : 
@@ -375,7 +385,7 @@ const PartiesPage = ({
             return (
               <div
                 key={party.id}
-                ref={cardsParallax[index]?.ref}
+                ref={cardsParallax[index].ref}
                 className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
                 style={{
                   opacity: partiesStagger.items[index]?.opacity ?? 0,
@@ -457,8 +467,6 @@ export default function WibblyWobblazLanding() {
     "hidden" | "animating" | "visible"
   >("hidden");
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const freeButtonRef = useRef<HTMLButtonElement>(null);
   
   // Magnetic effect for navigation header text
   const magnetic = useSimpleMagneticHover<HTMLDivElement>('strong');

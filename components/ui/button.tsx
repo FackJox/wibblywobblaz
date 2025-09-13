@@ -161,7 +161,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         if (ripple) {
           const rippleProps = rippleHook.getRippleProps()
           console.log('[BUTTON] Calling ripple onMouseDown', rippleProps)
-          rippleProps.onMouseDown?.(event as any)
+          rippleProps.onMouseDown?.(event as React.MouseEvent<HTMLElement>)
         }
         // Call click animation handler
         if (clickAnimation) {
@@ -178,7 +178,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         // Call ripple handler
         if (ripple) {
           const rippleProps = rippleHook.getRippleProps()
-          rippleProps.onTouchStart?.(event as any)
+          rippleProps.onTouchStart?.(event as React.TouchEvent<HTMLElement>)
         }
         // Call click animation handler
         if (clickAnimation) {

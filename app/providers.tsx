@@ -34,29 +34,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
  * Only loaded in development mode to avoid bundle bloat
  */
 export function DevProviders({ children }: { children: React.ReactNode }) {
-  // Only load dev tools in development
-  if (process.env.NODE_ENV !== 'development') {
-    return <>{children}</>
-  }
-
-  // Lazy load dev components to avoid including them in production bundle
-  const PerformanceOverlay = React.lazy(() => 
-    import('../components/dev/performance-overlay').then(module => ({
-      default: module.PerformanceOverlay
-    }))
-  )
-
-  const AnimationPerformanceOverlay = React.lazy(() =>
-    import('../components/dev/animation-performance-overlay').then(module => ({
-      default: module.AnimationPerformanceOverlay
-    }))
-  )
-
+  // Always call hooks at the top level
   const [showPerformanceOverlay, setShowPerformanceOverlay] = React.useState(false)
   const [showAnimationOverlay, setShowAnimationOverlay] = React.useState(false)
-
-  // Keyboard shortcuts for dev tools
+  
+  // Keyboard shortcuts for dev tools - always set up, but only work in dev
   React.useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') {
+      return
+    }
+    
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.shiftKey) {
         switch (event.key) {
@@ -81,6 +68,24 @@ export function DevProviders({ children }: { children: React.ReactNode }) {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
+  
+  // Early return after hooks for non-development
+  if (process.env.NODE_ENV !== 'development') {
+    return <>{children}</>
+  }
+
+  // Lazy load dev components to avoid including them in production bundle
+  const PerformanceOverlay = React.lazy(() => 
+    import('../components/dev/performance-overlay').then(module => ({
+      default: module.PerformanceOverlay
+    }))
+  )
+
+  const AnimationPerformanceOverlay = React.lazy(() =>
+    import('../components/dev/animation-performance-overlay').then(module => ({
+      default: module.AnimationPerformanceOverlay
+    }))
+  )
 
   return (
     <>

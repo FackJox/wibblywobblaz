@@ -81,13 +81,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const mergedRef = React.useCallback((element: HTMLDivElement | null) => {
       // Set refs for all hooks
       if (rippleHook.rippleRef) {
-        ;(rippleHook.rippleRef as any).current = element
+        ;(rippleHook.rippleRef as React.MutableRefObject<HTMLDivElement | null>).current = element
       }
       if (magneticHook.ref) {
-        ;(magneticHook.ref as any).current = element
+        ;(magneticHook.ref as React.MutableRefObject<HTMLDivElement | null>).current = element
       }
       if (gradientHook.ref) {
-        ;(gradientHook.ref as any).current = element
+        ;(gradientHook.ref as React.MutableRefObject<HTMLDivElement | null>).current = element
       }
       
       if (typeof ref === 'function') {
@@ -212,7 +212,7 @@ const CardTitle = React.forwardRef<HTMLDivElement, CardTitleProps>(
     
     const mergedRef = React.useCallback((element: HTMLDivElement | null) => {
       if (textRevealHook.ref) {
-        ;(textRevealHook.ref as any).current = element
+        ;(textRevealHook.ref as React.MutableRefObject<HTMLDivElement | null>).current = element
       }
       
       if (typeof ref === 'function') {

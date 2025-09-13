@@ -23,9 +23,9 @@ const Checkbox = React.forwardRef<
     maxSize: 100
   })
   
-  const mergedRef = React.useCallback((element: any) => {
+  const mergedRef = React.useCallback((element: HTMLButtonElement | null) => {
     if (rippleHook.rippleRef) {
-      ;(rippleHook.rippleRef as any).current = element
+      ;(rippleHook.rippleRef as React.MutableRefObject<HTMLButtonElement | null>).current = element
     }
     
     if (typeof ref === 'function') {

@@ -157,7 +157,7 @@ const LongPressDemoComponent: React.FC = () => {
                   {copied ? "Copied!" : "Long press to copy"}
                 </p>
                 <code className="text-xs text-muted-foreground block mt-1">
-                  "Long press functionality demo"
+                  &quot;Long press functionality demo&quot;
                 </code>
               </div>
             </GestureWrapper>

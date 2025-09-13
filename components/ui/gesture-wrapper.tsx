@@ -122,7 +122,7 @@ export const GestureWrapper = React.forwardRef<HTMLDivElement, GestureWrapperPro
 
     // Combine event handlers
     const eventHandlers = React.useMemo(() => {
-      const handlers: Record<string, (event: any) => void> = {}
+      const handlers: Record<string, any> = {}
 
       if (longPress.enabled && enabled) {
         handlers.onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {

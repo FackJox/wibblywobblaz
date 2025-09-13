@@ -9,7 +9,7 @@ interface ScrollAnimationsComponentProps {
     trigger: 'enter' | 'exit' | 'progress'
     start?: number
     end?: number
-    properties: Record<string, any>
+    properties: Record<string, string | number | { from: number; to: number }>
   }>
 }
 
@@ -29,10 +29,10 @@ export default function ScrollAnimationsComponent({
     animations.forEach(animation => {
       if (animation.trigger === 'progress') {
         const progress = scrollProgress.scrollProgress
-        Object.entries(animation.properties).forEach(([prop, value]: [string, any]) => {
+        Object.entries(animation.properties).forEach(([prop, value]: [string, string | number | { from: number; to: number }]) => {
           if (typeof value === 'object' && value.from !== undefined && value.to !== undefined) {
             const interpolated = value.from + (value.to - value.from) * progress
-            // @ts-ignore - dynamic style assignment
+            // @ts-expect-error - dynamic style assignment
             styles[prop] = interpolated
           }
         })

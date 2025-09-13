@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "../ui/badge"
-import { Switch } from "../ui/switch"
 import { Button } from "../ui/button"
 import { useFeatureFlags, useFeatureFlagsDebug } from "../../hooks/use-feature-flags"
 import { LazyParallax, LazyTextReveal, LazyScrollAnimations } from "../lazy"
@@ -178,13 +177,14 @@ function HoverAnimationExamples() {
   const { isEnabled, getQuality } = useFeatureFlags()
   const cardRef = React.useRef<HTMLDivElement>(null)
   
-  // Only use magnetic hover if enabled
-  const magneticProps = isEnabled('hover') 
-    ? useMagneticHover<HTMLDivElement>({ 
-        strength: getQuality('hover') === 'high' ? 0.3 : 0.1,
-        maxDistance: getQuality('hover') === 'low' ? 50 : 100 
-      })
-    : {}
+  // Always setup magnetic hover hook, but conditionally use the props
+  const magneticHook = useMagneticHover<HTMLDivElement>({ 
+    strength: getQuality('hover') === 'high' ? 0.3 : 0.1,
+    maxDistance: getQuality('hover') === 'low' ? 50 : 100 
+  })
+  
+  const shouldUseMagnetic = isEnabled('hover')
+  const magneticProps = shouldUseMagnetic ? magneticHook : {}
 
   return (
     <Card>

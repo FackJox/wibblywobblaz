@@ -40,14 +40,14 @@ function FeatureGatedRippleButton() {
   const isActive = useAnimationInstance('micro')
   const buttonRef = React.useRef<HTMLButtonElement>(null)
   
-  // Only setup ripple if micro animations are enabled and instance is active
-  const rippleHook = (isEnabled('micro') && isActive) 
-    ? useRipple({
-        color: 'rgba(255, 255, 255, 0.5)',
-        duration: 600
-      })
-    : null
-  const rippleEvents = rippleHook ? rippleHook.getRippleProps() : {}
+  // Always setup ripple hook, but conditionally use it
+  const rippleHook = useRipple({
+    color: 'rgba(255, 255, 255, 0.5)',
+    duration: 600
+  })
+  
+  const shouldUseRipple = isEnabled('micro') && isActive
+  const rippleEvents = shouldUseRipple ? rippleHook.getRippleProps() : {}
 
   return (
     <Card>
@@ -60,11 +60,11 @@ function FeatureGatedRippleButton() {
       <CardContent>
         <div className="space-y-4">
           <Button
-            ref={rippleHook ? rippleHook.rippleRef as React.RefObject<HTMLButtonElement> : buttonRef}
+            ref={shouldUseRipple ? rippleHook.rippleRef as React.RefObject<HTMLButtonElement> : buttonRef}
             {...rippleEvents}
             className="relative overflow-hidden"
           >
-            {isEnabled('micro') && isActive ? 'Click for Ripple' : 'Static Button'}
+            {shouldUseRipple ? 'Click for Ripple' : 'Static Button'}
           </Button>
           
           <div className="text-sm text-muted-foreground">
@@ -95,12 +95,13 @@ function AdaptiveMagneticCard() {
     easing: 'ease-out'
   })
   
-  const magneticHook = (isEnabled('hover') && isActive)
-    ? useMagneticHover({
-        strength: config.enabled ? (config.complexity * 0.3) : 0
-      })
-    : null
-  const magneticProps = magneticHook ? {} : {}
+  // Always setup magnetic hook, but conditionally use it
+  const magneticHook = useMagneticHover({
+    strength: config.enabled ? (config.complexity * 0.3) : 0
+  })
+  
+  const shouldUseMagnetic = isEnabled('hover') && isActive
+  const magneticProps = shouldUseMagnetic ? {} : {}
 
   const quality = getQuality('hover')
 
@@ -114,9 +115,9 @@ function AdaptiveMagneticCard() {
       </CardHeader>
       <CardContent>
         <Card
-          ref={magneticHook ? magneticHook.ref as React.RefObject<HTMLDivElement> : cardRef}
+          ref={shouldUseMagnetic ? magneticHook.ref as React.RefObject<HTMLDivElement> : cardRef}
           className={`p-6 text-center transition-all cursor-pointer ${
-            isEnabled('hover') && isActive ? 'hover:shadow-lg' : ''
+            shouldUseMagnetic ? 'hover:shadow-lg' : ''
           }`}
           {...magneticProps}
         >
@@ -156,15 +157,15 @@ function QualityAwareGradientFollow() {
     complexity: 1
   })
 
-  // Only use gradient follow if enabled and appropriate quality
-  const gradientHook = (isEnabled('hover') && isActive && quality !== 'low')
-    ? useGradientFollow({
-        radius: quality === 'high' ? 200 : 150,
-        opacity: config.complexity,
-        // updateRate removed as it's not a valid prop
-      })
-    : null
-  const gradientProps = gradientHook ? {} : {}
+  // Always setup gradient hook, but conditionally use it
+  const gradientHook = useGradientFollow({
+    radius: quality === 'high' ? 200 : 150,
+    opacity: config.complexity,
+    // updateRate removed as it's not a valid prop
+  })
+  
+  const shouldUseGradient = isEnabled('hover') && isActive && quality !== 'low'
+  const gradientProps = shouldUseGradient ? {} : {}
 
   return (
     <Card>
@@ -176,9 +177,9 @@ function QualityAwareGradientFollow() {
       </CardHeader>
       <CardContent>
         <div
-          ref={gradientHook ? gradientHook.ref as React.RefObject<HTMLDivElement> : containerRef}
+          ref={shouldUseGradient ? gradientHook.ref as React.RefObject<HTMLDivElement> : containerRef}
           className={`p-8 rounded-lg border-2 border-dashed border-muted-foreground/20 text-center relative overflow-hidden ${
-            isEnabled('hover') && isActive && quality !== 'low' ? 'cursor-none' : ''
+            shouldUseGradient ? 'cursor-none' : ''
           }`}
           {...gradientProps}
         >

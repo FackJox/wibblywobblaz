@@ -75,25 +75,7 @@ export function LazyParallax({
     }
   }, [isEnabled, shouldLazyLoad, isActive, isIntersecting])
 
-  // If animation is disabled or not active, return static content
-  if (!isEnabled('scroll') || !isActive) {
-    return (
-      <div ref={containerRef} className={className}>
-        {fallback || children}
-      </div>
-    )
-  }
-
-  // If lazy loading and not yet loaded, return placeholder
-  if (shouldLazyLoad('scroll') && !shouldLoad) {
-    return (
-      <div ref={containerRef} className={className}>
-        {fallback || children}
-      </div>
-    )
-  }
-
-  // Adjust config based on quality level
+  // Always call hooks at the top level
   const quality = getQuality('scroll')
   const adjustedConfig = React.useMemo(() => {
     const baseConfig = {
@@ -125,6 +107,24 @@ export function LazyParallax({
         return baseConfig
     }
   }, [config, quality])
+
+  // If animation is disabled or not active, return static content
+  if (!isEnabled('scroll') || !isActive) {
+    return (
+      <div ref={containerRef} className={className}>
+        {fallback || children}
+      </div>
+    )
+  }
+
+  // If lazy loading and not yet loaded, return placeholder
+  if (shouldLazyLoad('scroll') && !shouldLoad) {
+    return (
+      <div ref={containerRef} className={className}>
+        {fallback || children}
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef} className={className}>
