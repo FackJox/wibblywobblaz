@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "@/lib/utils"
+import { cx, css } from "../../styled-system/css"
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -28,7 +28,7 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80", className)}
+    className={cx(css({ position: "fixed", inset: "0", zIndex: "50", bg: "black/80" }), className)}
     {...props}
   />
 ))
@@ -42,13 +42,26 @@ const DrawerContent = React.forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
-      className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
+      className={cx(
+        css({
+          position: "fixed",
+          insetX: "0",
+          bottom: "0",
+          zIndex: "50",
+          marginTop: "24",
+          display: "flex",
+          height: "auto",
+          flexDirection: "column",
+          borderTopRadius: "10px",
+          border: "1px solid",
+          borderColor: "border",
+          bg: "background"
+        }),
         className
       )}
       {...props}
     >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+      <div className={css({ marginX: "auto", marginTop: "4", height: "2", width: "100px", borderRadius: "full", bg: "muted" })} />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
@@ -60,7 +73,7 @@ const DrawerHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+    className={cx(css({ display: "grid", gap: "1.5", padding: "4", textAlign: "center", sm: { textAlign: "left" } }), className)}
     {...props}
   />
 )
@@ -71,7 +84,7 @@ const DrawerFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+    className={cx(css({ marginTop: "auto", display: "flex", flexDirection: "column", gap: "2", padding: "4" }), className)}
     {...props}
   />
 )
@@ -83,8 +96,13 @@ const DrawerTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+    className={cx(
+      css({
+        fontSize: "lg",
+        fontWeight: "semibold",
+        lineHeight: "none",
+        letterSpacing: "tight"
+      }),
       className
     )}
     {...props}
@@ -98,7 +116,7 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cx(css({ fontSize: "sm", color: "muted.foreground" }), className)}
     {...props}
   />
 ))
