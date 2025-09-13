@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cx } from "../../styled-system/css"
 import { textarea } from "../../styled-system/recipes"
 
 const Textarea = React.forwardRef<
@@ -12,7 +12,7 @@ const Textarea = React.forwardRef<
 >(({ className, state, textareaSize, ...props }, ref) => {
   return (
     <textarea
-      className={cn(textarea({ state, size: textareaSize }), className)}
+      className={cx(textarea({ state, size: textareaSize }), className)}
       ref={ref}
       {...props}
     />

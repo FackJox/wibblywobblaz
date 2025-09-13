@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cx } from "../../styled-system/css"
 import { input } from "../../styled-system/recipes"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input"> & {
@@ -11,7 +11,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input"> &
     return (
       <input
         type={type}
-        className={cn(input({ state, size: inputSize }), className)}
+        className={cx(input({ state, size: inputSize }), className)}
         ref={ref}
         {...props}
       />
