@@ -280,6 +280,142 @@ export default defineConfig({
         'fadeInReduced': {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        
+        // Dialog and overlay animations
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
+        },
+        'fade-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' }
+        },
+        'dialog-in': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translate(-50%, -50%) scale(0.95)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translate(-50%, -50%) scale(1)'
+          }
+        },
+        'dialog-out': {
+          '0%': { 
+            opacity: '1', 
+            transform: 'translate(-50%, -50%) scale(1)'
+          },
+          '100%': { 
+            opacity: '0', 
+            transform: 'translate(-50%, -50%) scale(0.95)'
+          }
+        },
+        
+        // Dropdown/Popover animations
+        'dropdown-in': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'scale(0.95)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'scale(1)'
+          }
+        },
+        'dropdown-out': {
+          '0%': { 
+            opacity: '1', 
+            transform: 'scale(1)'
+          },
+          '100%': { 
+            opacity: '0', 
+            transform: 'scale(0.95)'
+          }
+        },
+        'popover-in': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'scale(0.95)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'scale(1)'
+          }
+        },
+        'popover-out': {
+          '0%': { 
+            opacity: '1', 
+            transform: 'scale(1)'
+          },
+          '100%': { 
+            opacity: '0', 
+            transform: 'scale(0.95)'
+          }
+        },
+        
+        // Tooltip animations
+        'tooltip-in': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'scale(0.95)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'scale(1)'
+          }
+        },
+        'tooltip-out': {
+          '0%': { 
+            opacity: '1', 
+            transform: 'scale(1)'
+          },
+          '100%': { 
+            opacity: '0', 
+            transform: 'scale(0.95)'
+          }
+        },
+        
+        // Slide animations for positioned elements
+        'slide-in-from-top': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateY(-8px)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateY(0)'
+          }
+        },
+        'slide-in-from-bottom': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateY(8px)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateY(0)'
+          }
+        },
+        'slide-in-from-left': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(-8px)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)'
+          }
+        },
+        'slide-in-from-right': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(8px)'
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)'
+          }
         }
       },
       
@@ -1149,6 +1285,549 @@ export default defineConfig({
         },
         defaultVariants: {
           state: 'default',
+          size: 'md'
+        }
+      },
+
+      // Dialog overlay recipe
+      dialogOverlay: {
+        className: 'dialogOverlay',
+        base: {
+          position: 'fixed',
+          inset: '0',
+          zIndex: '50',
+          backgroundColor: 'black',
+          opacity: '0.8',
+          
+          // Data state animations
+          '&[data-state=open]': {
+            animation: 'fade-in 150ms ease-out'
+          },
+          '&[data-state=closed]': {
+            animation: 'fade-out 150ms ease-in'
+          }
+        }
+      },
+
+      // Dialog content recipe
+      dialogContent: {
+        className: 'dialogContent',
+        base: {
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          zIndex: '50',
+          display: 'grid',
+          width: 'full',
+          maxWidth: 'lg',
+          transform: 'translate(-50%, -50%)',
+          gap: '4',
+          border: '1px solid {colors.border}',
+          backgroundColor: 'background',
+          padding: 'fluid-lg',
+          boxShadow: 'lg',
+          transitionDuration: '200ms',
+          borderRadius: 'lg',
+          
+          // Data state animations
+          '&[data-state=open]': {
+            animation: 'dialog-in 200ms ease-out'
+          },
+          '&[data-state=closed]': {
+            animation: 'dialog-out 200ms ease-in'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              maxWidth: 'md',
+              padding: 'fluid-sm'
+            },
+            md: {
+              maxWidth: 'lg',
+              padding: 'fluid-lg'
+            },
+            lg: {
+              maxWidth: 'xl',
+              padding: 'fluid-xl'
+            },
+            xl: {
+              maxWidth: '2xl',
+              padding: 'fluid-2xl'
+            },
+            full: {
+              maxWidth: '95vw',
+              maxHeight: '95vh',
+              padding: 'fluid-lg'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Dialog close button recipe
+      dialogClose: {
+        className: 'dialogClose',
+        base: {
+          position: 'absolute',
+          right: '4',
+          top: '4',
+          borderRadius: 'sm',
+          opacity: '0.7',
+          ringOffsetColor: 'background',
+          transition: 'opacity 150ms ease-in-out',
+          cursor: 'pointer',
+          
+          _hover: {
+            opacity: '1'
+          },
+          
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          _disabled: {
+            pointerEvents: 'none'
+          },
+          
+          '&[data-state=open]': {
+            backgroundColor: 'accent',
+            color: 'muted.foreground'
+          }
+        }
+      },
+
+      // Dialog header recipe
+      dialogHeader: {
+        className: 'dialogHeader',
+        base: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'fluid-xs',
+          textAlign: 'center',
+          
+          '@media (min-width: 640px)': {
+            textAlign: 'left'
+          }
+        },
+        variants: {
+          alignment: {
+            left: {
+              textAlign: 'left'
+            },
+            center: {
+              textAlign: 'center'
+            },
+            right: {
+              textAlign: 'right'
+            }
+          }
+        },
+        defaultVariants: {
+          alignment: 'left'
+        }
+      },
+
+      // Dialog footer recipe
+      dialogFooter: {
+        className: 'dialogFooter',
+        base: {
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          gap: '2',
+          
+          '@media (min-width: 640px)': {
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            gap: '2'
+          }
+        },
+        variants: {
+          alignment: {
+            start: {
+              '@media (min-width: 640px)': {
+                justifyContent: 'flex-start'
+              }
+            },
+            center: {
+              '@media (min-width: 640px)': {
+                justifyContent: 'center'
+              }
+            },
+            end: {
+              '@media (min-width: 640px)': {
+                justifyContent: 'flex-end'
+              }
+            },
+            between: {
+              '@media (min-width: 640px)': {
+                justifyContent: 'space-between'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          alignment: 'end'
+        }
+      },
+
+      // Dialog title recipe
+      dialogTitle: {
+        className: 'dialogTitle',
+        base: {
+          fontSize: 'fluid-lg',
+          fontWeight: 'semibold',
+          lineHeight: 'none',
+          letterSpacing: 'tight'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-base'
+            },
+            md: {
+              fontSize: 'fluid-lg'
+            },
+            lg: {
+              fontSize: 'fluid-xl'
+            },
+            xl: {
+              fontSize: 'fluid-2xl'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Dialog description recipe
+      dialogDescription: {
+        className: 'dialogDescription',
+        base: {
+          fontSize: 'fluid-sm',
+          color: 'muted.foreground'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Dropdown menu content recipe
+      dropdownMenuContent: {
+        className: 'dropdownMenuContent',
+        base: {
+          zIndex: '50',
+          minWidth: '8rem',
+          overflow: 'hidden',
+          borderRadius: 'md',
+          border: '1px solid {colors.border}',
+          backgroundColor: 'popover',
+          padding: '1',
+          color: 'popover.foreground',
+          boxShadow: 'md',
+          
+          // Data state animations
+          '&[data-state=open]': {
+            animation: 'dropdown-in 150ms ease-out'
+          },
+          '&[data-state=closed]': {
+            animation: 'dropdown-out 150ms ease-in'
+          },
+          
+          // Side-specific slide animations
+          '&[data-side=bottom]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-top 150ms ease-out'
+            }
+          },
+          '&[data-side=left]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-right 150ms ease-out'
+            }
+          },
+          '&[data-side=right]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-left 150ms ease-out'
+            }
+          },
+          '&[data-side=top]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-bottom 150ms ease-out'
+            }
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              minWidth: '6rem',
+              padding: '0.5'
+            },
+            md: {
+              minWidth: '8rem',
+              padding: '1'
+            },
+            lg: {
+              minWidth: '12rem',
+              padding: '1.5'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Dropdown menu item recipe
+      dropdownMenuItem: {
+        className: 'dropdownMenuItem',
+        base: {
+          position: 'relative',
+          display: 'flex',
+          cursor: 'default',
+          userSelect: 'none',
+          alignItems: 'center',
+          gap: '2',
+          borderRadius: 'sm',
+          paddingX: '2',
+          paddingY: '1.5',
+          fontSize: 'sm',
+          outline: 'none',
+          transition: 'colors 150ms ease-in-out',
+          
+          _focus: {
+            backgroundColor: 'accent',
+            color: 'accent.foreground'
+          },
+          
+          '&[data-disabled]': {
+            pointerEvents: 'none',
+            opacity: '0.5'
+          },
+          
+          // Icon styles
+          '& svg': {
+            pointerEvents: 'none',
+            width: '4',
+            height: '4',
+            flexShrink: '0'
+          }
+        },
+        variants: {
+          inset: {
+            true: {
+              paddingLeft: '8'
+            }
+          },
+          size: {
+            sm: {
+              paddingX: '1.5',
+              paddingY: '1',
+              fontSize: 'xs'
+            },
+            md: {
+              paddingX: '2',
+              paddingY: '1.5',
+              fontSize: 'sm'
+            },
+            lg: {
+              paddingX: '3',
+              paddingY: '2',
+              fontSize: 'base'
+            }
+          }
+        },
+        defaultVariants: {
+          inset: false,
+          size: 'md'
+        }
+      },
+
+      // Dropdown menu separator recipe
+      dropdownMenuSeparator: {
+        className: 'dropdownMenuSeparator',
+        base: {
+          marginX: '-1',
+          marginY: '1',
+          height: '1px',
+          backgroundColor: 'muted'
+        }
+      },
+
+      // Dropdown menu label recipe
+      dropdownMenuLabel: {
+        className: 'dropdownMenuLabel',
+        base: {
+          paddingX: '2',
+          paddingY: '1.5',
+          fontSize: 'sm',
+          fontWeight: 'semibold'
+        },
+        variants: {
+          inset: {
+            true: {
+              paddingLeft: '8'
+            }
+          }
+        },
+        defaultVariants: {
+          inset: false
+        }
+      },
+
+      // Dropdown menu shortcut recipe
+      dropdownMenuShortcut: {
+        className: 'dropdownMenuShortcut',
+        base: {
+          marginLeft: 'auto',
+          fontSize: 'xs',
+          letterSpacing: 'widest',
+          opacity: '0.6'
+        }
+      },
+
+      // Popover content recipe
+      popoverContent: {
+        className: 'popoverContent',
+        base: {
+          zIndex: '50',
+          width: '72',
+          borderRadius: 'md',
+          border: '1px solid {colors.border}',
+          backgroundColor: 'popover',
+          padding: 'fluid-lg',
+          color: 'popover.foreground',
+          boxShadow: 'md',
+          outline: 'none',
+          
+          // Data state animations
+          '&[data-state=open]': {
+            animation: 'popover-in 150ms ease-out'
+          },
+          '&[data-state=closed]': {
+            animation: 'popover-out 150ms ease-in'
+          },
+          
+          // Side-specific slide animations
+          '&[data-side=bottom]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-top 150ms ease-out'
+            }
+          },
+          '&[data-side=left]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-right 150ms ease-out'
+            }
+          },
+          '&[data-side=right]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-left 150ms ease-out'
+            }
+          },
+          '&[data-side=top]': {
+            '&[data-state=open]': {
+              animation: 'slide-in-from-bottom 150ms ease-out'
+            }
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              width: '56',
+              padding: 'fluid-sm'
+            },
+            md: {
+              width: '72',
+              padding: 'fluid-lg'
+            },
+            lg: {
+              width: '96',
+              padding: 'fluid-xl'
+            },
+            auto: {
+              width: 'auto'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Tooltip content recipe
+      tooltipContent: {
+        className: 'tooltipContent',
+        base: {
+          zIndex: '50',
+          overflow: 'hidden',
+          borderRadius: 'md',
+          border: '1px solid {colors.border}',
+          backgroundColor: 'popover',
+          paddingX: '3',
+          paddingY: '1.5',
+          fontSize: 'sm',
+          color: 'popover.foreground',
+          boxShadow: 'md',
+          
+          // Animation states
+          animation: 'tooltip-in 150ms ease-out',
+          
+          '&[data-state=closed]': {
+            animation: 'tooltip-out 150ms ease-in'
+          },
+          
+          // Side-specific slide animations
+          '&[data-side=bottom]': {
+            animation: 'slide-in-from-top 150ms ease-out'
+          },
+          '&[data-side=left]': {
+            animation: 'slide-in-from-right 150ms ease-out'
+          },
+          '&[data-side=right]': {
+            animation: 'slide-in-from-left 150ms ease-out'
+          },
+          '&[data-side=top]': {
+            animation: 'slide-in-from-bottom 150ms ease-out'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              paddingX: '2',
+              paddingY: '1',
+              fontSize: 'xs'
+            },
+            md: {
+              paddingX: '3',
+              paddingY: '1.5',
+              fontSize: 'sm'
+            },
+            lg: {
+              paddingX: '4',
+              paddingY: '2',
+              fontSize: 'base'
+            }
+          }
+        },
+        defaultVariants: {
           size: 'md'
         }
       }
