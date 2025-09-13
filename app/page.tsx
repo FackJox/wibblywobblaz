@@ -25,6 +25,8 @@ import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import Link from "next/link";
+import { PandaTestComponent } from "@/components/test-panda";
+import { css } from "../styled-system/css/css";
 
 interface PartyEvent {
   id: number;
@@ -615,13 +617,22 @@ export default function WibblyWobblazLanding() {
               magnetic.ref.current = el;
               headerParallax.ref.current = el;
             }}
-            className={`text-2xl md:text-7xl font-black tracking-tighter font-hegval cursor-pointer select-none ${currentPage === "parties" ? "text-white" : "text-black"}`}
-            style={{ 
-              ...headerParallax.styles,
+            className={css({
+              fontSize: 'brand',
+              fontWeight: '900',
+              letterSpacing: 'tighter',
+              fontFamily: 'hegval',
+              whiteSpace: 'nowrap', // Prevent wrapping at all viewport sizes
+              cursor: 'pointer',
+              userSelect: 'none',
+              color: currentPage === "parties" ? "white" : "black",
               position: 'relative',
               zIndex: 10,
               transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              willChange: 'transform',
+              willChange: 'transform'
+            })}
+            style={{ 
+              ...headerParallax.styles
             }}
           >
             WIBBLY WOBBLAZ
