@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid System Test - WIBBLY WOBBLAZ</title>
+    <style>
+        /* Import the fluid values from our Utopia calculations */
+        :root {
+            /* Typography Fluid Scales */
+            --fluid-xs: clamp(0.75rem, 0.1250vw + 0.7250rem, 0.875rem);
+            --fluid-sm: clamp(0.875rem, 0.1250vw + 0.8500rem, 1rem);
+            --fluid-base: clamp(1rem, 0.1250vw + 0.9750rem, 1.125rem);
+            --fluid-lg: clamp(1.125rem, 0.1250vw + 1.1000rem, 1.25rem);
+            --fluid-xl: clamp(1.25rem, 0.2500vw + 1.2000rem, 1.5rem);
+            --fluid-2xl: clamp(1.5rem, 0.3750vw + 1.3500rem, 1.875rem);
+            --fluid-3xl: clamp(1.875rem, 0.3750vw + 1.7250rem, 2.25rem);
+            --fluid-4xl: clamp(2.25rem, 0.7500vw + 2.0250rem, 3rem);
+            --fluid-5xl: clamp(3rem, 0.7500vw + 2.7750rem, 3.75rem);
+            --fluid-6xl: clamp(3.75rem, 0.7500vw + 3.5250rem, 4.5rem);
+            --fluid-7xl: clamp(4.5rem, 1.5000vw + 4.0500rem, 6rem);
+            --fluid-8xl: clamp(6rem, 2.0000vw + 5.6000rem, 8rem);
+            --fluid-9xl: clamp(8rem, 4.0000vw + 6.4000rem, 12rem);
+            
+            /* Spacing Fluid Scales */
+            --spacing-fluid-xs: clamp(0.5rem, 0.2500vw + 0.4500rem, 0.75rem);
+            --spacing-fluid-sm: clamp(0.75rem, 0.2500vw + 0.7000rem, 1rem);
+            --spacing-fluid-md: clamp(1rem, 0.5000vw + 0.9000rem, 1.5rem);
+            --spacing-fluid-lg: clamp(1.5rem, 0.5000vw + 1.4000rem, 2rem);
+            --spacing-fluid-xl: clamp(2rem, 1.0000vw + 1.8000rem, 3rem);
+            --spacing-fluid-2xl: clamp(3rem, 1.0000vw + 2.8000rem, 4rem);
+            --spacing-fluid-3xl: clamp(4rem, 2.0000vw + 3.6000rem, 6rem);
+            --spacing-fluid-4xl: clamp(6rem, 2.0000vw + 5.6000rem, 8rem);
+            --spacing-fluid-5xl: clamp(8rem, 4.0000vw + 6.4000rem, 12rem);
+            --spacing-fluid-6xl: clamp(12rem, 4.0000vw + 10.4000rem, 16rem);
+            
+            /* Brand-specific tokens */
+            --brand-font-size: var(--fluid-7xl); /* Specific for "WIBBLY WOBBLAZ" */
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-fluid-md);
+        }
+        
+        .test-section {
+            background: white;
+            padding: var(--spacing-fluid-lg);
+            margin-bottom: var(--spacing-fluid-lg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .brand-title {
+            font-size: var(--brand-font-size);
+            font-weight: 900;
+            font-family: 'Hegval', Arial, sans-serif;
+            text-align: center;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: #000;
+            margin-bottom: var(--spacing-fluid-xl);
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .typography-scale h1,
+        .typography-scale h2,
+        .typography-scale h3,
+        .typography-scale h4,
+        .typography-scale p {
+            margin-bottom: var(--spacing-fluid-sm);
+        }
+        
+        .typography-scale h1 { font-size: var(--fluid-6xl); }
+        .typography-scale h2 { font-size: var(--fluid-4xl); }
+        .typography-scale h3 { font-size: var(--fluid-2xl); }
+        .typography-scale h4 { font-size: var(--fluid-xl); }
+        .typography-scale p { font-size: var(--fluid-base); }
+        .typography-scale .small { font-size: var(--fluid-sm); }
+        .typography-scale .tiny { font-size: var(--fluid-xs); }
+        
+        .spacing-demo {
+            background: #e0e0e0;
+            padding: var(--spacing-fluid-lg);
+        }
+        
+        .spacing-demo > div {
+            background: #007acc;
+            color: white;
+            padding: var(--spacing-fluid-xs);
+            margin-bottom: var(--spacing-fluid-md);
+            border-radius: 4px;
+        }
+        
+        .viewport-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            z-index: 1000;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-fluid-lg);
+            margin-top: var(--spacing-fluid-xl);
+        }
+        
+        .test-card {
+            background: #f8f9fa;
+            padding: var(--spacing-fluid-md);
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+        }
+        
+        .test-card h3 {
+            font-size: var(--fluid-lg);
+            margin-bottom: var(--spacing-fluid-sm);
+            color: #495057;
+        }
+        
+        .test-card p {
+            font-size: var(--fluid-sm);
+            color: #6c757d;
+        }
+        
+        /* Responsive verification styles */
+        @media (max-width: 320px) {
+            .mobile-test::after {
+                content: " (Mobile - 320px)";
+                color: red;
+                font-weight: bold;
+            }
+        }
+        
+        @media (min-width: 1920px) {
+            .desktop-test::after {
+                content: " (Ultra Wide - 1920px+)";
+                color: green;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport-info">
+        Viewport: <span id="viewport-width"></span>px × <span id="viewport-height"></span>px
+    </div>
+    
+    <div class="container">
+        <div class="test-section">
+            <h1 class="brand-title mobile-test desktop-test">WIBBLY WOBBLAZ</h1>
+            <p style="text-align: center; font-size: var(--fluid-base); color: #666;">
+                Test: This title should never wrap and should scale smoothly from 320px to 1920px+
+            </p>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="font-size: var(--fluid-3xl); margin-bottom: var(--spacing-fluid-lg);">
+                Typography Scale Test
+            </h2>
+            <div class="typography-scale">
+                <h1>Heading 1 (6xl)</h1>
+                <h2>Heading 2 (4xl)</h2>
+                <h3>Heading 3 (2xl)</h3>
+                <h4>Heading 4 (xl)</h4>
+                <p>Body text (base) - This is the main body text that should be comfortable to read at all viewport sizes.</p>
+                <p class="small">Small text (sm) - Used for captions and secondary information.</p>
+                <p class="tiny">Tiny text (xs) - Used for footnotes and fine print.</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="font-size: var(--fluid-3xl); margin-bottom: var(--spacing-fluid-lg);">
+                Spacing Scale Test
+            </h2>
+            <div class="spacing-demo">
+                <div>Box with XS padding and MD margin</div>
+                <div>Another box to show consistent spacing</div>
+                <div>Third box demonstrating fluid spacing behavior</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="font-size: var(--fluid-3xl); margin-bottom: var(--spacing-fluid-lg);">
+                Component Grid Test
+            </h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Card Title</h3>
+                    <p>This card uses fluid spacing and typography to maintain proportions across all screen sizes.</p>
+                </div>
+                <div class="test-card">
+                    <h3>Another Card</h3>
+                    <p>Notice how the gap between cards, padding, and font sizes all scale proportionally.</p>
+                </div>
+                <div class="test-card">
+                    <h3>Third Card</h3>
+                    <p>The fluid system ensures consistent visual hierarchy regardless of viewport size.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="font-size: var(--fluid-3xl); margin-bottom: var(--spacing-fluid-lg);">
+                Extreme Scale Test
+            </h2>
+            <div style="font-size: var(--fluid-9xl); text-align: center; color: #007acc; font-weight: bold;">
+                9XL
+            </div>
+            <div style="font-size: var(--fluid-8xl); text-align: center; color: #17a2b8; font-weight: bold;">
+                8XL
+            </div>
+            <div style="font-size: var(--fluid-7xl); text-align: center; color: #28a745; font-weight: bold;">
+                7XL
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateViewportInfo() {
+            document.getElementById('viewport-width').textContent = window.innerWidth;
+            document.getElementById('viewport-height').textContent = window.innerHeight;
+        }
+        
+        updateViewportInfo();
+        window.addEventListener('resize', updateViewportInfo);
+        
+        // Log fluid values for debugging
+        console.log('Fluid System Test Values:');
+        console.log('Brand font size:', getComputedStyle(document.documentElement).getPropertyValue('--brand-font-size'));
+        console.log('Fluid base:', getComputedStyle(document.documentElement).getPropertyValue('--fluid-base'));
+        console.log('Fluid 7xl:', getComputedStyle(document.documentElement).getPropertyValue('--fluid-7xl'));
+    </script>
+</body>
+</html>
