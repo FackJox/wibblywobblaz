@@ -416,6 +416,28 @@ export default defineConfig({
             opacity: '1', 
             transform: 'translateX(0)'
           }
+        },
+        
+        // Progress shimmer animation
+        'shimmer': {
+          '0%': { 
+            backgroundPosition: '-200% 0'
+          },
+          '100%': { 
+            backgroundPosition: '200% 0'
+          }
+        },
+        
+        // Toast slide animations
+        'slide-out-to-right': {
+          '0%': { 
+            opacity: '1', 
+            transform: 'translateX(0)'
+          },
+          '100%': { 
+            opacity: '0', 
+            transform: 'translateX(100%)'
+          }
         }
       },
       
@@ -2282,6 +2304,759 @@ export default defineConfig({
         defaultVariants: {
           size: 'md',
           weight: 'medium'
+        }
+      },
+
+      // Alert component recipes
+      alert: {
+        className: 'alert',
+        base: {
+          position: 'relative',
+          width: 'full',
+          borderRadius: 'lg',
+          border: '1px solid {colors.border}',
+          padding: '4',
+          
+          // Icon and content positioning
+          '& > svg ~ *': {
+            paddingLeft: '7'
+          },
+          '& > svg + div': {
+            transform: 'translateY(-3px)'
+          },
+          '& > svg': {
+            position: 'absolute',
+            left: '4',
+            top: '4',
+            color: 'foreground'
+          }
+        },
+        variants: {
+          variant: {
+            default: {
+              backgroundColor: 'background',
+              color: 'foreground'
+            },
+            destructive: {
+              borderColor: 'destructive',
+              borderOpacity: '0.5',
+              color: 'destructive',
+              '& > svg': {
+                color: 'destructive'
+              }
+            },
+            warning: {
+              borderColor: 'amber.500',
+              backgroundColor: 'amber.50',
+              color: 'amber.900',
+              '& > svg': {
+                color: 'amber.600'
+              }
+            },
+            success: {
+              borderColor: 'green.500',
+              backgroundColor: 'green.50',
+              color: 'green.900',
+              '& > svg': {
+                color: 'green.600'
+              }
+            },
+            info: {
+              borderColor: 'blue.500',
+              backgroundColor: 'blue.50',
+              color: 'blue.900',
+              '& > svg': {
+                color: 'blue.600'
+              }
+            }
+          },
+          size: {
+            sm: {
+              padding: 'fluid-sm',
+              fontSize: 'fluid-sm'
+            },
+            md: {
+              padding: '4',
+              fontSize: 'fluid-base'
+            },
+            lg: {
+              padding: 'fluid-lg',
+              fontSize: 'fluid-lg'
+            }
+          }
+        },
+        defaultVariants: {
+          variant: 'default',
+          size: 'md'
+        }
+      },
+
+      // Alert title recipe
+      alertTitle: {
+        className: 'alertTitle',
+        base: {
+          marginBottom: '1',
+          fontWeight: 'medium',
+          lineHeight: 'none',
+          letterSpacing: 'tight'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-sm'
+            },
+            md: {
+              fontSize: 'fluid-base'
+            },
+            lg: {
+              fontSize: 'fluid-lg'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Alert description recipe
+      alertDescription: {
+        className: 'alertDescription',
+        base: {
+          fontSize: 'fluid-sm',
+          '& p': {
+            lineHeight: 'relaxed'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Badge recipe
+      badge: {
+        className: 'badge',
+        base: {
+          display: 'inline-flex',
+          alignItems: 'center',
+          borderRadius: 'full',
+          border: '1px solid transparent',
+          paddingX: '2.5',
+          paddingY: '0.5',
+          fontSize: 'xs',
+          fontWeight: 'semibold',
+          transitionProperty: 'colors',
+          transitionDuration: '150ms',
+          transitionTimingFunction: 'ease-in-out',
+          
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          }
+        },
+        variants: {
+          variant: {
+            default: {
+              borderColor: 'transparent',
+              backgroundColor: 'primary',
+              color: 'primary.foreground',
+              _hover: {
+                backgroundColor: 'primary',
+                opacity: '0.8'
+              }
+            },
+            secondary: {
+              borderColor: 'transparent',
+              backgroundColor: 'secondary',
+              color: 'secondary.foreground',
+              _hover: {
+                backgroundColor: 'secondary',
+                opacity: '0.8'
+              }
+            },
+            destructive: {
+              borderColor: 'transparent',
+              backgroundColor: 'destructive',
+              color: 'destructive.foreground',
+              _hover: {
+                backgroundColor: 'destructive',
+                opacity: '0.8'
+              }
+            },
+            outline: {
+              color: 'foreground',
+              borderColor: 'border'
+            },
+            success: {
+              borderColor: 'transparent',
+              backgroundColor: 'green.100',
+              color: 'green.800',
+              _hover: {
+                backgroundColor: 'green.200'
+              }
+            },
+            warning: {
+              borderColor: 'transparent',
+              backgroundColor: 'amber.100',
+              color: 'amber.800',
+              _hover: {
+                backgroundColor: 'amber.200'
+              }
+            },
+            info: {
+              borderColor: 'transparent',
+              backgroundColor: 'blue.100',
+              color: 'blue.800',
+              _hover: {
+                backgroundColor: 'blue.200'
+              }
+            }
+          },
+          size: {
+            sm: {
+              paddingX: '2',
+              paddingY: '0.5',
+              fontSize: '2xs',
+              height: '5'
+            },
+            md: {
+              paddingX: '2.5',
+              paddingY: '0.5',
+              fontSize: 'xs',
+              height: '6'
+            },
+            lg: {
+              paddingX: '3',
+              paddingY: '1',
+              fontSize: 'sm',
+              height: '7'
+            }
+          }
+        },
+        defaultVariants: {
+          variant: 'default',
+          size: 'md'
+        }
+      },
+
+      // Progress recipe
+      progress: {
+        className: 'progress',
+        base: {
+          position: 'relative',
+          height: '4',
+          width: 'full',
+          overflow: 'hidden',
+          borderRadius: 'full',
+          backgroundColor: 'secondary'
+        },
+        variants: {
+          size: {
+            sm: {
+              height: '2'
+            },
+            md: {
+              height: '4'
+            },
+            lg: {
+              height: '6'
+            },
+            xl: {
+              height: '8'
+            }
+          },
+          variant: {
+            default: {
+              backgroundColor: 'secondary'
+            },
+            success: {
+              backgroundColor: 'green.200'
+            },
+            warning: {
+              backgroundColor: 'amber.200'
+            },
+            error: {
+              backgroundColor: 'red.200'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md',
+          variant: 'default'
+        }
+      },
+
+      // Progress indicator recipe
+      progressIndicator: {
+        className: 'progressIndicator',
+        base: {
+          height: 'full',
+          width: 'full',
+          flex: '1',
+          backgroundColor: 'primary',
+          transitionProperty: 'transform',
+          transitionDuration: '300ms',
+          transitionTimingFunction: 'ease-in-out'
+        },
+        variants: {
+          variant: {
+            default: {
+              backgroundColor: 'primary'
+            },
+            success: {
+              backgroundColor: 'green.500'
+            },
+            warning: {
+              backgroundColor: 'amber.500'
+            },
+            error: {
+              backgroundColor: 'red.500'
+            }
+          },
+          animated: {
+            true: {
+              background: 'linear-gradient(90deg, transparent, {colors.white}, transparent)',
+              backgroundSize: '200% 100%',
+              animation: 'shimmer 2s infinite'
+            }
+          }
+        },
+        defaultVariants: {
+          variant: 'default',
+          animated: false
+        }
+      },
+
+      // Avatar recipe
+      avatar: {
+        className: 'avatar',
+        base: {
+          position: 'relative',
+          display: 'flex',
+          height: '10',
+          width: '10',
+          flexShrink: '0',
+          overflow: 'hidden',
+          borderRadius: 'full'
+        },
+        variants: {
+          size: {
+            xs: {
+              height: '6',
+              width: '6'
+            },
+            sm: {
+              height: '8',
+              width: '8'
+            },
+            md: {
+              height: '10',
+              width: '10'
+            },
+            lg: {
+              height: '12',
+              width: '12'
+            },
+            xl: {
+              height: '16',
+              width: '16'
+            },
+            '2xl': {
+              height: '20',
+              width: '20'
+            }
+          },
+          shape: {
+            circle: {
+              borderRadius: 'full'
+            },
+            square: {
+              borderRadius: 'md'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md',
+          shape: 'circle'
+        }
+      },
+
+      // Avatar image recipe
+      avatarImage: {
+        className: 'avatarImage',
+        base: {
+          aspectRatio: '1',
+          height: 'full',
+          width: 'full',
+          objectFit: 'cover'
+        }
+      },
+
+      // Avatar fallback recipe
+      avatarFallback: {
+        className: 'avatarFallback',
+        base: {
+          display: 'flex',
+          height: 'full',
+          width: 'full',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 'full',
+          backgroundColor: 'muted',
+          color: 'muted.foreground',
+          fontSize: 'sm',
+          fontWeight: 'medium'
+        },
+        variants: {
+          size: {
+            xs: {
+              fontSize: 'xs'
+            },
+            sm: {
+              fontSize: 'xs'
+            },
+            md: {
+              fontSize: 'sm'
+            },
+            lg: {
+              fontSize: 'base'
+            },
+            xl: {
+              fontSize: 'lg'
+            },
+            '2xl': {
+              fontSize: 'xl'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Separator recipe
+      separator: {
+        className: 'separator',
+        base: {
+          flexShrink: '0',
+          backgroundColor: 'border'
+        },
+        variants: {
+          orientation: {
+            horizontal: {
+              height: '1px',
+              width: 'full'
+            },
+            vertical: {
+              height: 'full',
+              width: '1px'
+            }
+          },
+          size: {
+            sm: {
+              '&[data-orientation=horizontal]': {
+                marginY: '2'
+              },
+              '&[data-orientation=vertical]': {
+                marginX: '2'
+              }
+            },
+            md: {
+              '&[data-orientation=horizontal]': {
+                marginY: '4'
+              },
+              '&[data-orientation=vertical]': {
+                marginX: '4'
+              }
+            },
+            lg: {
+              '&[data-orientation=horizontal]': {
+                marginY: '6'
+              },
+              '&[data-orientation=vertical]': {
+                marginX: '6'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          orientation: 'horizontal',
+          size: 'md'
+        }
+      },
+
+      // Toast viewport recipe
+      toastViewport: {
+        className: 'toastViewport',
+        base: {
+          position: 'fixed',
+          top: '0',
+          zIndex: '100',
+          display: 'flex',
+          maxHeight: '100vh',
+          width: 'full',
+          flexDirection: 'column-reverse',
+          padding: '4',
+          
+          '@media (min-width: 640px)': {
+            bottom: '0',
+            right: '0',
+            top: 'auto',
+            flexDirection: 'column',
+            maxWidth: '420px'
+          }
+        }
+      },
+
+      // Toast recipe
+      toast: {
+        className: 'toast',
+        base: {
+          group: true,
+          pointerEvents: 'auto',
+          position: 'relative',
+          display: 'flex',
+          width: 'full',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '4',
+          overflow: 'hidden',
+          borderRadius: 'md',
+          border: '1px solid {colors.border}',
+          padding: '6',
+          paddingRight: '8',
+          boxShadow: 'lg',
+          transitionProperty: 'all',
+          transitionDuration: '300ms',
+          transitionTimingFunction: 'ease-in-out',
+          
+          // Data state animations
+          '&[data-swipe=cancel]': {
+            transform: 'translateX(0)'
+          },
+          '&[data-swipe=end]': {
+            transform: 'translateX(var(--radix-toast-swipe-end-x))'
+          },
+          '&[data-swipe=move]': {
+            transform: 'translateX(var(--radix-toast-swipe-move-x))',
+            transitionProperty: 'none'
+          },
+          '&[data-state=open]': {
+            animation: 'slide-in-from-top 300ms ease-out',
+            '@media (min-width: 640px)': {
+              animation: 'slide-in-from-bottom 300ms ease-out'
+            }
+          },
+          '&[data-state=closed]': {
+            animation: 'fade-out 200ms ease-in, slide-out-to-right 200ms ease-in'
+          }
+        },
+        variants: {
+          variant: {
+            default: {
+              backgroundColor: 'background',
+              color: 'foreground'
+            },
+            destructive: {
+              borderColor: 'destructive',
+              backgroundColor: 'destructive',
+              color: 'destructive.foreground'
+            },
+            success: {
+              borderColor: 'green.500',
+              backgroundColor: 'green.50',
+              color: 'green.900'
+            },
+            warning: {
+              borderColor: 'amber.500',
+              backgroundColor: 'amber.50',
+              color: 'amber.900'
+            },
+            info: {
+              borderColor: 'blue.500',
+              backgroundColor: 'blue.50',
+              color: 'blue.900'
+            }
+          },
+          size: {
+            sm: {
+              padding: 'fluid-sm',
+              paddingRight: 'fluid-md'
+            },
+            md: {
+              padding: '6',
+              paddingRight: '8'
+            },
+            lg: {
+              padding: 'fluid-lg',
+              paddingRight: 'fluid-xl'
+            }
+          }
+        },
+        defaultVariants: {
+          variant: 'default',
+          size: 'md'
+        }
+      },
+
+      // Toast action recipe
+      toastAction: {
+        className: 'toastAction',
+        base: {
+          display: 'inline-flex',
+          height: '8',
+          flexShrink: '0',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 'md',
+          border: '1px solid {colors.border}',
+          backgroundColor: 'transparent',
+          paddingX: '3',
+          fontSize: 'sm',
+          fontWeight: 'medium',
+          ringOffsetColor: 'background',
+          transitionProperty: 'colors',
+          transitionDuration: '150ms',
+          transitionTimingFunction: 'ease-in-out',
+          
+          _hover: {
+            backgroundColor: 'secondary'
+          },
+          
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          _disabled: {
+            pointerEvents: 'none',
+            opacity: '0.5'
+          },
+          
+          // Group variant styles
+          '.group.destructive &': {
+            borderColor: 'muted',
+            borderOpacity: '0.4',
+            _hover: {
+              borderColor: 'destructive',
+              borderOpacity: '0.3',
+              backgroundColor: 'destructive',
+              color: 'destructive.foreground'
+            },
+            _focusVisible: {
+              ringColor: 'destructive'
+            }
+          }
+        }
+      },
+
+      // Toast close recipe
+      toastClose: {
+        className: 'toastClose',
+        base: {
+          position: 'absolute',
+          right: '2',
+          top: '2',
+          borderRadius: 'md',
+          padding: '1',
+          color: 'foreground',
+          opacity: '0',
+          transitionProperty: 'opacity',
+          transitionDuration: '150ms',
+          transitionTimingFunction: 'ease-in-out',
+          
+          _hover: {
+            color: 'foreground',
+            opacity: '1'
+          },
+          
+          _focusVisible: {
+            opacity: '1',
+            outline: 'none',
+            ringWidth: '2px'
+          },
+          
+          '.group:hover &': {
+            opacity: '1'
+          },
+          
+          // Group variant styles
+          '.group.destructive &': {
+            color: 'red.300',
+            _hover: {
+              color: 'red.50'
+            },
+            _focusVisible: {
+              ringColor: 'red.400',
+              ringOffsetColor: 'red.600'
+            }
+          }
+        }
+      },
+
+      // Toast title recipe
+      toastTitle: {
+        className: 'toastTitle',
+        base: {
+          fontSize: 'sm',
+          fontWeight: 'semibold'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'xs'
+            },
+            md: {
+              fontSize: 'sm'
+            },
+            lg: {
+              fontSize: 'base'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Toast description recipe
+      toastDescription: {
+        className: 'toastDescription',
+        base: {
+          fontSize: 'sm',
+          opacity: '0.9'
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'xs'
+            },
+            md: {
+              fontSize: 'sm'
+            },
+            lg: {
+              fontSize: 'base'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
         }
       }
     }
