@@ -1830,6 +1830,459 @@ export default defineConfig({
         defaultVariants: {
           size: 'md'
         }
+      },
+
+      // Checkbox recipe
+      checkbox: {
+        className: 'checkbox',
+        base: {
+          height: '4',
+          width: '4',
+          flexShrink: '0',
+          borderRadius: 'sm',
+          border: '1px solid {colors.primary}',
+          ringOffsetColor: 'background',
+          transition: 'all 150ms ease-in-out',
+          cursor: 'pointer',
+          
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          _disabled: {
+            cursor: 'not-allowed',
+            opacity: 0.5
+          },
+          
+          '&[data-state=checked]': {
+            backgroundColor: 'primary',
+            color: 'primary.foreground'
+          },
+          
+          '&[data-state=unchecked]': {
+            backgroundColor: 'background'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              height: '3.5',
+              width: '3.5'
+            },
+            md: {
+              height: '4',
+              width: '4'
+            },
+            lg: {
+              height: '5',
+              width: '5'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Checkbox indicator recipe
+      checkboxIndicator: {
+        className: 'checkboxIndicator',
+        base: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'current'
+        }
+      },
+
+      // Radio Group recipe
+      radioGroup: {
+        className: 'radioGroup',
+        base: {
+          display: 'grid',
+          gap: '2'
+        },
+        variants: {
+          orientation: {
+            vertical: {
+              display: 'grid',
+              gap: '2'
+            },
+            horizontal: {
+              display: 'flex',
+              gap: '4'
+            }
+          },
+          spacing: {
+            tight: {
+              gap: '1'
+            },
+            normal: {
+              gap: '2'
+            },
+            loose: {
+              gap: '4'
+            }
+          }
+        },
+        defaultVariants: {
+          orientation: 'vertical',
+          spacing: 'normal'
+        }
+      },
+
+      // Radio Group Item recipe
+      radioGroupItem: {
+        className: 'radioGroupItem',
+        base: {
+          aspectRatio: '1',
+          height: '4',
+          width: '4',
+          borderRadius: 'full',
+          border: '1px solid {colors.primary}',
+          color: 'primary',
+          ringOffsetColor: 'background',
+          transition: 'all 150ms ease-in-out',
+          cursor: 'pointer',
+          
+          _focus: {
+            outline: 'none'
+          },
+          
+          _focusVisible: {
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          _disabled: {
+            cursor: 'not-allowed',
+            opacity: 0.5
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              height: '3.5',
+              width: '3.5'
+            },
+            md: {
+              height: '4',
+              width: '4'
+            },
+            lg: {
+              height: '5',
+              width: '5'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Radio Group Indicator recipe
+      radioGroupIndicator: {
+        className: 'radioGroupIndicator',
+        base: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }
+      },
+
+      // Switch recipe
+      switchComponent: {
+        className: 'switch',
+        base: {
+          display: 'inline-flex',
+          height: '6',
+          width: '11',
+          flexShrink: '0',
+          cursor: 'pointer',
+          alignItems: 'center',
+          borderRadius: 'full',
+          border: '2px solid transparent',
+          transitionProperty: 'colors',
+          transitionDuration: '200ms',
+          transitionTimingFunction: 'ease-in-out',
+          
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px',
+            ringOffsetColor: 'background'
+          },
+          
+          _disabled: {
+            cursor: 'not-allowed',
+            opacity: 0.5
+          },
+          
+          '&[data-state=checked]': {
+            backgroundColor: 'primary'
+          },
+          
+          '&[data-state=unchecked]': {
+            backgroundColor: 'input'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              height: '5',
+              width: '9'
+            },
+            md: {
+              height: '6',
+              width: '11'
+            },
+            lg: {
+              height: '7',
+              width: '13'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Switch thumb recipe
+      switchThumb: {
+        className: 'switchThumb',
+        base: {
+          pointerEvents: 'none',
+          display: 'block',
+          height: '5',
+          width: '5',
+          borderRadius: 'full',
+          backgroundColor: 'background',
+          boxShadow: 'lg',
+          ringWidth: '0',
+          transitionProperty: 'transform',
+          transitionDuration: '200ms',
+          transitionTimingFunction: 'ease-in-out',
+          
+          '&[data-state=checked]': {
+            transform: 'translateX(20px)'
+          },
+          
+          '&[data-state=unchecked]': {
+            transform: 'translateX(0)'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              height: '4',
+              width: '4',
+              '&[data-state=checked]': {
+                transform: 'translateX(16px)'
+              }
+            },
+            md: {
+              height: '5',
+              width: '5',
+              '&[data-state=checked]': {
+                transform: 'translateX(20px)'
+              }
+            },
+            lg: {
+              height: '6',
+              width: '6',
+              '&[data-state=checked]': {
+                transform: 'translateX(24px)'
+              }
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Slider recipe
+      slider: {
+        className: 'slider',
+        base: {
+          position: 'relative',
+          display: 'flex',
+          width: 'full',
+          touchAction: 'none',
+          userSelect: 'none',
+          alignItems: 'center',
+          cursor: 'pointer'
+        },
+        variants: {
+          orientation: {
+            horizontal: {
+              flexDirection: 'row'
+            },
+            vertical: {
+              flexDirection: 'column',
+              height: '48'
+            }
+          }
+        },
+        defaultVariants: {
+          orientation: 'horizontal'
+        }
+      },
+
+      // Slider track recipe
+      sliderTrack: {
+        className: 'sliderTrack',
+        base: {
+          position: 'relative',
+          height: '2',
+          width: 'full',
+          flexGrow: '1',
+          overflow: 'hidden',
+          borderRadius: 'full',
+          backgroundColor: 'secondary'
+        },
+        variants: {
+          orientation: {
+            horizontal: {
+              height: '2',
+              width: 'full'
+            },
+            vertical: {
+              height: 'full',
+              width: '2'
+            }
+          },
+          size: {
+            sm: {
+              height: '1.5'
+            },
+            md: {
+              height: '2'
+            },
+            lg: {
+              height: '3'
+            }
+          }
+        },
+        defaultVariants: {
+          orientation: 'horizontal',
+          size: 'md'
+        }
+      },
+
+      // Slider range recipe
+      sliderRange: {
+        className: 'sliderRange',
+        base: {
+          position: 'absolute',
+          height: 'full',
+          backgroundColor: 'primary'
+        }
+      },
+
+      // Slider thumb recipe
+      sliderThumb: {
+        className: 'sliderThumb',
+        base: {
+          display: 'block',
+          height: '5',
+          width: '5',
+          borderRadius: 'full',
+          border: '2px solid {colors.primary}',
+          backgroundColor: 'background',
+          ringOffsetColor: 'background',
+          transitionProperty: 'colors',
+          transitionDuration: '200ms',
+          transitionTimingFunction: 'ease-in-out',
+          cursor: 'grab',
+          
+          _focusVisible: {
+            outline: 'none',
+            ringWidth: '2px',
+            ringColor: 'ring',
+            ringOffsetWidth: '2px'
+          },
+          
+          _disabled: {
+            pointerEvents: 'none',
+            opacity: 0.5
+          },
+          
+          _active: {
+            cursor: 'grabbing'
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              height: '4',
+              width: '4'
+            },
+            md: {
+              height: '5',
+              width: '5'
+            },
+            lg: {
+              height: '6',
+              width: '6'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md'
+        }
+      },
+
+      // Label recipe
+      label: {
+        className: 'label',
+        base: {
+          fontSize: 'fluid-sm',
+          fontWeight: 'medium',
+          lineHeight: 'none',
+          
+          // Peer styles for form field associations
+          _peerDisabled: {
+            cursor: 'not-allowed',
+            opacity: 0.7
+          }
+        },
+        variants: {
+          size: {
+            sm: {
+              fontSize: 'fluid-xs'
+            },
+            md: {
+              fontSize: 'fluid-sm'
+            },
+            lg: {
+              fontSize: 'fluid-base'
+            }
+          },
+          weight: {
+            normal: {
+              fontWeight: 'normal'
+            },
+            medium: {
+              fontWeight: 'medium'
+            },
+            semibold: {
+              fontWeight: 'semibold'
+            },
+            bold: {
+              fontWeight: 'bold'
+            }
+          }
+        },
+        defaultVariants: {
+          size: 'md',
+          weight: 'medium'
+        }
       }
     }
   },
