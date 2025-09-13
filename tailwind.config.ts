@@ -83,11 +83,44 @@ const config: Config = {
   				to: {
   					height: '0'
   				}
+  			},
+  			'ripple': {
+  				'0%': {
+  					transform: 'scale(0)',
+  					opacity: '0.3'
+  				},
+  				'50%': {
+  					opacity: '0.2'
+  				},
+  				'100%': {
+  					transform: 'scale(2)',
+  					opacity: '0'
+  				}
+  			},
+  			'micro-bounce': {
+  				'0%': { transform: 'scale(1)' },
+  				'50%': { transform: 'scale(0.95)' },
+  				'100%': { transform: 'scale(1)' }
+  			},
+  			'click-scale': {
+  				'0%': { transform: 'scale(1)' },
+  				'50%': { transform: 'scale(0.95)' },
+  				'100%': { transform: 'scale(1)' }
+  			},
+  			'success-bounce': {
+  				'0%, 20%, 53%, 80%, 100%': { transform: 'scale(1)' },
+  				'40%, 43%': { transform: 'scale(1.1)' },
+  				'70%': { transform: 'scale(1.05)' },
+  				'90%': { transform: 'scale(1.02)' }
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+  			'ripple': 'ripple 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+  			'micro-bounce': 'micro-bounce 200ms cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+  			'click-scale': 'click-scale 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+  			'success-bounce': 'success-bounce 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275)'
   		}
   	}
   },

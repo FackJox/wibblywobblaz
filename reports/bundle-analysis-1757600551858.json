@@ -1,0 +1,220 @@
+{
+  "timestamp": "2025-09-11T14:22:31.803Z",
+  "chunks": [
+    {
+      "name": "framework-f593a28cde54158e.js",
+      "size": 182797,
+      "gzippedSize": 57733,
+      "formatted": {
+        "size": "178.51 KB",
+        "gzippedSize": "56.38 KB"
+      }
+    },
+    {
+      "name": "4bd1b696-3269f8edb1a520b8.js",
+      "size": 169106,
+      "gzippedSize": 53241,
+      "formatted": {
+        "size": "165.14 KB",
+        "gzippedSize": "51.99 KB"
+      }
+    },
+    {
+      "name": "684-03d65be2798a98d4.js",
+      "size": 172958,
+      "gzippedSize": 45670,
+      "formatted": {
+        "size": "168.9 KB",
+        "gzippedSize": "44.6 KB"
+      }
+    },
+    {
+      "name": "polyfills-42372ed130431b0a.js",
+      "size": 112594,
+      "gzippedSize": 39509,
+      "formatted": {
+        "size": "109.96 KB",
+        "gzippedSize": "38.58 KB"
+      }
+    },
+    {
+      "name": "main-db0e8fa5ad50d0ca.js",
+      "size": 119313,
+      "gzippedSize": 34157,
+      "formatted": {
+        "size": "116.52 KB",
+        "gzippedSize": "33.36 KB"
+      }
+    },
+    {
+      "name": "486-5f3bab2566992e97.js",
+      "size": 36383,
+      "gzippedSize": 10336,
+      "formatted": {
+        "size": "35.53 KB",
+        "gzippedSize": "10.09 KB"
+      }
+    },
+    {
+      "name": "497-4b2b31b459e879b3.js",
+      "size": 23500,
+      "gzippedSize": 8040,
+      "formatted": {
+        "size": "22.95 KB",
+        "gzippedSize": "7.85 KB"
+      }
+    },
+    {
+      "name": "334-d2c17b30a483ba85.js",
+      "size": 16335,
+      "gzippedSize": 6186,
+      "formatted": {
+        "size": "15.95 KB",
+        "gzippedSize": "6.04 KB"
+      }
+    },
+    {
+      "name": "530-fa3532d37fec2691.js",
+      "size": 14101,
+      "gzippedSize": 4917,
+      "formatted": {
+        "size": "13.77 KB",
+        "gzippedSize": "4.8 KB"
+      }
+    },
+    {
+      "name": "296.ed9e3fee53cd79e0.js",
+      "size": 14958,
+      "gzippedSize": 4913,
+      "formatted": {
+        "size": "14.61 KB",
+        "gzippedSize": "4.8 KB"
+      }
+    },
+    {
+      "name": "893-d384a505a50628e8.js",
+      "size": 11866,
+      "gzippedSize": 3888,
+      "formatted": {
+        "size": "11.59 KB",
+        "gzippedSize": "3.8 KB"
+      }
+    },
+    {
+      "name": "116-24b8d27fde1a6430.js",
+      "size": 10866,
+      "gzippedSize": 3826,
+      "formatted": {
+        "size": "10.61 KB",
+        "gzippedSize": "3.74 KB"
+      }
+    },
+    {
+      "name": "874-be6971e4438147bc.js",
+      "size": 7445,
+      "gzippedSize": 3045,
+      "formatted": {
+        "size": "7.27 KB",
+        "gzippedSize": "2.97 KB"
+      }
+    },
+    {
+      "name": "479.67a649bacac89a64.js",
+      "size": 8085,
+      "gzippedSize": 2886,
+      "formatted": {
+        "size": "7.9 KB",
+        "gzippedSize": "2.82 KB"
+      }
+    },
+    {
+      "name": "589.529752c4916532c6.js",
+      "size": 7961,
+      "gzippedSize": 2724,
+      "formatted": {
+        "size": "7.77 KB",
+        "gzippedSize": "2.66 KB"
+      }
+    },
+    {
+      "name": "168-3f0dcc454923c1f8.js",
+      "size": 6470,
+      "gzippedSize": 2618,
+      "formatted": {
+        "size": "6.32 KB",
+        "gzippedSize": "2.56 KB"
+      }
+    },
+    {
+      "name": "webpack-228908a602555a9a.js",
+      "size": 3742,
+      "gzippedSize": 1944,
+      "formatted": {
+        "size": "3.65 KB",
+        "gzippedSize": "1.9 KB"
+      }
+    },
+    {
+      "name": "727.b89235dc8300277b.js",
+      "size": 454,
+      "gzippedSize": 346,
+      "formatted": {
+        "size": "454 B",
+        "gzippedSize": "346 B"
+      }
+    },
+    {
+      "name": "779.1839e87205ec9d06.js",
+      "size": 405,
+      "gzippedSize": 315,
+      "formatted": {
+        "size": "405 B",
+        "gzippedSize": "315 B"
+      }
+    },
+    {
+      "name": "main-app-14a14fa3e56b85fb.js",
+      "size": 506,
+      "gzippedSize": 244,
+      "formatted": {
+        "size": "506 B",
+        "gzippedSize": "244 B"
+      }
+    }
+  ],
+  "css": [
+    {
+      "name": "b059cfdbe2cdeb9a.css",
+      "size": 78996,
+      "gzippedSize": 14092,
+      "formatted": {
+        "size": "77.14 KB",
+        "gzippedSize": "13.76 KB"
+      }
+    }
+  ],
+  "totalSize": 998841,
+  "totalGzipped": 300630,
+  "exceedsThreshold": true,
+  "warnings": [
+    "⚠️  Chunk 4bd1b696-3269f8edb1a520b8.js exceeds 30KB gzipped (51.99 KB)",
+    "⚠️  Chunk 684-03d65be2798a98d4.js exceeds 30KB gzipped (44.6 KB)",
+    "⚠️  Chunk framework-f593a28cde54158e.js exceeds 30KB gzipped (56.38 KB)",
+    "⚠️  Chunk main-db0e8fa5ad50d0ca.js exceeds 30KB gzipped (33.36 KB)",
+    "⚠️  Chunk polyfills-42372ed130431b0a.js exceeds 30KB gzipped (38.58 KB)"
+  ],
+  "performance": {
+    "meetsTarget": false,
+    "totalFormatted": {
+      "size": "975.43 KB",
+      "gzippedSize": "293.58 KB"
+    },
+    "recommendations": [
+      "Consider code splitting for large chunks",
+      "Review and remove unused dependencies",
+      "Implement lazy loading for non-critical components",
+      "Consider merging small chunks to reduce HTTP requests",
+      "Too many large chunks - review bundle splitting strategy"
+    ]
+  }
+}
