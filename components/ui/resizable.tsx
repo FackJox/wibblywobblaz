@@ -3,17 +3,21 @@
 import { GripVertical } from "lucide-react"
 import * as ResizablePrimitive from "react-resizable-panels"
 
-import { cn } from "@/lib/utils"
+import { cx, css } from "@/styled-system/css"
 
 const ResizablePanelGroup = ({
   className,
   ...props
 }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
-    className={cn(
-      "flex h-full w-full data-[panel-group-direction=vertical]:flex-col",
-      className
-    )}
+    className={cx(css({
+      display: "flex",
+      height: "full",
+      width: "full",
+      "&[data-panel-group-direction=vertical]": {
+        flexDirection: "column"
+      }
+    }), className)}
     {...props}
   />
 )
@@ -28,15 +32,57 @@ const ResizableHandle = ({
   withHandle?: boolean
 }) => (
   <ResizablePrimitive.PanelResizeHandle
-    className={cn(
-      "relative flex w-px items-center justify-center bg-border after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-1 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:-translate-y-1/2 data-[panel-group-direction=vertical]:after:translate-x-0 [&[data-panel-group-direction=vertical]>div]:rotate-90",
-      className
-    )}
+    className={cx(css({
+      position: "relative",
+      display: "flex",
+      width: "1px",
+      alignItems: "center",
+      justifyContent: "center",
+      bg: "border",
+      _after: {
+        content: '""',
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: "50%",
+        width: "1rem",
+        transform: "translateX(-50%)"
+      },
+      "&:focus-visible": {
+        outline: "none",
+        ring: "1px",
+        ringColor: "ring",
+        ringOffset: "1px"
+      },
+      "&[data-panel-group-direction=vertical]": {
+        height: "1px",
+        width: "full",
+        _after: {
+          left: 0,
+          height: "1rem",
+          width: "full",
+          transform: "translateY(-50%)"
+        },
+        "& > div": {
+          transform: "rotate(90deg)"
+        }
+      }
+    }), className)}
     {...props}
   >
     {withHandle && (
-      <div className="z-10 flex h-4 w-3 items-center justify-center rounded-sm border bg-border">
-        <GripVertical className="h-2.5 w-2.5" />
+      <div className={css({
+        zIndex: 10,
+        display: "flex",
+        height: 4,
+        width: 3,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: "sm",
+        border: "1px solid {colors.border}",
+        bg: "border"
+      })}>
+        <GripVertical className={css({ h: "2.5", w: "2.5" })} />
       </div>
     )}
   </ResizablePrimitive.PanelResizeHandle>
