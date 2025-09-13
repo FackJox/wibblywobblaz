@@ -2,40 +2,88 @@
 
 import * as React from "react"
 import * as TogglePrimitive from "@radix-ui/react-toggle"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, cx, type RecipeVariantProps } from "../../styled-system/css"
 
-import { cn } from "@/lib/utils"
-
-const toggleVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 gap-2",
-  {
-    variants: {
-      variant: {
-        default: "bg-transparent",
-        outline:
-          "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
-      },
-      size: {
-        default: "h-10 px-3 min-w-10",
-        sm: "h-9 px-2.5 min-w-9",
-        lg: "h-11 px-5 min-w-11",
-      },
+const toggleVariants = cva({
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "md",
+    fontSize: "sm",
+    fontWeight: "medium",
+    transition: "colors",
+    gap: "2",
+    "&:hover": {
+      backgroundColor: "muted",
+      color: "muted.foreground"
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    "&:focus-visible": {
+      outline: "none",
+      boxShadow: "0 0 0 2px hsl(var(--ring))"
     },
+    "&:disabled": {
+      pointerEvents: "none",
+      opacity: "0.5"
+    },
+    "&[data-state=on]": {
+      backgroundColor: "accent",
+      color: "accent.foreground"
+    },
+    "& svg": {
+      pointerEvents: "none",
+      width: "4",
+      height: "4",
+      flexShrink: "0"
+    }
+  },
+  variants: {
+    variant: {
+      default: {
+        backgroundColor: "transparent"
+      },
+      outline: {
+        border: "1px solid",
+        borderColor: "input",
+        backgroundColor: "transparent",
+        "&:hover": {
+          backgroundColor: "accent",
+          color: "accent.foreground"
+        }
+      }
+    },
+    size: {
+      default: {
+        height: "10",
+        paddingX: "3",
+        minWidth: "10"
+      },
+      sm: {
+        height: "9",
+        paddingX: "2.5",
+        minWidth: "9"
+      },
+      lg: {
+        height: "11",
+        paddingX: "5",
+        minWidth: "11"
+      }
+    }
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "default"
   }
-)
+})
 
 const Toggle = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
-    VariantProps<typeof toggleVariants>
+    RecipeVariantProps<typeof toggleVariants>
 >(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
     ref={ref}
-    className={cn(toggleVariants({ variant, size, className }))}
+    className={cx(toggleVariants({ variant, size }), className)}
     {...props}
   />
 ))
