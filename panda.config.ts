@@ -90,7 +90,11 @@ export default defineConfig({
             'accent-foreground': { value: 'hsl(var(--sidebar-accent-foreground))' },
             border: { value: 'hsl(var(--sidebar-border))' },
             ring: { value: 'hsl(var(--sidebar-ring))' }
-          }
+          },
+          
+          // Pure black and white colors
+          black: { value: '#000000' },
+          white: { value: '#ffffff' }
         },
         
         fonts: {
@@ -3512,28 +3516,27 @@ export default defineConfig({
         className: 'partiesGrid',
         base: {
           display: 'grid',
-          gridTemplateColumns: '1',
+          gridTemplateColumns: '1fr',
           gap: 'fluid-md',
           maxWidth: '7xl',
-          marginX: 'auto'
+          marginX: 'auto',
+          '@media (min-width: 768px)': {
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 'fluid-lg'
+          },
+          '@media (min-width: 1024px)': {
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 'fluid-lg'
+          }
         },
         variants: {
           responsive: {
             mobile: {
-              gridTemplateColumns: '1',
+              gridTemplateColumns: '1fr',
               gap: 'fluid-md'
             },
             desktop: {
-              gridTemplateColumns: '1',
-              gap: 'fluid-md',
-              md: {
-                gridTemplateColumns: '2',
-                gap: 'fluid-lg'
-              },
-              lg: {
-                gridTemplateColumns: '4',
-                gap: 'fluid-lg'
-              }
+              // Desktop variant inherits base responsive styles
             }
           }
         },

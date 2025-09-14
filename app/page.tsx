@@ -578,7 +578,7 @@ export default function WibblyWobblazLanding() {
             {upcomingParties.map((party, index) => (
               <div
                 key={party.id}
-                className={css({
+                className={cx('group', css({
                   borderWidth: '4px',
                   borderColor: 'white',
                   backgroundColor: 'black',
@@ -590,7 +590,7 @@ export default function WibblyWobblazLanding() {
                     backgroundColor: 'white',
                     color: 'black'
                   }
-                })}
+                }))}
               >
                 <div className={css({
                   aspectRatio: '3/4',
@@ -688,7 +688,7 @@ export default function WibblyWobblazLanding() {
                       disabled={shhhState === "animating"}
                       className={css({
                         width: 'full',
-                        backgroundColor: 'transparent',
+                        backgroundColor: 'black',
                         borderWidth: '2px',
                         borderColor: 'white',
                         color: 'white',
@@ -696,11 +696,7 @@ export default function WibblyWobblazLanding() {
                         transition: 'colors 0.2s ease',
                         _hover: {
                           backgroundColor: 'white',
-                          color: 'black'
-                        },
-                        _groupHover: {
-                          backgroundColor: 'black',
-                          color: 'white',
+                          color: 'black',
                           borderColor: 'black'
                         },
                         _disabled: {
@@ -715,7 +711,7 @@ export default function WibblyWobblazLanding() {
                     <Button
                       className={css({
                         width: 'full',
-                        backgroundColor: 'transparent',
+                        backgroundColor: 'black',
                         borderWidth: '2px',
                         borderColor: 'white',
                         color: 'white',
@@ -723,11 +719,7 @@ export default function WibblyWobblazLanding() {
                         transition: 'colors 0.2s ease',
                         _hover: {
                           backgroundColor: 'white',
-                          color: 'black'
-                        },
-                        _groupHover: {
-                          backgroundColor: 'black',
-                          color: 'white',
+                          color: 'black',
                           borderColor: 'black'
                         }
                       })}
