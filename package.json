@@ -14,7 +14,13 @@
     "test:visual": "playwright test tests/visual/",
     "test:visual:update": "playwright test tests/visual/ --update-snapshots",
     "test:visual:chromium": "playwright test tests/visual/ --project=chromium",
-    "test:visual:report": "playwright show-report"
+    "test:visual:report": "playwright show-report",
+    "analyze": "ANALYZE=true npm run build",
+    "perf:build": "npm run build && npm run analyze",
+    "perf:benchmark": "node scripts/performance-benchmark.js",
+    "perf:lighthouse": "node scripts/lighthouse-audit.js",
+    "perf:bundle-size": "node scripts/bundle-size-analysis.js",
+    "perf:report": "node scripts/generate-performance-report.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -84,10 +90,14 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "gzip-size": "^7.0.0",
+    "lighthouse": "^12.8.2",
     "lint-staged": "^16.1.6",
     "playwright": "^1.55.0",
     "postcss": "^8.5",
+    "puppeteer": "^24.20.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webpack-bundle-analyzer": "^4.10.2"
   }
 }

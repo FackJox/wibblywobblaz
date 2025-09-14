@@ -1,0 +1,48 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - heading "Button Recipe Test" [level=1] [ref=e3]
+    - generic [ref=e4]:
+      - heading "Variants" [level=2] [ref=e5]
+      - generic [ref=e6]:
+        - button "Default" [ref=e7] [cursor=pointer]
+        - button "Destructive" [ref=e8] [cursor=pointer]
+        - button "Outline" [ref=e9] [cursor=pointer]
+        - button "Secondary" [ref=e10] [cursor=pointer]
+        - button "Ghost" [ref=e11] [cursor=pointer]
+        - button "Link" [ref=e12] [cursor=pointer]
+    - generic [ref=e13]:
+      - heading "Sizes" [level=2] [ref=e14]
+      - generic [ref=e15]:
+        - button "Small" [ref=e16] [cursor=pointer]
+        - button "Default" [ref=e17] [cursor=pointer]
+        - button "Large" [ref=e18] [cursor=pointer]
+        - button "🔥" [ref=e19] [cursor=pointer]
+    - generic [ref=e20]:
+      - heading "Combined Variants" [level=2] [ref=e21]
+      - generic [ref=e22]:
+        - button "Small Outline" [ref=e23] [cursor=pointer]
+        - button "Large Destructive" [ref=e24] [cursor=pointer]
+        - button "👻" [ref=e25] [cursor=pointer]
+        - button "Small Secondary" [ref=e26] [cursor=pointer]
+    - generic [ref=e27]:
+      - heading "States" [level=2] [ref=e28]
+      - generic [ref=e29]:
+        - button "Disabled" [disabled] [ref=e30]
+        - button "Disabled Outline" [disabled] [ref=e31]
+        - button "Disabled Destructive" [disabled] [ref=e32]
+    - generic [ref=e33]:
+      - heading "With Icons" [level=2] [ref=e34]
+      - generic [ref=e35]:
+        - button "Add Item" [ref=e36] [cursor=pointer]:
+          - img [ref=e37] [cursor=pointer]
+          - text: Add Item
+        - button "Delete" [ref=e39] [cursor=pointer]:
+          - img [ref=e40] [cursor=pointer]
+          - text: Delete
+  - button "Open Next.js Dev Tools" [ref=e47] [cursor=pointer]:
+    - img [ref=e48] [cursor=pointer]
+  - alert [ref=e51]
+```

@@ -1,3 +1,9 @@
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -9,6 +15,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    // Enable webpack bundle analysis
+    bundlePagesRouterDependencies: true,
+    optimizePackageImports: ['@radix-ui/react-*', 'lucide-react'],
+  },
 }
 
-export default nextConfig
+export default withBundleAnalyzer(nextConfig)
