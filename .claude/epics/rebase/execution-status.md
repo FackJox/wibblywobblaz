@@ -9,10 +9,7 @@ branch: epic/rebase
 - (None currently active)
 
 ## Queued Work
-- Issue #65 - Ready to start
-- Issue #66 - Ready to start
-- Issue #67 - Ready to start
-- Issue #68 - Waiting for #65, #66, #67
+- Issue #68 - Ready to start (dependencies met)
 - Issue #69 - Waiting for #68
 - Issue #70 - Waiting for #69
 - Issue #71 - Waiting for #70
@@ -22,6 +19,9 @@ branch: epic/rebase
 - Issue #64 Stream B (PandaCSS Research) - Completed 22:45
 - Issue #64 Stream C (Mapping Document) - Completed 22:47
 - **Issue #64: Complete** ✅
+- **Issue #65: Complete** ✅ - Simple utility hooks converted
+- **Issue #66: Complete** ✅ - Dynamic style hooks converted
+- **Issue #67: Complete** ✅ - Complex animation hooks converted
 
 ## Notes
 - Issue #64 is the only task ready to start (no dependencies)
