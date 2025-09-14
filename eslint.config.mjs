@@ -12,7 +12,26 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Next.js core rules and TypeScript support
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  
+  // Override for Node.js scripts directory
+  {
+    files: ['scripts/**/*.js'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-var-requires': 'off',
+    },
+  },
+  
+  // PandaCSS generated files should be ignored
+  {
+    ignores: [
+      'styled-system/**',
+      '.panda/**',
+      'panda-css/**',
+    ],
+  },
 ];
 
 export default eslintConfig;

@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-09-13T18:21:00.644Z",
+  "totals": {
+    "css": {
+      "original": "27.9 KB",
+      "gzipped": "5.91 KB",
+      "fileCount": 1
+    },
+    "javascript": {
+      "original": "817 Bytes",
+      "gzipped": "395 Bytes",
+      "fileCount": 2
+    },
+    "chunks": {
+      "original": "1.07 MB",
+      "gzipped": "334.16 KB",
+      "fileCount": 26
+    },
+    "overall": {
+      "original": "1.1 MB",
+      "gzipped": "340.46 KB",
+      "fileCount": 29
+    }
+  }
+}

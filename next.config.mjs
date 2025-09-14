@@ -1,4 +1,8 @@
-import withBundleAnalyzer from '@next/bundle-analyzer'
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -64,21 +68,16 @@ const nextConfig = {
 
     return config
   },
-  // Performance monitoring
+  // Performance monitoring and experimental features
   experimental: {
     // Optimize for smaller bundles
     optimizeCss: true,
     // Reduce JavaScript bundle size
     swcTraceProfiling: process.env.NODE_ENV === 'development',
+    // Enable webpack bundle analysis
+    bundlePagesRouterDependencies: true,
+    optimizePackageImports: ['@radix-ui/react-*', 'lucide-react'],
   },
 }
 
-// Conditionally wrap with bundle analyzer
-const configWithAnalyzer = process.env.ANALYZE === 'true'
-  ? withBundleAnalyzer({
-      enabled: true,
-      openAnalyzer: false,
-    })(nextConfig)
-  : nextConfig
-
-export default configWithAnalyzer
+export default withBundleAnalyzer(nextConfig)
