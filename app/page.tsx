@@ -532,7 +532,7 @@ const PartiesPage = ({
           ref={partiesStagger.containerRef}
           className={css({
             display: 'grid',
-            gridTemplateColumns: { base: '1', md: '2', lg: '4' },
+            gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
             gap: { base: '4', md: '6' },
             maxWidth: '7xl',
             marginX: 'auto'
@@ -551,6 +551,8 @@ const PartiesPage = ({
                 key={party.id}
                 ref={cardsParallax[index].ref}
                 className={css({
+                  display: 'flex',
+                  flexDirection: 'column',
                   border: '4px solid white',
                   backgroundColor: 'black',
                   color: 'white',
