@@ -7,8 +7,6 @@ import {
   Calendar,
   MapPin,
   Clock,
-  Menu,
-  X,
   ShoppingBag,
 } from "lucide-react";
 import Image from "next/image";
@@ -17,11 +15,12 @@ import {
   useSimpleFadeIn,
 } from "@/hooks/use-scroll-animations";
 import { useMouseParallax } from "@/hooks/use-parallax";
-import { useSimpleMagneticHover, useMagneticHover } from "@/hooks/use-magnetic-hover";
+import { useMagneticHover } from "@/hooks/use-magnetic-hover";
 import { useHorizontalSwipeNavigation } from "@/hooks/use-swipe";
 import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
+import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { css, cx } from "@/styled-system/css";
 import { PartyEvent, SocialLink } from "@/types";
 import { upcomingParties, socialLinks } from "@/data/constants";
@@ -723,14 +722,11 @@ export default function WibblyWobblazLanding() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const freeButtonRef = useRef<HTMLButtonElement>(null);
   
-  // Magnetic effect for navigation header text
-  const magnetic = useSimpleMagneticHover<HTMLDivElement>('strong');
+  // Handle mobile menu toggle
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
   
-  // Mouse parallax for header (closest layer - minimal movement)
-  const headerParallax = useMouseParallax<HTMLDivElement>(0.01, { maxOffset: 10 });
-  
-  // Mouse parallax for navigation buttons (slightly more movement than header)
-  const navButtonsParallax = useMouseParallax<HTMLDivElement>(0.015, { maxOffset: 12 });
 
   const handlePageTransition = (targetPage: "links" | "parties") => {
     if (targetPage === currentPage || isTransitioning) return;
@@ -811,206 +807,13 @@ export default function WibblyWobblazLanding() {
       flexDirection: 'column'
     })}>
       {/* Shared Navigation */}
-      <nav
-        className={css({
-          borderBottom: '4px solid',
-          borderColor: currentPage === "parties" ? "white" : "black",
-          backgroundColor: currentPage === "parties" ? "black" : "white",
-          color: currentPage === "parties" ? "white" : "black",
-          padding: { base: '4', md: '6' },
-          flexShrink: '0',
-          zIndex: 50
-        })}
-      >
-        <div className={css({
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        })}>
-          <div
-            ref={(el) => {
-              magnetic.ref.current = el;
-              headerParallax.ref.current = el;
-            }}
-            className={css({
-              fontSize: 'brand',
-              fontWeight: '900',
-              letterSpacing: 'tighter',
-              fontFamily: 'hegval',
-              whiteSpace: 'nowrap', // Prevent wrapping at all viewport sizes
-              cursor: 'pointer',
-              userSelect: 'none',
-              color: currentPage === "parties" ? "white" : "black",
-              position: 'relative',
-              zIndex: 10,
-              transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              willChange: 'transform'
-            })}
-            style={{ 
-              ...headerParallax.styles
-            }}
-          >
-            WIBBLY WOBBLAZ
-          </div>
-
-          {/* Desktop Navigation */}
-          <div 
-            ref={navButtonsParallax.ref}
-            className={css({
-              display: { base: 'none', md: 'flex' },
-              gap: '8'
-            })}
-            style={{
-              ...navButtonsParallax.styles,
-              transition: 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              willChange: 'transform',
-            }}
-          >
-            <Button
-              variant="ghost"
-              className={css({
-                fontSize: 'xl',
-                fontWeight: 'black',
-                backgroundColor: currentPage === "links" ? "black" : "transparent",
-                color: currentPage === "links" 
-                  ? "white" 
-                  : currentPage === "parties" 
-                    ? "white" 
-                    : "black",
-                _hover: currentPage === "links"
-                  ? { backgroundColor: 'gray.800' }
-                  : currentPage === "parties"
-                    ? { backgroundColor: 'white', color: 'black' }
-                    : { backgroundColor: 'black', color: 'white' }
-              })}
-              onClick={() => handlePageTransition("links")}
-              disabled={isTransitioning}
-              ripple={true}
-              clickAnimation={true}
-              magnetic={true}
-            >
-              LINKS
-            </Button>
-            <Button
-              variant="ghost"
-              className={css({
-                fontSize: 'xl',
-                fontWeight: 'black',
-                backgroundColor: currentPage === "parties" ? "white" : "transparent",
-                color: currentPage === "parties" 
-                  ? "black" 
-                  : currentPage === "links" 
-                    ? "black" 
-                    : "white",
-                _hover: currentPage === "parties"
-                  ? { backgroundColor: 'gray.200' }
-                  : currentPage === "links"
-                    ? { backgroundColor: 'black', color: 'white' }
-                    : { backgroundColor: 'white', color: 'black' }
-              })}
-              onClick={() => handlePageTransition("parties")}
-              disabled={isTransitioning}
-              ripple={true}
-              clickAnimation={true}
-              magnetic={true}
-            >
-              PARTIES
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            className={css({
-              display: { base: 'block', md: 'none' },
-              padding: '2',
-              color: currentPage === "parties" ? "white" : "black",
-              _hover: currentPage === "parties" 
-                ? { backgroundColor: 'white', color: 'black' }
-                : {}
-            })}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            ripple={true}
-            clickAnimation={true}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div
-            className={css({
-              display: { base: 'block', md: 'none' },
-              marginTop: '4',
-              borderTop: '2px solid',
-              borderColor: currentPage === "parties" ? "white" : "black",
-              paddingTop: '4'
-            })}
-          >
-            <div className={css({
-              display: 'flex',
-              flexDirection: 'column',
-              '& > * + *': {
-                marginTop: '2'
-              }
-            })}>
-              <Button
-                variant="ghost"
-                className={css({
-                  fontSize: 'xl',
-                  fontWeight: 'black',
-                  justifyContent: 'flex-start',
-                  backgroundColor: currentPage === "links" ? "black" : "transparent",
-                  color: currentPage === "links" 
-                    ? "white" 
-                    : currentPage === "parties" 
-                      ? "white" 
-                      : "black",
-                  _hover: currentPage === "links"
-                    ? {}
-                    : currentPage === "parties"
-                      ? { backgroundColor: 'white', color: 'black' }
-                      : { backgroundColor: 'black', color: 'white' }
-                })}
-                onClick={() => handlePageTransition("links")}
-                disabled={isTransitioning}
-                ripple={true}
-                clickAnimation={true}
-                magnetic={true}
-              >
-                LINKS
-              </Button>
-              <Button
-                variant="ghost"
-                className={css({
-                  fontSize: 'xl',
-                  fontWeight: 'black',
-                  justifyContent: 'flex-start',
-                  backgroundColor: currentPage === "parties" ? "white" : "transparent",
-                  color: currentPage === "parties" 
-                    ? "black" 
-                    : currentPage === "links" 
-                      ? "black" 
-                      : "white",
-                  _hover: currentPage === "parties"
-                    ? {}
-                    : currentPage === "links"
-                      ? { backgroundColor: 'black', color: 'white' }
-                      : { backgroundColor: 'white', color: 'black' }
-                })}
-                onClick={() => handlePageTransition("parties")}
-                disabled={isTransitioning}
-                ripple={true}
-                clickAnimation={true}
-                magnetic={true}
-              >
-                PARTIES
-              </Button>
-            </div>
-          </div>
-        )}
-      </nav>
+      <NavigationHeader
+        currentPage={currentPage}
+        mobileMenuOpen={mobileMenuOpen}
+        isTransitioning={isTransitioning}
+        onPageTransition={handlePageTransition}
+        onMobileMenuToggle={handleMobileMenuToggle}
+      />
 
       {/* Content Container with Conditional Rendering */}
       <div
