@@ -74,8 +74,6 @@ const nextConfig = {
     optimizeCss: true,
     // Reduce JavaScript bundle size
     swcTraceProfiling: process.env.NODE_ENV === 'development',
-    // Enable webpack bundle analysis
-    bundlePagesRouterDependencies: true,
     optimizePackageImports: ['@radix-ui/react-*', 'lucide-react'],
   },
 }
