@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   ExternalLink,
   Calendar,
   ShoppingBag,
 } from "lucide-react";
-import Image from "next/image";
 import { useStaggerReveal } from "@/hooks/use-stagger-reveal";
 import {
   useSimpleFadeIn,
@@ -21,6 +21,7 @@ import { AnimationPerformanceOverlay } from "@/components/dev/animation-performa
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { PartyCard } from "@/components/wibbly/party-card";
 import { SocialLinkButton } from "@/components/wibbly/social-link-button";
+import { ShhhAnimation } from "@/components/wibbly/shhh-animation";
 import { css, cx } from "@/styled-system/css";
 import { PartyEvent, SocialLink } from "@/types";
 import { upcomingParties, socialLinks } from "@/data/constants";
@@ -518,6 +519,20 @@ export default function WibblyWobblazLanding() {
     }
   };
 
+  // Handle Shhh animation completion
+  const handleShhhAnimationEnd = () => {
+    setShhhState("visible");
+  };
+
+  // Handle Instagram opening
+  const handleInstagramOpen = () => {
+    window.open("https://instagram.com/wibblywobblaz", "_blank");
+    // Hide the shhh SVG after 2 seconds
+    setTimeout(() => {
+      setShhhState("hidden");
+    }, 2000);
+  };
+
   // Handle keyboard events for FREE button
   const handleFreeKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -575,83 +590,12 @@ export default function WibblyWobblazLanding() {
           ),
           parties: (
             <div ref={scrollContainerRef} className={css({ height: 'full' })}>
-              {/* Accessibility live region for animation announcements */}
-              <div aria-live="polite" aria-atomic="true" className={css({ srOnly: true })}>
-                {shhhState === "animating" &&
-                  "Animation started, opening Instagram..."}
-                {shhhState === "visible" &&
-                  "Animation completed, Instagram opening in new tab"}
-              </div>
-
-              {/* Shhh SVG - stays visible after first animation */}
-              <div
-                role="img"
-                aria-label="Shhh character animation"
-                aria-hidden={shhhState === "hidden"}
-                className={cx(
-                  css({
-                    position: 'absolute',
-                    inset: '0',
-                    display: 'flex',
-                    alignItems: 'end',
-                    justifyContent: 'center',
-                    willChange: 'transform',
-                    zIndex: '50',
-                    pointerEvents: 'none'
-                  }),
-                  shhhState === "animating" ? css({ 
-                    animation: 'slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
-                    '@media (prefers-reduced-motion: reduce)': {
-                      animation: 'fadeInReduced 400ms ease-out forwards'
-                    }
-                  }) : ""
-                )}
-                style={{
-                  transform:
-                    shhhState === "animating" || shhhState === "visible"
-                      ? "translateY(0)"
-                      : "translateY(100vh)",
-                  transition: shhhState === "animating" ? "none" : "transform 600ms ease-in-out",
-                  opacity:
-                    shhhState === "animating" || shhhState === "visible" ? 1 : 0,
-                }}
-                onAnimationEnd={(e) => {
-                  if (e.animationName === "slideUpBounce") {
-                    setShhhState("visible");
-                    window.open("https://instagram.com/wibblywobblaz", "_blank");
-                    // Hide the shhh SVG after 2 seconds
-                    setTimeout(() => {
-                      setShhhState("hidden");
-                    }, 2000);
-                  }
-                }}
-              >
-                <div className={css({ 
-                  position: 'absolute',
-                  bottom: '0',
-                  left: '50%',
-                  transform: 'translateX(-50%) translateZ(0)',
-                  maxWidth: '90vw',
-                  maxHeight: '90vh',
-                  width: 'auto',
-                  height: 'auto',
-                  backfaceVisibility: 'hidden',
-                  perspective: '1000px'
-                })}>
-                  <Image
-                    src="/images/shhh.svg"
-                    alt="Shhh"
-                    width={1024}
-                    height={1024}
-                    className={css({ 
-                      width: 'auto', 
-                      height: 'auto', 
-                      objectFit: 'contain' 
-                    })}
-                    priority
-                  />
-                </div>
-              </div>
+              {/* Shhh Animation Component */}
+              <ShhhAnimation
+                state={shhhState}
+                onAnimationEnd={handleShhhAnimationEnd}
+                onInstagramOpen={handleInstagramOpen}
+              />
 
               <PartiesPage
                 upcomingParties={upcomingParties}
