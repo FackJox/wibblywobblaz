@@ -20,6 +20,7 @@ import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { PartyCard } from "@/components/wibbly/party-card";
+import { SocialLinkButton } from "@/components/wibbly/social-link-button";
 import { css, cx } from "@/styled-system/css";
 import { PartyEvent, SocialLink } from "@/types";
 import { upcomingParties, socialLinks } from "@/data/constants";
@@ -46,13 +47,8 @@ const LinksPage = ({
   const linksParallax = useMouseParallax<HTMLDivElement>(0.02, { maxOffset: 15 }); // Middle layer - moderate movement
   
   // Magnetic effects for link buttons - create individual hooks
-  const socialLink1Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
-  const socialLink2Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
   const ticketLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
   const merchLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
-  
-  // Create array of magnetic hooks for easier access
-  const socialLinksMagnetic = [socialLink1Magnetic, socialLink2Magnetic];
 
   // Store animation functions in refs to avoid dependency issues
   const staggerTriggerRef = React.useRef(allButtonsStagger.trigger);
@@ -191,30 +187,9 @@ const LinksPage = ({
               }
             })}>
               {socialLinks.map((social, index) => (
-                <GestureWrapper
+                <SocialLinkButton
                   key={social.name}
-                  longPress={{
-                    enabled: true,
-                    handlers: {
-                      onLongPress: () => {
-                        navigator.clipboard.writeText(social.url);
-                        toast({
-                          title: "Link Copied!",
-                          description: `${social.name} link copied to clipboard`,
-                          duration: 2000,
-                        });
-                      },
-                    },
-                    options: {
-                      duration: 600,
-                    },
-                  }}
-                  feedback={{
-                    enabled: true,
-                    variant: "ring",
-                    showProgress: true,
-                    color: "secondary",
-                  }}
+                  social={social}
                   style={{
                     opacity: allButtonsStagger.items[index + 1]?.opacity ?? 0,
                     transform:
@@ -223,37 +198,7 @@ const LinksPage = ({
                     transition:
                       allButtonsStagger.items[index + 1]?.transition ?? "none",
                   }}
-                >
-                  <Button
-                    ref={socialLinksMagnetic[index].ref}
-                    className={css({
-                      width: 'full',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      gap: '3',
-                      fontSize: { base: 'lg', md: 'xl' },
-                      fontWeight: 'bold',
-                      padding: '3',
-                      border: '2px solid white',
-                      backgroundColor: 'transparent',
-                      color: 'white',
-                      transition: 'all 0.2s',
-                      _hover: {
-                        backgroundColor: 'white',
-                        color: 'black'
-                      }
-                    })}
-                    onClick={() => window.open(social.url, '_blank')}
-                    ripple={true}
-                    magnetic={true}
-                    clickAnimation={true}
-                  >
-                    <social.icon size={24} />
-                    <span>{social.name.toUpperCase()}</span>
-                    <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
-                  </Button>
-                </GestureWrapper>
+                />
               ))}
             </div>
           </div>
