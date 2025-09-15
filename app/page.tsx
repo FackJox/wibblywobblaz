@@ -26,7 +26,7 @@ import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import Link from "next/link";
 import { PandaTestComponent } from "@/components/test-panda";
-import { css } from "../styled-system/css/css";
+import { css, cx } from "@/styled-system/css";
 
 interface PartyEvent {
   id: number;
@@ -109,15 +109,33 @@ const LinksPage = ({
   }, [isVisible]);
 
   return (
-    <div className="h-full bg-white flex flex-col md:flex-row relative">
+    <div className={css({
+      height: 'full',
+      backgroundColor: 'white',
+      display: 'flex',
+      flexDirection: { base: 'column', md: 'row' },
+      position: 'relative'
+    })}>
       {/* Left Side - Logo */}
-      <div className="flex items-center justify-center p-4 md:p-8 bg-white md:flex-1 md:h-full" style={{ zIndex: 1 }}>
+      <div className={css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: { base: '4', md: '8' },
+        backgroundColor: 'white',
+        flex: { md: '1' },
+        height: { md: 'full' },
+        zIndex: 1
+      })}>
         <div
           ref={(el) => {
             logoFadeIn.ref.current = el;
             logoParallax.ref.current = el;
           }}
-          className="max-w-lg w-full"
+          className={css({
+            maxWidth: 'lg',
+            width: 'full'
+          })}
           style={{
             ...logoFadeIn.styles,
             ...logoParallax.styles,
@@ -130,17 +148,34 @@ const LinksPage = ({
             alt="WIBBLY WOBBLAZ"
             width={500}
             height={400}
-            className="w-full h-auto"
+            className={css({
+              width: 'full',
+              height: 'auto'
+            })}
             priority
           />
         </div>
       </div>
 
       {/* Right Side - Links */}
-      <div className="flex-1 bg-black text-white p-4 md:p-8 flex flex-col justify-center md:h-full" style={{ zIndex: 2 }}>
+      <div className={css({
+        flex: '1',
+        backgroundColor: 'black',
+        color: 'white',
+        padding: { base: '4', md: '8' },
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: { md: 'full' },
+        zIndex: 2
+      })}>
         <div 
           ref={linksParallax.ref}
-          className="space-y-6 md:space-y-8"
+          className={css({
+            '& > * + *': {
+              marginTop: { base: '6', md: '8' }
+            }
+          })}
           style={{
             ...linksParallax.styles,
             transition: 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -148,9 +183,19 @@ const LinksPage = ({
           }}
         >
           {/* Social Links */}
-          <div className="space-y-4" ref={allButtonsStagger.containerRef}>
+          <div className={css({
+            '& > * + *': {
+              marginTop: '4'
+            }
+          })} ref={allButtonsStagger.containerRef}>
             <h2 
-              className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2"
+              className={css({
+                fontSize: { base: '2xl', md: '3xl' },
+                fontWeight: 'black',
+                letterSpacing: 'tighter',
+                borderBottom: '2px solid white',
+                paddingBottom: '2'
+              })}
               style={{
                 opacity: allButtonsStagger.items[0]?.opacity ?? 0,
                 transform:
@@ -162,7 +207,11 @@ const LinksPage = ({
             >
               FOLLOW US
             </h2>
-            <div className="space-y-3">
+            <div className={css({
+              '& > * + *': {
+                marginTop: '3'
+              }
+            })}>
               {socialLinks.map((social, index) => (
                 <GestureWrapper
                   key={social.name}
@@ -199,7 +248,24 @@ const LinksPage = ({
                 >
                   <Button
                     ref={socialLinksMagnetic[index].ref}
-                    className="w-full flex items-center justify-start space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white bg-transparent text-white"
+                    className={css({
+                      width: 'full',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      gap: '3',
+                      fontSize: { base: 'lg', md: 'xl' },
+                      fontWeight: 'bold',
+                      padding: '3',
+                      border: '2px solid white',
+                      backgroundColor: 'transparent',
+                      color: 'white',
+                      transition: 'all 0.2s',
+                      _hover: {
+                        backgroundColor: 'white',
+                        color: 'black'
+                      }
+                    })}
                     onClick={() => window.open(social.url, '_blank')}
                     ripple={true}
                     magnetic={true}
@@ -207,7 +273,7 @@ const LinksPage = ({
                   >
                     <social.icon size={24} />
                     <span>{social.name.toUpperCase()}</span>
-                    <ExternalLink size={20} className="ml-auto" />
+                    <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
                   </Button>
                 </GestureWrapper>
               ))}
@@ -215,9 +281,19 @@ const LinksPage = ({
           </div>
 
           {/* Tickets */}
-          <div className="space-y-4">
+          <div className={css({
+            '& > * + *': {
+              marginTop: '4'
+            }
+          })}>
             <h2 
-              className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2"
+              className={css({
+                fontSize: { base: '2xl', md: '3xl' },
+                fontWeight: 'black',
+                letterSpacing: 'tighter',
+                borderBottom: '2px solid white',
+                paddingBottom: '2'
+              })}
               style={{
                 opacity: allButtonsStagger.items[3]?.opacity ?? 0,
                 transform:
@@ -263,7 +339,24 @@ const LinksPage = ({
             >
               <Button
                 ref={ticketLinkMagnetic.ref}
-                className="w-full flex items-center justify-start space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white bg-transparent text-white"
+                className={css({
+                  width: 'full',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  gap: '3',
+                  fontSize: { base: 'lg', md: 'xl' },
+                  fontWeight: 'bold',
+                  padding: '3',
+                  border: '2px solid white',
+                  backgroundColor: 'transparent',
+                  color: 'white',
+                  transition: 'all 0.2s',
+                  _hover: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                  }
+                })}
                 onClick={() => window.open('https://hdfst.uk/e132325', '_blank')}
                 ripple={true}
                 magnetic={true}
@@ -277,9 +370,20 @@ const LinksPage = ({
           </div>
 
           {/* Merch */}
-          <div className="space-y-4 pb-10">
+          <div className={css({
+            '& > * + *': {
+              marginTop: '4'
+            },
+            paddingBottom: '10'
+          })}>
             <h2 
-              className="text-2xl md:text-3xl font-black tracking-tighter border-b-2 border-white pb-2"
+              className={css({
+                fontSize: { base: '2xl', md: '3xl' },
+                fontWeight: 'black',
+                letterSpacing: 'tighter',
+                borderBottom: '2px solid white',
+                paddingBottom: '2'
+              })}
               style={{
                 opacity: allButtonsStagger.items[5]?.opacity ?? 0,
                 transform:
@@ -327,7 +431,24 @@ const LinksPage = ({
             >
               <Button
                 ref={merchLinkMagnetic.ref}
-                className="w-full flex items-center justify-start space-x-3 text-lg md:text-xl font-bold hover:bg-white hover:text-black transition-all duration-200 p-3 border-2 border-white bg-transparent text-white"
+                className={css({
+                  width: 'full',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  gap: '3',
+                  fontSize: { base: 'lg', md: 'xl' },
+                  fontWeight: 'bold',
+                  padding: '3',
+                  border: '2px solid white',
+                  backgroundColor: 'transparent',
+                  color: 'white',
+                  transition: 'all 0.2s',
+                  _hover: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                  }
+                })}
                 onClick={() => window.open('https://merch.wibblywobblaz.xyz', '_blank')}
                 ripple={true}
                 magnetic={true}
@@ -398,11 +519,24 @@ const PartiesPage = ({
   }, [isVisible]);
 
   return (
-    <div className="h-full bg-black text-white overflow-y-auto">
-      <div className="parties-content p-4 md:p-8">
+    <div className={css({
+      height: 'full',
+      backgroundColor: 'black',
+      color: 'white',
+      overflowY: 'auto'
+    })}>
+      <div className={css({
+        padding: { base: '4', md: '8' }
+      })}>
         <div
           ref={partiesStagger.containerRef}
-          className="parties-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto"
+          className={css({
+            display: 'grid',
+            gridTemplateColumns: { base: '1', md: '2', lg: '4' },
+            gap: { base: '4', md: '6' },
+            maxWidth: '7xl',
+            marginX: 'auto'
+          })}
         >
           {upcomingParties.map((party: PartyEvent, index: number) => {
             // Combine parallax and stagger transforms
@@ -416,7 +550,17 @@ const PartiesPage = ({
               <div
                 key={party.id}
                 ref={cardsParallax[index].ref}
-                className="parties-card border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-all duration-300 group backdrop-blur-sm bg-opacity-90"
+                className={css({
+                  border: '4px solid white',
+                  backgroundColor: 'black',
+                  color: 'white',
+                  transition: 'all 0.3s',
+                  backdropFilter: 'blur(0.125rem)',
+                  _hover: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                  }
+                })}
                 style={{
                   opacity: partiesStagger.items[index]?.opacity ?? 0,
                   transform: combinedTransform,
@@ -425,23 +569,53 @@ const PartiesPage = ({
                 }}
               >
               {/* Poster */}
-              <div className="aspect-[3/4] border-b-4 border-white relative overflow-hidden">
+              <div className={css({
+                aspectRatio: '3/4',
+                borderBottom: '4px solid white',
+                position: 'relative',
+                overflow: 'hidden'
+              })}>
                 <Image
                   src={party.poster || "/images/flyer4.png"}
                   alt={party.title}
                   fill
-                  className="object-cover group-hover:invert transition-all duration-200"
+                  className={css({
+                    objectFit: 'cover',
+                    transition: 'all 0.2s',
+                    '.group:hover &': {
+                      filter: 'invert(1)'
+                    }
+                  })}
                 />
               </div>
 
               {/* Event Details */}
-              <div className="p-4 space-y-3">
-                <h3 className="text-lg md:text-xl font-black tracking-tighter">
+              <div className={css({
+                padding: '4',
+                '& > * + *': {
+                  marginTop: '3'
+                }
+              })}>
+                <h3 className={css({
+                  fontSize: { base: 'lg', md: 'xl' },
+                  fontWeight: 'black',
+                  letterSpacing: 'tighter'
+                })}>
                   {party.title}
                 </h3>
 
-                <div className="space-y-2 text-sm md:text-base font-bold">
-                  <div className="flex items-center space-x-2">
+                <div className={css({
+                  '& > * + *': {
+                    marginTop: '2'
+                  },
+                  fontSize: { base: 'sm', md: 'base' },
+                  fontWeight: 'bold'
+                })}>
+                  <div className={css({
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '2'
+                  })}>
                     <Calendar size={16} />
                     <span>
                       {new Date(party.date)
@@ -454,24 +628,51 @@ const PartiesPage = ({
                     </span>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  <div className={css({
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '2'
+                  })}>
                     <Clock size={16} />
                     <span>{party.time}</span>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  <div className={css({
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '2'
+                  })}>
                     <MapPin size={16} />
                     <span>{party.venue}</span>
                   </div>
 
-                  <div className="text-xs font-black tracking-wider">
+                  <div className={css({
+                    fontSize: 'xs',
+                    fontWeight: 'black',
+                    letterSpacing: 'wider'
+                  })}>
                     {party.location}
                   </div>
                 </div>
 
                 <Button
                   ref={ticketButtonsMagnetic[index].ref}
-                  className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black group-hover:bg-black group-hover:text-white group-hover:border-black font-black"
+                  className={css({
+                    width: 'full',
+                    backgroundColor: 'transparent',
+                    border: '2px solid white',
+                    color: 'white',
+                    fontWeight: 'black',
+                    _hover: {
+                      backgroundColor: 'white',
+                      color: 'black'
+                    },
+                    '.group:hover &': {
+                      backgroundColor: 'black',
+                      color: 'white',
+                      borderColor: 'black'
+                    }
+                  })}
                   onClick={() => window.open('https://hdfst.uk/e132325', '_blank')}
                   ripple={true}
                   clickAnimation={true}
@@ -605,13 +806,30 @@ export default function WibblyWobblazLanding() {
   ];
 
   return (
-    <div className="fixed inset-0 overflow-hidden flex flex-col">
+    <div className={css({
+      position: 'fixed',
+      inset: '0',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
+    })}>
       {/* Shared Navigation */}
       <nav
-        className={`sticky-nav border-b-4 ${currentPage === "parties" ? "border-white bg-black text-white" : "border-black bg-white text-black"} p-4 md:p-6 flex-shrink-0`}
-        style={{ zIndex: 50 }}
+        className={css({
+          borderBottom: '4px solid',
+          borderColor: currentPage === "parties" ? "white" : "black",
+          backgroundColor: currentPage === "parties" ? "black" : "white",
+          color: currentPage === "parties" ? "white" : "black",
+          padding: { base: '4', md: '6' },
+          flexShrink: '0',
+          zIndex: 50
+        })}
       >
-        <div className="flex justify-between items-center">
+        <div className={css({
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        })}>
           <div
             ref={(el) => {
               magnetic.ref.current = el;
@@ -641,7 +859,10 @@ export default function WibblyWobblazLanding() {
           {/* Desktop Navigation */}
           <div 
             ref={navButtonsParallax.ref}
-            className="hidden md:flex space-x-8"
+            className={css({
+              display: { base: 'none', md: 'flex' },
+              gap: '8'
+            })}
             style={{
               ...navButtonsParallax.styles,
               transition: 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -650,13 +871,21 @@ export default function WibblyWobblazLanding() {
           >
             <Button
               variant="ghost"
-              className={`text-xl font-black ${
-                currentPage === "links"
-                  ? "bg-black text-white hover:bg-gray-800"
+              className={css({
+                fontSize: 'xl',
+                fontWeight: 'black',
+                backgroundColor: currentPage === "links" ? "black" : "transparent",
+                color: currentPage === "links" 
+                  ? "white" 
+                  : currentPage === "parties" 
+                    ? "white" 
+                    : "black",
+                _hover: currentPage === "links"
+                  ? { backgroundColor: 'gray.800' }
                   : currentPage === "parties"
-                    ? "text-white hover:bg-white hover:text-black"
-                    : "hover:bg-black hover:text-white"
-              }`}
+                    ? { backgroundColor: 'white', color: 'black' }
+                    : { backgroundColor: 'black', color: 'white' }
+              })}
               onClick={() => handlePageTransition("links")}
               disabled={isTransitioning}
               ripple={true}
@@ -667,13 +896,21 @@ export default function WibblyWobblazLanding() {
             </Button>
             <Button
               variant="ghost"
-              className={`text-xl font-black ${
-                currentPage === "parties"
-                  ? "bg-white text-black hover:bg-gray-200"
+              className={css({
+                fontSize: 'xl',
+                fontWeight: 'black',
+                backgroundColor: currentPage === "parties" ? "white" : "transparent",
+                color: currentPage === "parties" 
+                  ? "black" 
+                  : currentPage === "links" 
+                    ? "black" 
+                    : "white",
+                _hover: currentPage === "parties"
+                  ? { backgroundColor: 'gray.200' }
                   : currentPage === "links"
-                    ? "text-black hover:bg-black hover:text-white"
-                    : "hover:bg-white hover:text-black"
-              }`}
+                    ? { backgroundColor: 'black', color: 'white' }
+                    : { backgroundColor: 'white', color: 'black' }
+              })}
               onClick={() => handlePageTransition("parties")}
               disabled={isTransitioning}
               ripple={true}
@@ -687,7 +924,14 @@ export default function WibblyWobblazLanding() {
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            className={`md:hidden p-2 ${currentPage === "parties" ? "text-white hover:bg-white hover:text-black" : ""}`}
+            className={css({
+              display: { base: 'block', md: 'none' },
+              padding: '2',
+              color: currentPage === "parties" ? "white" : "black",
+              _hover: currentPage === "parties" 
+                ? { backgroundColor: 'white', color: 'black' }
+                : {}
+            })}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             ripple={true}
             clickAnimation={true}
@@ -699,18 +943,39 @@ export default function WibblyWobblazLanding() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div
-            className={`md:hidden mt-4 border-t-2 ${currentPage === "parties" ? "border-white" : "border-black"} pt-4`}
+            className={css({
+              display: { base: 'block', md: 'none' },
+              marginTop: '4',
+              borderTop: '2px solid',
+              borderColor: currentPage === "parties" ? "white" : "black",
+              paddingTop: '4'
+            })}
           >
-            <div className="flex flex-col space-y-2">
+            <div className={css({
+              display: 'flex',
+              flexDirection: 'column',
+              '& > * + *': {
+                marginTop: '2'
+              }
+            })}>
               <Button
                 variant="ghost"
-                className={`text-xl font-black justify-start ${
-                  currentPage === "links"
-                    ? "bg-black text-white"
+                className={css({
+                  fontSize: 'xl',
+                  fontWeight: 'black',
+                  justifyContent: 'flex-start',
+                  backgroundColor: currentPage === "links" ? "black" : "transparent",
+                  color: currentPage === "links" 
+                    ? "white" 
+                    : currentPage === "parties" 
+                      ? "white" 
+                      : "black",
+                  _hover: currentPage === "links"
+                    ? {}
                     : currentPage === "parties"
-                      ? "text-white hover:bg-white hover:text-black"
-                      : "hover:bg-black hover:text-white"
-                }`}
+                      ? { backgroundColor: 'white', color: 'black' }
+                      : { backgroundColor: 'black', color: 'white' }
+                })}
                 onClick={() => handlePageTransition("links")}
                 disabled={isTransitioning}
                 ripple={true}
@@ -721,13 +986,22 @@ export default function WibblyWobblazLanding() {
               </Button>
               <Button
                 variant="ghost"
-                className={`text-xl font-black justify-start ${
-                  currentPage === "parties"
-                    ? "bg-white text-black"
+                className={css({
+                  fontSize: 'xl',
+                  fontWeight: 'black',
+                  justifyContent: 'flex-start',
+                  backgroundColor: currentPage === "parties" ? "white" : "transparent",
+                  color: currentPage === "parties" 
+                    ? "black" 
+                    : currentPage === "links" 
+                      ? "black" 
+                      : "white",
+                  _hover: currentPage === "parties"
+                    ? {}
                     : currentPage === "links"
-                      ? "text-black hover:bg-black hover:text-white"
-                      : "hover:bg-white hover:text-black"
-                }`}
+                      ? { backgroundColor: 'black', color: 'white' }
+                      : { backgroundColor: 'white', color: 'black' }
+                })}
                 onClick={() => handlePageTransition("parties")}
                 disabled={isTransitioning}
                 ripple={true}
@@ -744,7 +1018,11 @@ export default function WibblyWobblazLanding() {
       {/* Content Container with Conditional Rendering */}
       <div
         ref={containerRef}
-        className="flex-1 relative overflow-hidden"
+        className={css({
+          flex: '1',
+          position: 'relative',
+          overflow: 'hidden'
+        })}
         onTouchStart={(e) => gestureHandlers.onTouchStart(e.nativeEvent)}
         onTouchMove={(e) => gestureHandlers.onTouchMove(e.nativeEvent)}
         onTouchEnd={(e) => gestureHandlers.onTouchEnd(e.nativeEvent)}
@@ -754,12 +1032,19 @@ export default function WibblyWobblazLanding() {
         onMouseUp={(e) => gestureHandlers.onMouseUp(e.nativeEvent)}
         onMouseLeave={(e) => gestureHandlers.onMouseLeave(e.nativeEvent)}
       >
-        <div className="relative w-full h-full">
+        <div className={css({
+          position: 'relative',
+          width: 'full',
+          height: 'full'
+        })}>
           {/* Links Page */}
           <div
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-              currentPage === "links" ? "translate-x-0" : "-translate-x-full"
-            }`}
+            className={css({
+              position: 'absolute',
+              inset: '0',
+              transition: 'transform 0.7s ease-in-out',
+              transform: currentPage === "links" ? 'translateX(0)' : 'translateX(-100%)'
+            })}
           >
             <LinksPage
               socialLinks={socialLinks}
@@ -769,9 +1054,12 @@ export default function WibblyWobblazLanding() {
 
           {/* Parties Page */}
           <div
-            className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-              currentPage === "parties" ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={css({
+              position: 'absolute',
+              inset: '0',
+              transition: 'transform 0.7s ease-in-out',
+              transform: currentPage === "parties" ? 'translateX(0)' : 'translateX(100%)'
+            })}
           >
             <PartiesPage
               upcomingParties={upcomingParties}
@@ -782,7 +1070,12 @@ export default function WibblyWobblazLanding() {
       </div>
 
       {/* PandaCSS Test Component - for hot reload testing */}
-      <div className="absolute top-0 right-0 z-50">
+      <div className={css({
+        position: 'absolute',
+        top: '0',
+        right: '0',
+        zIndex: '50'
+      })}>
         <PandaTestComponent />
       </div>
 
