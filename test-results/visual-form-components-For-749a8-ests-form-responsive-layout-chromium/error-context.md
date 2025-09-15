@@ -1,0 +1,182 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Form Recipe System Demo" [level=1] [ref=e6]
+      - paragraph [ref=e7]: Comprehensive demonstration of all form component recipes with their variants.
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: Contact Form
+        - generic [ref=e11]: Complete form with validation states and various input types
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Full Name
+          - textbox "Full Name" [ref=e17]
+          - paragraph [ref=e18]: This will be displayed on your public profile.
+        - generic [ref=e19]:
+          - generic [ref=e20]: Email Address
+          - textbox "Email Address" [ref=e22]
+          - paragraph [ref=e23]: We'll never share your email with anyone else.
+          - paragraph [ref=e24]: Please enter a valid email address.
+        - generic [ref=e25]:
+          - generic [ref=e26]: Phone Number
+          - textbox "Phone Number" [ref=e28]
+          - paragraph [ref=e29]: Optional - for urgent inquiries only.
+          - paragraph [ref=e30]: Phone number format is valid.
+        - generic [ref=e31]:
+          - generic [ref=e32]: Category
+          - combobox "Category" [ref=e34] [cursor=pointer]:
+            - generic: Select a category
+            - img [ref=e35] [cursor=pointer]
+          - combobox [ref=e37]
+          - paragraph [ref=e38]: Choose the most appropriate category for your inquiry.
+          - paragraph [ref=e39]: Please select a category to help us route your message.
+        - generic [ref=e40]:
+          - generic [ref=e41]: Message
+          - textbox "Message" [ref=e43]
+          - paragraph [ref=e44]: Provide as much detail as possible to help us assist you.
+        - generic [ref=e45]:
+          - generic [ref=e46]: Biography
+          - textbox "Biography" [ref=e48]
+          - paragraph [ref=e49]: Optional extended biography for your profile.
+        - button "Submit Form" [ref=e50] [cursor=pointer]
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: Small Form
+          - generic [ref=e55]: Compact form controls
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]: Name
+            - textbox "Small input" [ref=e60]
+            - paragraph [ref=e61]: Small description
+          - generic [ref=e62]:
+            - generic [ref=e63]: Category
+            - combobox [ref=e64] [cursor=pointer]:
+              - generic: Small select
+              - img [ref=e65] [cursor=pointer]
+          - generic [ref=e67]:
+            - generic [ref=e68]: Message
+            - textbox "Small textarea" [ref=e69]
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: Medium Form
+          - generic [ref=e73]: Standard form controls
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - generic [ref=e77]: Name
+            - textbox "Medium input" [ref=e78]
+            - paragraph [ref=e79]: Medium description
+          - generic [ref=e80]:
+            - generic [ref=e81]: Category
+            - combobox [ref=e82] [cursor=pointer]:
+              - generic: Medium select
+              - img [ref=e83] [cursor=pointer]
+          - generic [ref=e85]:
+            - generic [ref=e86]: Message
+            - textbox "Medium textarea" [ref=e87]
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - generic [ref=e90]: Large Form
+          - generic [ref=e91]: Spacious form controls
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e95]: Name
+            - textbox "Large input" [ref=e96]
+            - paragraph [ref=e97]: Large description with more space
+          - generic [ref=e98]:
+            - generic [ref=e99]: Category
+            - combobox [ref=e100] [cursor=pointer]:
+              - generic: Large select
+              - img [ref=e101] [cursor=pointer]
+          - generic [ref=e103]:
+            - generic [ref=e104]: Message
+            - textbox "Large textarea" [ref=e105]
+    - generic [ref=e106]:
+      - generic [ref=e107]:
+        - generic [ref=e108]: Validation States
+        - generic [ref=e109]: Examples of different form validation states
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - generic [ref=e114]: Default State
+            - textbox "Normal input" [ref=e115]
+            - paragraph [ref=e116]: This field is in normal state
+          - generic [ref=e117]:
+            - generic [ref=e118]: Error State
+            - textbox "Error input" [ref=e119]
+            - paragraph [ref=e120]: This field has an error
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e123]: Success State
+            - textbox "Success input" [ref=e124]
+            - paragraph [ref=e125]: This field is valid
+          - generic [ref=e126]:
+            - generic [ref=e127]: Warning State
+            - textbox "Warning input" [ref=e128]
+            - paragraph [ref=e129]: This field has a warning
+    - generic [ref=e130]:
+      - generic [ref=e131]:
+        - generic [ref=e132]: Form Recipe System
+        - generic [ref=e133]: Complete form component recipes with PandaCSS
+      - generic [ref=e135]:
+        - generic [ref=e136]:
+          - heading "Available Form Recipes:" [level=4] [ref=e137]
+          - list [ref=e138]:
+            - listitem [ref=e139]:
+              - strong [ref=e140]: "FormItem:"
+              - text: Container with spacing variants (tight, normal, loose)
+            - listitem [ref=e141]:
+              - strong [ref=e142]: "FormLabel:"
+              - text: Labels with state and size variants
+            - listitem [ref=e143]:
+              - strong [ref=e144]: "FormControl:"
+              - text: Wrapper for form inputs
+            - listitem [ref=e145]:
+              - strong [ref=e146]: "FormDescription:"
+              - text: Help text with size variants
+            - listitem [ref=e147]:
+              - strong [ref=e148]: "FormMessage:"
+              - text: Validation messages with state and size variants
+            - listitem [ref=e149]:
+              - strong [ref=e150]: "Input:"
+              - text: Text inputs with state and size variants
+            - listitem [ref=e151]:
+              - strong [ref=e152]: "Textarea:"
+              - text: Multi-line inputs with state and size variants
+            - listitem [ref=e153]:
+              - strong [ref=e154]: "SelectTrigger:"
+              - text: Select dropdowns with state and size variants
+        - generic [ref=e155]:
+          - heading "Validation States:" [level=4] [ref=e156]
+          - list [ref=e157]:
+            - listitem [ref=e158]:
+              - strong [ref=e159]: "default:"
+              - text: Normal state
+            - listitem [ref=e160]:
+              - strong [ref=e161]: "error:"
+              - text: Error state with destructive colors
+            - listitem [ref=e162]:
+              - strong [ref=e163]: "success:"
+              - text: Success state with green colors
+            - listitem [ref=e164]:
+              - strong [ref=e165]: "warning:"
+              - text: Warning state with amber colors
+        - generic [ref=e166]:
+          - heading "Size Variants:" [level=4] [ref=e167]
+          - list [ref=e168]:
+            - listitem [ref=e169]:
+              - strong [ref=e170]: "sm:"
+              - text: Small, compact forms
+            - listitem [ref=e171]:
+              - strong [ref=e172]: "md:"
+              - text: Medium, standard forms
+            - listitem [ref=e173]:
+              - strong [ref=e174]: "lg:"
+              - text: Large, spacious forms
+  - button "Open Next.js Dev Tools" [ref=e180] [cursor=pointer]:
+    - img [ref=e181] [cursor=pointer]
+  - alert [ref=e184]
+```

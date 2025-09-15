@@ -3,11 +3,16 @@
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check } from "lucide-react"
+import { cx, css } from "../../styled-system/css"
+import { checkbox, checkboxIndicator } from "../../styled-system/recipes"
+import { type CheckboxVariantProps } from "../../styled-system/recipes"
 
-import { cn } from "@/lib/utils"
 import { useRipple } from "@/hooks/use-ripple"
 
-interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+export interface CheckboxProps 
+  extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
+    CheckboxVariantProps {
+  className?: string
   /** Enable ripple effect (default: true) */
   ripple?: boolean
 }
@@ -15,7 +20,7 @@ interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPr
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, ripple = true, disabled, ...props }, ref) => {
+>(({ className, size, ripple = true, disabled, ...props }, ref) => {
   const rippleHook = useRipple({
     preset: 'icon',
     centerOrigin: true,
@@ -38,8 +43,8 @@ const Checkbox = React.forwardRef<
   return (
     <CheckboxPrimitive.Root
       ref={mergedRef}
-      className={cn(
-        "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+      className={cx(
+        checkbox({ size }),
         ripple && !disabled && "ripple-container relative overflow-hidden active-micro-scale",
         className
       )}
@@ -48,9 +53,12 @@ const Checkbox = React.forwardRef<
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className={cn("flex items-center justify-center text-current")}
+        className={checkboxIndicator()}
       >
-        <Check className="h-4 w-4" />
+        <Check className={css({
+          h: size === 'sm' ? '3' : size === 'lg' ? '4' : '4',
+          w: size === 'sm' ? '3' : size === 'lg' ? '4' : '4'
+        })} />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

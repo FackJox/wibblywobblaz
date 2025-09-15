@@ -1,43 +1,13 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-
-import { cn } from "@/lib/utils"
+import { cx } from "@/styled-system/css"
+import { button, type ButtonVariantProps } from "@/styled-system/recipes"
 import { useRipple, useClickAnimation, type UseRippleProps } from "@/hooks/use-ripple"
 import { useMagneticHover, type UseMagneticHoverConfig } from "@/hooks/use-magnetic-hover"
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 ripple-container relative overflow-hidden",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  }
-)
-
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    ButtonVariantProps {
   asChild?: boolean
   /** Enable ripple effect (default: true) */
   ripple?: boolean
@@ -134,6 +104,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     // Merge refs
     const mergedRef = React.useCallback((element: HTMLButtonElement | null) => {
+      // Debug logging for button dimensions
+      if (element) {
+        const computedStyle = window.getComputedStyle(element)
+        console.log('[DEBUGBUT] Button mounted:', {
+          element,
+          width: element.offsetWidth,
+          height: element.offsetHeight,
+          display: computedStyle.display,
+          position: computedStyle.position,
+          overflow: computedStyle.overflow,
+          className: element.className,
+          variant,
+          size
+        })
+      }
+      
       // Set all hook refs
       if (rippleHook.rippleRef) {
         (rippleHook.rippleRef as React.MutableRefObject<HTMLButtonElement | null>).current = element
@@ -151,22 +137,57 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       } else if (ref) {
         ref.current = element
       }
-    }, [rippleHook.rippleRef, clickAnimationHook.clickRef, magneticHook.ref, ref])
+    }, [rippleHook.rippleRef, clickAnimationHook.clickRef, magneticHook.ref, ref, variant, size])
     
     // Merge all event handlers
     const handleMouseDown = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-      console.log('[BUTTON] handleMouseDown triggered')
+      console.log('[DEBUGBUT] handleMouseDown triggered')
+      const target = event.currentTarget
+      const beforeStyle = window.getComputedStyle(target)
+      const beforeWidth = target.offsetWidth
+      
+      console.log('[DEBUGBUT] Before click:', {
+        width: beforeWidth,
+        display: beforeStyle.display,
+        position: beforeStyle.position,
+        overflow: beforeStyle.overflow
+      })
+      
       if (!disabled) {
         // Call ripple handler
         if (ripple) {
           const rippleProps = rippleHook.getRippleProps()
-          console.log('[BUTTON] Calling ripple onMouseDown', rippleProps)
+          console.log('[DEBUGBUT] Calling ripple onMouseDown')
           rippleProps.onMouseDown?.(event as React.MouseEvent<HTMLElement>)
+          
+          // Check after ripple
+          setTimeout(() => {
+            const afterStyle = window.getComputedStyle(target)
+            const afterWidth = target.offsetWidth
+            console.log('[DEBUGBUT] After ripple:', {
+              width: afterWidth,
+              widthChanged: afterWidth !== beforeWidth,
+              display: afterStyle.display,
+              position: afterStyle.position,
+              overflow: afterStyle.overflow
+            })
+          }, 10)
         }
         // Call click animation handler
         if (clickAnimation) {
           const clickProps = clickAnimationHook.getClickProps()
           clickProps.onMouseDown?.()
+          
+          // Check after click animation
+          setTimeout(() => {
+            const afterStyle = window.getComputedStyle(target)
+            const afterWidth = target.offsetWidth
+            console.log('[DEBUGBUT] After clickAnimation:', {
+              width: afterWidth,
+              widthChanged: afterWidth !== beforeWidth,
+              transform: afterStyle.transform
+            })
+          }, 20)
         }
       }
       // Call parent's handler if exists
@@ -192,7 +213,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cx(button({ variant, size }), className)}
         ref={mergedRef}
         onClick={handleClick}
         onMouseDown={handleMouseDown}
@@ -205,4 +226,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 )
 Button.displayName = "Button"
 
-export { Button, buttonVariants }
+export { Button, button as buttonRecipe }
+
+// Legacy export for compatibility
+export const buttonVariants = button

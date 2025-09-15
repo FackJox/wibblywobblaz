@@ -4,7 +4,7 @@ import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
 import { Dot } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { css, cx } from "../../styled-system/css"
 
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
@@ -12,11 +12,25 @@ const InputOTP = React.forwardRef<
 >(({ className, containerClassName, ...props }, ref) => (
   <OTPInput
     ref={ref}
-    containerClassName={cn(
-      "flex items-center gap-2 has-[:disabled]:opacity-50",
+    containerClassName={cx(
+      css({
+        display: "flex",
+        alignItems: "center",
+        gap: "2",
+        "&:has([disabled])": {
+          opacity: "0.5"
+        }
+      }),
       containerClassName
     )}
-    className={cn("disabled:cursor-not-allowed", className)}
+    className={cx(
+      css({
+        "&:disabled": {
+          cursor: "not-allowed"
+        }
+      }),
+      className
+    )}
     {...props}
   />
 ))
@@ -26,7 +40,13 @@ const InputOTPGroup = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex items-center", className)} {...props} />
+  <div ref={ref} className={cx(
+    css({
+      display: "flex",
+      alignItems: "center"
+    }),
+    className
+  )} {...props} />
 ))
 InputOTPGroup.displayName = "InputOTPGroup"
 
@@ -40,17 +60,56 @@ const InputOTPSlot = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn(
-        "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-        isActive && "z-10 ring-2 ring-ring ring-offset-background",
+      className={cx(
+        css({
+          position: "relative",
+          display: "flex",
+          height: "10",
+          width: "10",
+          alignItems: "center",
+          justifyContent: "center",
+          borderTop: "1px solid",
+          borderBottom: "1px solid",
+          borderRight: "1px solid",
+          borderColor: "input",
+          fontSize: "sm",
+          transition: "all",
+          "&:first-child": {
+            borderTopLeftRadius: "md",
+            borderBottomLeftRadius: "md",
+            borderLeft: "1px solid",
+            borderLeftColor: "input"
+          },
+          "&:last-child": {
+            borderTopRightRadius: "md",
+            borderBottomRightRadius: "md"
+          }
+        }),
+        isActive && css({
+          zIndex: "10",
+          boxShadow: "0 0 0 2px hsl(var(--ring))"
+        }),
         className
       )}
       {...props}
     >
       {char}
       {hasFakeCaret && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
+        <div className={css({
+          pointerEvents: "none",
+          position: "absolute",
+          inset: "0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        })}>
+          <div className={css({
+            height: "4",
+            width: "1px",
+            animationName: "caret-blink",
+            backgroundColor: "foreground",
+            animationDuration: "1000ms"
+          })} />
         </div>
       )}
     </div>

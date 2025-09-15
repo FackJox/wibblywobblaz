@@ -1,15 +1,15 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { css, cx } from "@/styled-system/css"
 
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className={css({ position: "relative", width: "100%", overflow: "auto" })}>
     <table
       ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
+      className={cx(css({ width: "100%", captionSide: "bottom", fontSize: "0.875rem" }), className)}
       {...props}
     />
   </div>
@@ -20,7 +20,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+  <thead ref={ref} className={cx(css({ '& tr': { borderBottom: "1px solid token(colors.border)" } }), className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -30,7 +30,7 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
+    className={cx(css({ '& tr:last-child': { border: "0" } }), className)}
     {...props}
   />
 ))
@@ -42,8 +42,14 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn(
-      "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+    className={cx(
+      css({
+        borderTop: "1px solid token(colors.border)",
+        backgroundColor: "muted",
+        opacity: "0.5",
+        fontWeight: "500",
+        '& > tr:last-child': { borderBottom: "0" }
+      }),
       className
     )}
     {...props}
@@ -57,8 +63,13 @@ const TableRow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tr
     ref={ref}
-    className={cn(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+    className={cx(
+      css({
+        borderBottom: "1px solid token(colors.border)",
+        transition: "colors",
+        _hover: { backgroundColor: "muted", opacity: "0.5" },
+        '&[data-state=selected]': { backgroundColor: "muted" }
+      }),
       className
     )}
     {...props}
@@ -72,8 +83,16 @@ const TableHead = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <th
     ref={ref}
-    className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+    className={cx(
+      css({
+        height: "3rem",
+        paddingX: "1rem",
+        textAlign: "left",
+        verticalAlign: "middle",
+        fontWeight: "500",
+        color: "muted.foreground",
+        '&:has([role=checkbox])': { paddingRight: "0" }
+      }),
       className
     )}
     {...props}
@@ -87,7 +106,14 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
+    className={cx(
+      css({
+        padding: "1rem",
+        verticalAlign: "middle",
+        '&:has([role=checkbox])': { paddingRight: "0" }
+      }),
+      className
+    )}
     {...props}
   />
 ))
@@ -99,7 +125,14 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-4 text-sm text-muted-foreground", className)}
+    className={cx(
+      css({
+        marginTop: "1rem",
+        fontSize: "0.875rem",
+        color: "muted.foreground"
+      }),
+      className
+    )}
     {...props}
   />
 ))

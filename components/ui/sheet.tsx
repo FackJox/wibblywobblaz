@@ -5,7 +5,7 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cx, css } from "../../styled-system/css"
 
 const Sheet = SheetPrimitive.Root
 
@@ -20,8 +20,15 @@ const SheetOverlay = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
-    className={cn(
-      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+    className={cx(
+      css({
+        position: "fixed",
+        inset: "0",
+        zIndex: "50",
+        bg: "black/80",
+        "&[data-state=open]": { animationName: "in", animationFillMode: "forwards", opacity: "1" },
+        "&[data-state=closed]": { animationName: "out", animationFillMode: "forwards", opacity: "0" }
+      }),
       className
     )}
     {...props}
@@ -61,13 +68,78 @@ const SheetContent = React.forwardRef<
     <SheetOverlay />
     <SheetPrimitive.Content
       ref={ref}
-      className={cn(sheetVariants({ side }), className)}
+      className={cx(
+        css({
+          position: "fixed",
+          zIndex: "50",
+          gap: "4",
+          bg: "background",
+          padding: "6",
+          boxShadow: "lg",
+          transition: "all",
+          transitionTimingFunction: "ease-in-out",
+          "&[data-state=open]": { animationName: "in", animationDuration: "500ms", animationFillMode: "forwards" },
+          "&[data-state=closed]": { animationName: "out", animationDuration: "300ms", animationFillMode: "forwards" }
+        }),
+        // Side-specific styles using PandaCSS conditionals
+        side === "top" && css({
+          insetX: "0",
+          top: "0",
+          borderBottom: "1px solid",
+          borderColor: "border",
+          "&[data-state=closed]": { transform: "translateY(-100%)" },
+          "&[data-state=open]": { transform: "translateY(0)" }
+        }),
+        side === "bottom" && css({
+          insetX: "0",
+          bottom: "0",
+          borderTop: "1px solid",
+          borderColor: "border",
+          "&[data-state=closed]": { transform: "translateY(100%)" },
+          "&[data-state=open]": { transform: "translateY(0)" }
+        }),
+        side === "left" && css({
+          insetY: "0",
+          left: "0",
+          height: "full",
+          width: "3/4",
+          borderRight: "1px solid",
+          borderColor: "border",
+          "&[data-state=closed]": { transform: "translateX(-100%)" },
+          "&[data-state=open]": { transform: "translateX(0)" },
+          sm: { maxWidth: "sm" }
+        }),
+        side === "right" && css({
+          insetY: "0",
+          right: "0",
+          height: "full",
+          width: "3/4",
+          borderLeft: "1px solid",
+          borderColor: "border",
+          "&[data-state=closed]": { transform: "translateX(100%)" },
+          "&[data-state=open]": { transform: "translateX(0)" },
+          sm: { maxWidth: "sm" }
+        }),
+        className
+      )}
       {...props}
     >
       {children}
-      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+      <SheetPrimitive.Close className={css({
+        position: "absolute",
+        right: "4",
+        top: "4",
+        borderRadius: "sm",
+        opacity: "0.7",
+        ringOffset: "2",
+        transition: "opacity",
+        _hover: { opacity: "1" },
+        _focus: { outline: "none", ringWidth: "2", ringColor: "ring", ringOffset: "2" },
+        _disabled: { pointerEvents: "none" },
+        "&[data-state=open]": { bg: "secondary" }
+      })}>
+        <X className={css({ height: "4", width: "4" })} />
+        <span className={css({ srOnly: true })}>Close</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>
@@ -79,8 +151,14 @@ const SheetHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      "flex flex-col space-y-2 text-center sm:text-left",
+    className={cx(
+      css({
+        display: "flex",
+        flexDirection: "column",
+        gap: "2",
+        textAlign: "center",
+        sm: { textAlign: "left" }
+      }),
       className
     )}
     {...props}
@@ -93,8 +171,12 @@ const SheetFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+    className={cx(
+      css({
+        display: "flex",
+        flexDirection: "column-reverse",
+        sm: { flexDirection: "row", justifyContent: "flex-end", gap: "2" }
+      }),
       className
     )}
     {...props}
@@ -108,7 +190,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold text-foreground", className)}
+    className={cx(css({ fontSize: "lg", fontWeight: "semibold", color: "foreground" }), className)}
     {...props}
   />
 ))
@@ -120,7 +202,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cx(css({ fontSize: "sm", color: "muted.foreground" }), className)}
     {...props}
   />
 ))

@@ -238,19 +238,57 @@ export function useClickAnimation<T extends HTMLElement = HTMLElement>(props: Us
 
     const element = elementRef.current
     isAnimatingRef.current = true
+    
+    console.log('[DEBUGBUT] ClickAnimation starting:', {
+      element,
+      beforeTransform: element.style.transform,
+      scaleDown
+    })
 
-    // Apply click animation
-    element.style.transform = `scale(${scaleDown})`
+    // Apply click animation while preserving existing transforms
+    const currentTransform = element.style.transform || ''
+    const hasTranslate = currentTransform.includes('translate')
+    
+    // Preserve any existing translate and apply scale
+    if (hasTranslate) {
+      // Remove any existing scale and add new one
+      const cleanedTransform = currentTransform.replace(/scale\([^)]*\)/g, '').trim()
+      element.style.transform = `${cleanedTransform} scale(${scaleDown})`
+    } else {
+      element.style.transform = `scale(${scaleDown})`
+    }
     element.style.transition = `transform ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`
+    
+    console.log('[DEBUGBUT] ClickAnimation applied:', {
+      afterTransform: element.style.transform,
+      transition: element.style.transition
+    })
 
     // Reset after duration
     setTimeout(() => {
       if (element) {
-        element.style.transform = 'scale(1)'
+        const currentTransform = element.style.transform || ''
+        if (currentTransform.includes('translate')) {
+          // Preserve translate, reset scale
+          element.style.transform = currentTransform.replace(/scale\([^)]*\)/g, '').trim() + ' scale(1)'
+        } else {
+          element.style.transform = 'scale(1)'
+        }
+        
+        console.log('[DEBUGBUT] ClickAnimation resetting:', {
+          transform: element.style.transform
+        })
+        
         setTimeout(() => {
           if (element) {
+            // Clean up scale(1) as it's the default
+            element.style.transform = element.style.transform.replace(/\s*scale\(1\)/g, '')
             element.style.transition = ''
             isAnimatingRef.current = false
+            
+            console.log('[DEBUGBUT] ClickAnimation complete:', {
+              finalTransform: element.style.transform
+            })
           }
         }, duration)
       }

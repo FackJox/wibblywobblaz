@@ -1,0 +1,133 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "Form Controls Test" [level=1] [ref=e4]
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: Checkbox Component
+          - generic [ref=e9]: Test checkbox with different sizes and states
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - checkbox "Small checkbox"
+            - generic [ref=e12]: Small checkbox
+          - generic [ref=e13]:
+            - checkbox "Medium checkbox (default)"
+            - generic [ref=e14]: Medium checkbox (default)
+          - generic [ref=e15]:
+            - checkbox "Large checkbox"
+            - generic [ref=e16]: Large checkbox
+          - generic [ref=e17]:
+            - checkbox "Disabled checkbox" [disabled]
+            - generic [ref=e18]: Disabled checkbox
+          - paragraph [ref=e19]: "Checkbox state: unchecked"
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Radio Group Component
+          - generic [ref=e23]: Test radio group with different orientations and sizes
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Vertical Radio Group (Small)
+            - radiogroup [ref=e27]:
+              - generic [ref=e28]:
+                - radio "Option 1" [checked] [ref=e29] [cursor=pointer]:
+                  - img [ref=e31] [cursor=pointer]
+                - generic [ref=e33]: Option 1
+              - generic [ref=e34]:
+                - radio "Option 2"
+                - generic [ref=e35]: Option 2
+              - generic [ref=e36]:
+                - radio "Option 3"
+                - generic [ref=e37]: Option 3
+          - generic [ref=e38]:
+            - generic [ref=e39]: Horizontal Radio Group (Large)
+            - radiogroup [ref=e40]:
+              - generic [ref=e41]:
+                - radio "A"
+                - generic [ref=e42]: A
+              - generic [ref=e43]:
+                - radio "B"
+                - generic [ref=e44]: B
+              - generic [ref=e45]:
+                - radio "C"
+                - generic [ref=e46]: C
+          - paragraph [ref=e47]: "Selected: option1"
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]: Switch Component
+          - generic [ref=e51]: Test switch with different sizes and animations
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - switch "Small switch"
+            - generic [ref=e54]: Small switch
+          - generic [ref=e55]:
+            - switch "Medium switch (default)"
+            - generic [ref=e56]: Medium switch (default)
+          - generic [ref=e57]:
+            - switch "Large switch"
+            - generic [ref=e58]: Large switch
+          - generic [ref=e59]:
+            - switch "Disabled switch" [disabled]
+            - generic [ref=e60]: Disabled switch
+          - paragraph [ref=e61]: "Switch state: off"
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]: Slider Component
+          - generic [ref=e65]: Test slider with different sizes and orientations
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]: Horizontal Slider (Small Track)
+            - generic:
+              - generic:
+                - slider
+          - generic [ref=e69]:
+            - generic [ref=e70]: Horizontal Slider (Medium Track)
+            - generic:
+              - generic:
+                - slider
+          - generic [ref=e71]:
+            - generic [ref=e72]: Horizontal Slider (Large Track)
+            - generic:
+              - generic:
+                - slider
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: Vertical Slider
+              - generic:
+                - generic:
+                  - slider
+            - generic [ref=e76]:
+              - generic [ref=e77]: Disabled Slider
+              - generic:
+                - generic:
+                  - slider [disabled]
+          - paragraph [ref=e78]: "Slider value: 50"
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]: Label Component
+          - generic [ref=e82]: Test label with different sizes and weights
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]: Small Normal
+            - generic [ref=e87]: Small Medium
+            - generic [ref=e88]: Small Semibold
+            - generic [ref=e89]: Small Bold
+          - generic [ref=e90]:
+            - generic [ref=e91]: Medium Normal
+            - generic [ref=e92]: Medium Medium
+            - generic [ref=e93]: Medium Semibold
+            - generic [ref=e94]: Medium Bold
+          - generic [ref=e95]:
+            - generic [ref=e96]: Large Normal
+            - generic [ref=e97]: Large Medium
+            - generic [ref=e98]: Large Semibold
+            - generic [ref=e99]: Large Bold
+    - generic [ref=e100]:
+      - button "Randomize Values" [ref=e101] [cursor=pointer]
+      - button "Reset All" [ref=e102] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e108] [cursor=pointer]:
+    - img [ref=e109] [cursor=pointer]
+  - alert [ref=e112]
+```

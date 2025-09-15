@@ -1,0 +1,253 @@
+{
+  "timestamp": "2025-09-13T18:21:00.644Z",
+  "css": {
+    "files": [
+      {
+        "name": "static/css/813e80387680bf9c.css",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/css/813e80387680bf9c.css",
+        "originalSize": 28573,
+        "gzippedSize": 6054,
+        "originalFormatted": "27.9 KB",
+        "gzippedFormatted": "5.91 KB"
+      }
+    ],
+    "totalOriginal": 28573,
+    "totalGzipped": 6054
+  },
+  "javascript": {
+    "files": [
+      {
+        "name": "static/kPdfd5_m1h68BZCesWlZd/_buildManifest.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/kPdfd5_m1h68BZCesWlZd/_buildManifest.js",
+        "originalSize": 737,
+        "gzippedSize": 331,
+        "originalFormatted": "737 Bytes",
+        "gzippedFormatted": "331 Bytes"
+      },
+      {
+        "name": "static/kPdfd5_m1h68BZCesWlZd/_ssgManifest.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/kPdfd5_m1h68BZCesWlZd/_ssgManifest.js",
+        "originalSize": 80,
+        "gzippedSize": 64,
+        "originalFormatted": "80 Bytes",
+        "gzippedFormatted": "64 Bytes"
+      }
+    ],
+    "totalOriginal": 817,
+    "totalGzipped": 395
+  },
+  "chunks": {
+    "files": [
+      {
+        "name": "static/chunks/11-6b1f28878e91672e.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/11-6b1f28878e91672e.js",
+        "originalSize": 29017,
+        "gzippedSize": 9669,
+        "originalFormatted": "28.34 KB",
+        "gzippedFormatted": "9.44 KB"
+      },
+      {
+        "name": "static/chunks/168-d2c642775d426698.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/168-d2c642775d426698.js",
+        "originalSize": 45763,
+        "gzippedSize": 11358,
+        "originalFormatted": "44.69 KB",
+        "gzippedFormatted": "11.09 KB"
+      },
+      {
+        "name": "static/chunks/332-149d8397e444b12b.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/332-149d8397e444b12b.js",
+        "originalSize": 64230,
+        "gzippedSize": 22068,
+        "originalFormatted": "62.72 KB",
+        "gzippedFormatted": "21.55 KB"
+      },
+      {
+        "name": "static/chunks/4bd1b696-5461113b81276f6f.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/4bd1b696-5461113b81276f6f.js",
+        "originalSize": 169106,
+        "gzippedSize": 53453,
+        "originalFormatted": "165.14 KB",
+        "gzippedFormatted": "52.2 KB"
+      },
+      {
+        "name": "static/chunks/526-ee565c85dd13c5a2.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/526-ee565c85dd13c5a2.js",
+        "originalSize": 41938,
+        "gzippedSize": 11216,
+        "originalFormatted": "40.96 KB",
+        "gzippedFormatted": "10.95 KB"
+      },
+      {
+        "name": "static/chunks/534-47d95652f5d4c643.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/534-47d95652f5d4c643.js",
+        "originalSize": 11230,
+        "gzippedSize": 4193,
+        "originalFormatted": "10.97 KB",
+        "gzippedFormatted": "4.09 KB"
+      },
+      {
+        "name": "static/chunks/630-f5b96593a67663e8.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/630-f5b96593a67663e8.js",
+        "originalSize": 26382,
+        "gzippedSize": 9526,
+        "originalFormatted": "25.76 KB",
+        "gzippedFormatted": "9.3 KB"
+      },
+      {
+        "name": "static/chunks/684-0e60a7924c0022dc.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/684-0e60a7924c0022dc.js",
+        "originalSize": 172958,
+        "gzippedSize": 45557,
+        "originalFormatted": "168.9 KB",
+        "gzippedFormatted": "44.49 KB"
+      },
+      {
+        "name": "static/chunks/740-46deeb236d92bcf0.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/740-46deeb236d92bcf0.js",
+        "originalSize": 43440,
+        "gzippedSize": 16047,
+        "originalFormatted": "42.42 KB",
+        "gzippedFormatted": "15.67 KB"
+      },
+      {
+        "name": "static/chunks/922-31b80dfb625e5b22.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/922-31b80dfb625e5b22.js",
+        "originalSize": 17980,
+        "gzippedSize": 6375,
+        "originalFormatted": "17.56 KB",
+        "gzippedFormatted": "6.23 KB"
+      },
+      {
+        "name": "static/chunks/app/_not-found/page-a3cc41667356e2de.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/_not-found/page-a3cc41667356e2de.js",
+        "originalSize": 2237,
+        "gzippedSize": 978,
+        "originalFormatted": "2.18 KB",
+        "gzippedFormatted": "978 Bytes"
+      },
+      {
+        "name": "static/chunks/app/layout-9469afa31b0d703c.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/layout-9469afa31b0d703c.js",
+        "originalSize": 209,
+        "gzippedSize": 179,
+        "originalFormatted": "209 Bytes",
+        "gzippedFormatted": "179 Bytes"
+      },
+      {
+        "name": "static/chunks/app/page-b076f325006f3e7c.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/page-b076f325006f3e7c.js",
+        "originalSize": 12325,
+        "gzippedSize": 3123,
+        "originalFormatted": "12.04 KB",
+        "gzippedFormatted": "3.05 KB"
+      },
+      {
+        "name": "static/chunks/app/test-button/page-ededf4197d0a23a5.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/test-button/page-ededf4197d0a23a5.js",
+        "originalSize": 144,
+        "gzippedSize": 133,
+        "originalFormatted": "144 Bytes",
+        "gzippedFormatted": "133 Bytes"
+      },
+      {
+        "name": "static/chunks/app/test-card/page-e948c2e2978703de.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/test-card/page-e948c2e2978703de.js",
+        "originalSize": 4942,
+        "gzippedSize": 1732,
+        "originalFormatted": "4.83 KB",
+        "gzippedFormatted": "1.69 KB"
+      },
+      {
+        "name": "static/chunks/app/test-dialog/page-ff5cf3729460c2a2.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/test-dialog/page-ff5cf3729460c2a2.js",
+        "originalSize": 10879,
+        "gzippedSize": 2321,
+        "originalFormatted": "10.62 KB",
+        "gzippedFormatted": "2.27 KB"
+      },
+      {
+        "name": "static/chunks/app/test-feedback-display/page-e1f24276d79b726f.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/test-feedback-display/page-e1f24276d79b726f.js",
+        "originalSize": 18868,
+        "gzippedSize": 3702,
+        "originalFormatted": "18.43 KB",
+        "gzippedFormatted": "3.62 KB"
+      },
+      {
+        "name": "static/chunks/app/test-form/page-9a3974fa4735b9c3.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/test-form/page-9a3974fa4735b9c3.js",
+        "originalSize": 19209,
+        "gzippedSize": 4317,
+        "originalFormatted": "18.76 KB",
+        "gzippedFormatted": "4.22 KB"
+      },
+      {
+        "name": "static/chunks/app/test-form-controls/page-480c877c3c99ad87.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/app/test-form-controls/page-480c877c3c99ad87.js",
+        "originalSize": 12127,
+        "gzippedSize": 2339,
+        "originalFormatted": "11.84 KB",
+        "gzippedFormatted": "2.28 KB"
+      },
+      {
+        "name": "static/chunks/framework-f593a28cde54158e.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/framework-f593a28cde54158e.js",
+        "originalSize": 182797,
+        "gzippedSize": 57975,
+        "originalFormatted": "178.51 KB",
+        "gzippedFormatted": "56.62 KB"
+      },
+      {
+        "name": "static/chunks/main-app-9f222d56e45c93f8.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/main-app-9f222d56e45c93f8.js",
+        "originalSize": 506,
+        "gzippedSize": 213,
+        "originalFormatted": "506 Bytes",
+        "gzippedFormatted": "213 Bytes"
+      },
+      {
+        "name": "static/chunks/main-db0e8fa5ad50d0ca.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/main-db0e8fa5ad50d0ca.js",
+        "originalSize": 119313,
+        "gzippedSize": 34133,
+        "originalFormatted": "116.52 KB",
+        "gzippedFormatted": "33.33 KB"
+      },
+      {
+        "name": "static/chunks/pages/_app-da15c11dea942c36.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/pages/_app-da15c11dea942c36.js",
+        "originalSize": 233,
+        "gzippedSize": 189,
+        "originalFormatted": "233 Bytes",
+        "gzippedFormatted": "189 Bytes"
+      },
+      {
+        "name": "static/chunks/pages/_error-cc3f077a18ea1793.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/pages/_error-cc3f077a18ea1793.js",
+        "originalSize": 232,
+        "gzippedSize": 190,
+        "originalFormatted": "232 Bytes",
+        "gzippedFormatted": "190 Bytes"
+      },
+      {
+        "name": "static/chunks/polyfills-42372ed130431b0a.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/polyfills-42372ed130431b0a.js",
+        "originalSize": 112594,
+        "gzippedSize": 39494,
+        "originalFormatted": "109.96 KB",
+        "gzippedFormatted": "38.57 KB"
+      },
+      {
+        "name": "static/chunks/webpack-538344e1ec16ef6b.js",
+        "path": "/home/jack/Projects/dev/wibblywobblaz/epic-tailwindcss-to-pandacss-migration/.next/static/chunks/webpack-538344e1ec16ef6b.js",
+        "originalSize": 3414,
+        "gzippedSize": 1698,
+        "originalFormatted": "3.33 KB",
+        "gzippedFormatted": "1.66 KB"
+      }
+    ],
+    "totalOriginal": 1122073,
+    "totalGzipped": 342178
+  }
+}

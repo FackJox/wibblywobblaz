@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Text Wrapping Test - WIBBLY WOBBLAZ</title>
+    <style>
+        /* Import the fluid values from our Utopia calculations */
+        :root {
+            /* Brand-specific fluid token - fluid-7xl */
+            --brand-font-size: clamp(4.5rem, 1.5000vw + 4.0500rem, 6rem);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #ddd;
+        }
+        
+        .brand-title {
+            font-size: var(--brand-font-size);
+            font-weight: 900;
+            font-family: 'Hegval', Arial, sans-serif;
+            text-align: center;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: #000;
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 2px solid red; /* Visual indicator to see text bounds */
+            padding: 10px;
+        }
+        
+        .brand-title.allow-wrap {
+            white-space: normal; /* Allow wrapping for comparison */
+            border-color: blue;
+        }
+        
+        .viewport-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            z-index: 1000;
+        }
+        
+        .test-description {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .font-size-display {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+            font-family: monospace;
+            text-align: center;
+        }
+        
+        /* Test viewport sizes */
+        .container-320 { max-width: 320px; margin: 0 auto 20px; }
+        .container-480 { max-width: 480px; margin: 0 auto 20px; }
+        .container-768 { max-width: 768px; margin: 0 auto 20px; }
+        .container-1024 { max-width: 1024px; margin: 0 auto 20px; }
+        .container-1440 { max-width: 1440px; margin: 0 auto 20px; }
+    </style>
+</head>
+<body>
+    <div class="viewport-info">
+        Viewport: <span id="viewport-width"></span>px × <span id="viewport-height"></span>px<br>
+        Brand Font Size: <span id="brand-font-size"></span>
+    </div>
+    
+    <h1>WIBBLY WOBBLAZ Brand Text Wrapping Test</h1>
+    
+    <!-- Test at different container widths -->
+    <div class="container-320">
+        <div class="test-container">
+            <div class="test-description">
+                <strong>320px Container Test:</strong> Brand text with white-space: nowrap (red border)
+            </div>
+            <div class="brand-title">WIBBLY WOBBLAZ</div>
+            <div class="font-size-display">Computed font size: <span class="computed-size"></span></div>
+        </div>
+    </div>
+    
+    <div class="container-480">
+        <div class="test-container">
+            <div class="test-description">
+                <strong>480px Container Test:</strong> Brand text with white-space: nowrap (red border)
+            </div>
+            <div class="brand-title">WIBBLY WOBBLAZ</div>
+            <div class="font-size-display">Computed font size: <span class="computed-size"></span></div>
+        </div>
+    </div>
+    
+    <div class="container-768">
+        <div class="test-container">
+            <div class="test-description">
+                <strong>768px Container Test:</strong> Brand text with white-space: nowrap (red border)
+            </div>
+            <div class="brand-title">WIBBLY WOBBLAZ</div>
+            <div class="font-size-display">Computed font size: <span class="computed-size"></span></div>
+        </div>
+    </div>
+    
+    <div class="container-1024">
+        <div class="test-container">
+            <div class="test-description">
+                <strong>1024px Container Test:</strong> Brand text with white-space: nowrap (red border)
+            </div>
+            <div class="brand-title">WIBBLY WOBBLAZ</div>
+            <div class="font-size-display">Computed font size: <span class="computed-size"></span></div>
+        </div>
+    </div>
+    
+    <div class="container-1440">
+        <div class="test-container">
+            <div class="test-description">
+                <strong>1440px Container Test:</strong> Brand text with white-space: nowrap (red border)
+            </div>
+            <div class="brand-title">WIBBLY WOBBLAZ</div>
+            <div class="font-size-display">Computed font size: <span class="computed-size"></span></div>
+        </div>
+    </div>
+    
+    <!-- Comparison test with wrapping allowed -->
+    <div class="container-320">
+        <div class="test-container">
+            <div class="test-description">
+                <strong>320px Container Comparison:</strong> Same text with wrapping allowed (blue border) - should wrap
+            </div>
+            <div class="brand-title allow-wrap">WIBBLY WOBBLAZ</div>
+            <div class="font-size-display">This demonstrates what would happen with normal text wrapping</div>
+        </div>
+    </div>
+    
+    <script>
+        function updateViewportInfo() {
+            document.getElementById('viewport-width').textContent = window.innerWidth;
+            document.getElementById('viewport-height').textContent = window.innerHeight;
+            
+            // Get the computed brand font size
+            const brandElement = document.querySelector('.brand-title');
+            const computedStyle = getComputedStyle(brandElement);
+            const fontSize = computedStyle.fontSize;
+            document.getElementById('brand-font-size').textContent = fontSize;
+            
+            // Update all computed size displays
+            document.querySelectorAll('.computed-size').forEach(el => {
+                el.textContent = fontSize;
+            });
+        }
+        
+        updateViewportInfo();
+        window.addEventListener('resize', updateViewportInfo);
+        
+        // Log the CSS custom property value
+        console.log('CSS Variable --brand-font-size:', getComputedStyle(document.documentElement).getPropertyValue('--brand-font-size'));
+        
+        // Test the actual clamp calculation at different viewport widths
+        console.log('Fluid calculation test:');
+        [320, 480, 768, 1024, 1440, 1920].forEach(width => {
+            // Simulate the clamp calculation: clamp(4.5rem, 1.5000vw + 4.0500rem, 6rem)
+            const vwValue = (width * 0.015); // 1.5000vw converted to rem (assuming 16px base)
+            const preferredSize = vwValue + 4.05; // + 4.0500rem
+            const actualSize = Math.min(Math.max(4.5, preferredSize), 6); // clamp between 4.5rem and 6rem
+            console.log(`${width}px: ${actualSize.toFixed(3)}rem (${(actualSize * 16).toFixed(1)}px)`);
+        });
+    </script>
+</body>
+</html>

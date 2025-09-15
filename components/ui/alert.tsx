@@ -1,32 +1,23 @@
 import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cx } from "../../styled-system/css"
+import { 
+  alert, 
+  alertTitle, 
+  alertDescription,
+  type AlertVariantProps,
+  type AlertTitleVariantProps,
+  type AlertDescriptionVariantProps
+} from "../../styled-system/recipes"
 
-import { cn } from "@/lib/utils"
-
-const alertVariants = cva(
-  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
-  {
-    variants: {
-      variant: {
-        default: "bg-background text-foreground",
-        destructive:
-          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
 
 const Alert = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className, variant, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & AlertVariantProps
+>(({ className, variant, size, ...props }, ref) => (
   <div
     ref={ref}
     role="alert"
-    className={cn(alertVariants({ variant }), className)}
+    className={cx(alert({ variant, size }), className)}
     {...props}
   />
 ))
@@ -34,11 +25,11 @@ Alert.displayName = "Alert"
 
 const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLHeadingElement> & AlertTitleVariantProps
+>(({ className, size, ...props }, ref) => (
   <h5
     ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+    className={cx(alertTitle({ size }), className)}
     {...props}
   />
 ))
@@ -46,11 +37,11 @@ AlertTitle.displayName = "AlertTitle"
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLParagraphElement> & AlertDescriptionVariantProps
+>(({ className, size, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm [&_p]:leading-relaxed", className)}
+    className={cx(alertDescription({ size }), className)}
     {...props}
   />
 ))

@@ -1,0 +1,213 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "Feedback & Display Components Test" [level=1] [ref=e5]
+        - paragraph [ref=e6]: Comprehensive showcase of Alert, Badge, Progress, Avatar, Separator, and Toast components with PandaCSS
+      - generic [ref=e7]:
+        - button "Randomize All" [ref=e8] [cursor=pointer]
+        - button "Add Progress" [ref=e9] [cursor=pointer]
+        - button "Reset Progress" [ref=e10] [cursor=pointer]
+      - generic [ref=e11]:
+        - heading "Alert Components" [level=2] [ref=e12]
+        - generic [ref=e13]:
+          - alert [ref=e14]:
+            - img [ref=e15]
+            - heading "Default Alert" [level=5] [ref=e17]
+            - generic [ref=e18]: This is a default alert with an information icon. It provides general information to users.
+          - alert [ref=e19]:
+            - img [ref=e20]
+            - heading "Destructive Alert" [level=5] [ref=e22]
+            - generic [ref=e23]: This is a destructive alert indicating an error or critical issue that needs attention.
+          - alert [ref=e24]:
+            - img [ref=e25]
+            - heading "Warning Alert" [level=5] [ref=e27]
+            - generic [ref=e28]: This is a warning alert that notifies users of potential issues or important notes.
+          - alert [ref=e29]:
+            - img [ref=e30]
+            - heading "Success Alert" [level=5] [ref=e33]
+            - generic [ref=e34]: This is a success alert confirming that an action has been completed successfully.
+          - alert [ref=e35]:
+            - img [ref=e36]
+            - heading "Info Alert" [level=5] [ref=e38]
+            - generic [ref=e39]: This is an informational alert providing helpful context or guidance.
+        - generic [ref=e40]:
+          - alert [ref=e41]:
+            - img [ref=e42]
+            - heading "Small Alert" [level=5] [ref=e44]
+            - generic [ref=e45]: Compact alert with small text.
+          - alert [ref=e46]:
+            - img [ref=e47]
+            - heading "Medium Alert" [level=5] [ref=e49]
+            - generic [ref=e50]: Standard sized alert with medium text.
+          - alert [ref=e51]:
+            - img [ref=e52]
+            - heading "Large Alert" [level=5] [ref=e54]
+            - generic [ref=e55]: Spacious alert with large text.
+      - generic [ref=e56]:
+        - heading "Badge Components" [level=2] [ref=e57]
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "Badge Variants" [level=3] [ref=e60]
+            - generic [ref=e61]:
+              - generic [ref=e62]: Default
+              - generic [ref=e63]: Secondary
+              - generic [ref=e64]: Destructive
+              - generic [ref=e65]: Outline
+              - generic [ref=e66]: Success
+              - generic [ref=e67]: Warning
+              - generic [ref=e68]: Info
+          - generic [ref=e69]:
+            - heading "Badge Sizes" [level=3] [ref=e70]
+            - generic [ref=e71]:
+              - generic [ref=e72]: Small
+              - generic [ref=e73]: Medium
+              - generic [ref=e74]: Large
+          - generic [ref=e75]:
+            - heading "Contextual Badges" [level=3] [ref=e76]
+            - generic [ref=e77]:
+              - generic [ref=e78]: Online
+              - generic [ref=e79]: Pending
+              - generic [ref=e80]: Offline
+              - generic [ref=e81]: New
+              - generic [ref=e82]: Free
+              - generic [ref=e83]: Premium
+      - generic [ref=e84]:
+        - heading "Progress Components" [level=2] [ref=e85]
+        - generic [ref=e87]:
+          - heading "Progress Variants & Sizes" [level=3] [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: Default Progress (Small)
+                - generic [ref=e93]: 33%
+              - progressbar
+            - generic [ref=e94]:
+              - generic [ref=e95]:
+                - generic [ref=e96]: Default Progress (Medium)
+                - generic [ref=e97]: 33%
+              - progressbar
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - generic [ref=e100]: Default Progress (Large)
+                - generic [ref=e101]: 33%
+              - progressbar
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - generic [ref=e104]: Success Progress
+                - generic [ref=e105]: 33%
+              - progressbar
+            - generic [ref=e106]:
+              - generic [ref=e107]:
+                - generic [ref=e108]: Warning Progress
+                - generic [ref=e109]: 33%
+              - progressbar
+            - generic [ref=e110]:
+              - generic [ref=e111]:
+                - generic [ref=e112]: Error Progress
+                - generic [ref=e113]: 33%
+              - progressbar
+            - generic [ref=e114]:
+              - generic [ref=e115]:
+                - generic [ref=e116]: Animated Progress
+                - generic [ref=e117]: 33%
+              - progressbar
+      - generic [ref=e118]:
+        - heading "Avatar Components" [level=2] [ref=e119]
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - heading "Avatar Sizes" [level=3] [ref=e122]
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - img [ref=e126]
+                - generic [ref=e127]: XS
+              - generic [ref=e128]:
+                - img [ref=e130]
+                - generic [ref=e131]: SM
+              - generic [ref=e132]:
+                - img [ref=e134]
+                - generic [ref=e135]: MD
+              - generic [ref=e136]:
+                - img [ref=e138]
+                - generic [ref=e139]: LG
+              - generic [ref=e140]:
+                - img [ref=e142]
+                - generic [ref=e143]: XL
+              - generic [ref=e144]:
+                - img [ref=e146]
+                - generic [ref=e147]: 2XL
+          - generic [ref=e148]:
+            - heading "Avatar Shapes" [level=3] [ref=e149]
+            - generic [ref=e150]:
+              - generic [ref=e151]:
+                - generic [ref=e153]: C
+                - generic [ref=e154]: Circle
+              - generic [ref=e155]:
+                - generic [ref=e157]: S
+                - generic [ref=e158]: Square
+          - generic [ref=e159]:
+            - heading "Avatar with Fallbacks" [level=3] [ref=e160]
+            - generic [ref=e161]:
+              - generic [ref=e163]: JD
+              - img [ref=e166]
+              - generic [ref=e170]: AB
+      - generic [ref=e171]:
+        - heading "Separator Components" [level=2] [ref=e172]
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - heading "Horizontal Separators" [level=3] [ref=e175]
+            - generic [ref=e176]:
+              - generic [ref=e177]:
+                - paragraph [ref=e178]: Small spacing
+                - paragraph [ref=e179]: Content after separator
+              - generic [ref=e180]:
+                - paragraph [ref=e181]: Medium spacing (default)
+                - paragraph [ref=e182]: Content after separator
+              - generic [ref=e183]:
+                - paragraph [ref=e184]: Large spacing
+                - paragraph [ref=e185]: Content after separator
+          - generic [ref=e186]:
+            - heading "Vertical Separators" [level=3] [ref=e187]
+            - generic [ref=e188]:
+              - generic [ref=e189]: Item 1
+              - generic [ref=e190]: Item 2
+              - generic [ref=e191]: Item 3
+              - generic [ref=e192]: Item 4
+      - generic [ref=e193]:
+        - heading "Toast Components" [level=2] [ref=e194]
+        - generic [ref=e195]:
+          - generic [ref=e196]:
+            - button "Default Toast" [active] [ref=e197] [cursor=pointer]:
+              - img [ref=e198] [cursor=pointer]
+              - text: Default Toast
+            - button "Error Toast" [ref=e201] [cursor=pointer]:
+              - img [ref=e202] [cursor=pointer]
+              - text: Error Toast
+            - button "Success Toast" [ref=e204] [cursor=pointer]:
+              - img [ref=e205] [cursor=pointer]
+              - text: Success Toast
+            - button "Warning Toast" [ref=e208] [cursor=pointer]:
+              - img [ref=e209] [cursor=pointer]
+              - text: Warning Toast
+            - button "Info Toast" [ref=e211] [cursor=pointer]:
+              - img [ref=e212] [cursor=pointer]
+              - text: Info Toast
+          - paragraph [ref=e214]: Click the buttons above to trigger toast notifications. Each toast type has its own styling and behavior.
+      - paragraph [ref=e216]: All components are now using PandaCSS recipes with enhanced variant support and consistent theming.
+    - region "Notifications (F8)" [ref=e217]:
+      - list [ref=e219]:
+        - status [ref=e220]:
+          - generic [ref=e221]:
+            - generic [ref=e222]: Default Toast
+            - generic [ref=e223]: This is a default toast notification with some example content.
+          - button "Action" [ref=e224] [cursor=pointer]
+          - button [ref=e225] [cursor=pointer]:
+            - img [ref=e226] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e235] [cursor=pointer]:
+    - img [ref=e236] [cursor=pointer]
+  - alert [ref=e239]
+  - status [ref=e240]: Notification Default ToastThis is a default toast notification with some example content.Action
+```

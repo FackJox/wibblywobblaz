@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { css } from "@/styled-system/css"
 import { ThemeProvider } from "../components/theme-provider"
 import { FeatureFlagsProvider } from "../hooks/use-feature-flags"
 import { Toaster } from "../components/ui/sonner"
@@ -106,7 +107,18 @@ export function DevProviders({ children }: { children: React.ReactNode }) {
 
       {/* Development hints */}
       {(showPerformanceOverlay || showAnimationOverlay) && (
-        <div className="fixed bottom-4 right-4 bg-black/80 text-white text-xs p-2 rounded pointer-events-none z-50">
+        <div className={css({
+          position: 'fixed',
+          bottom: '4',
+          right: '4',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          fontSize: 'xs',
+          padding: '2',
+          borderRadius: 'md',
+          pointerEvents: 'none',
+          zIndex: '50'
+        })}>
           <div>Ctrl+Shift+P: Toggle Performance</div>
           <div>Ctrl+Shift+A: Toggle Animation</div>
           <div>Ctrl+Shift+D: Toggle Both</div>

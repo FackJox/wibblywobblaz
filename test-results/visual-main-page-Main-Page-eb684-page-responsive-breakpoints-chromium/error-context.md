@@ -1,0 +1,112 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]: PandaCSS Test Component - Hot Reloading
+    - generic [ref=e5]:
+      - generic [ref=e7]:
+        - navigation [ref=e8]:
+          - generic [ref=e9]:
+            - generic [ref=e10]: WIBBLY WOBBLAZ
+            - generic [ref=e11]:
+              - button "LINKS" [ref=e12] [cursor=pointer]
+              - button "PARTIES" [ref=e13] [cursor=pointer]
+            - button [ref=e14] [cursor=pointer]:
+              - img [ref=e15] [cursor=pointer]
+        - generic [ref=e18]:
+          - img "WIBBLY WOBBLAZ" [ref=e21]
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - heading "FOLLOW US" [level=2] [ref=e25]
+              - generic [ref=e26]:
+                - link "INSTAGRAM" [ref=e27] [cursor=pointer]:
+                  - /url: https://instagram.com/wibblywobblaz
+                  - img [ref=e28] [cursor=pointer]
+                  - generic [ref=e31] [cursor=pointer]: INSTAGRAM
+                  - img [ref=e32] [cursor=pointer]
+                - link "SOUNDCLOUD" [ref=e36] [cursor=pointer]:
+                  - /url: https://soundcloud.com/wibblywobblaz
+                  - img [ref=e37] [cursor=pointer]
+                  - generic [ref=e41] [cursor=pointer]: SOUNDCLOUD
+                  - img [ref=e42] [cursor=pointer]
+            - generic [ref=e46]:
+              - heading "GET TICKETS" [level=2] [ref=e47]
+              - link "HEADFIRST" [ref=e48] [cursor=pointer]:
+                - /url: https://hdfst.uk/e132325
+                - img [ref=e49] [cursor=pointer]
+                - generic [ref=e51] [cursor=pointer]: HEADFIRST
+                - img [ref=e52] [cursor=pointer]
+            - generic [ref=e56]:
+              - heading "MERCH STORE" [level=2] [ref=e57]
+              - link "SHOP NOW" [ref=e58] [cursor=pointer]:
+                - /url: https://merch.wibblywobblaz.xyz
+                - img [ref=e59] [cursor=pointer]
+                - generic [ref=e62] [cursor=pointer]: SHOP NOW
+                - img [ref=e63] [cursor=pointer]
+      - generic [ref=e68]:
+        - navigation [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e71]: UPCOMING PARTIES
+            - generic [ref=e72]:
+              - button "LINKS" [ref=e73] [cursor=pointer]
+              - button "PARTIES" [ref=e74] [cursor=pointer]
+            - button [ref=e75] [cursor=pointer]:
+              - img [ref=e76] [cursor=pointer]
+        - generic [ref=e77]:
+          - img [ref=e78]:
+            - img [ref=e80]
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - img "WIBBLY WOBBLAZ - LAUNCH PARTY" [ref=e84]
+              - generic [ref=e85]:
+                - heading "WIBBLY WOBBLAZ - LAUNCH PARTY" [level=3] [ref=e86]
+                - generic [ref=e87]:
+                  - generic [ref=e88]:
+                    - img [ref=e89]
+                    - generic [ref=e91]: 30 AUG 2025
+                  - generic [ref=e92]:
+                    - img [ref=e93]
+                    - generic [ref=e96]: 22:00
+                  - generic [ref=e97]:
+                    - img [ref=e98]
+                    - generic [ref=e101]: THE PACKHORSE SECRET CELLAR
+                  - generic [ref=e102]: BRISTOL
+                - link "GET TICKETS" [ref=e103] [cursor=pointer]:
+                  - /url: https://hdfst.uk/e132325
+            - generic [ref=e104]:
+              - img "HOT ONES - EP01" [ref=e105]
+              - generic [ref=e106]:
+                - heading "HOT ONES - EP01" [level=3] [ref=e107]
+                - generic [ref=e108]:
+                  - generic [ref=e109]:
+                    - img [ref=e110]
+                    - generic [ref=e112]: 16 AUG 2025
+                  - generic [ref=e113]:
+                    - img [ref=e114]
+                    - generic [ref=e117]: 22:00
+                  - generic [ref=e118]:
+                    - img [ref=e119]
+                    - generic [ref=e122]: DIXIES CHICKEN SHOP
+                  - generic [ref=e123]: BRISTOL
+                - button "Free ticket - opens Instagram" [ref=e124] [cursor=pointer]: FREE
+            - generic [ref=e125]:
+              - img "HOT ONES - EP02" [ref=e126]
+              - generic [ref=e127]:
+                - heading "HOT ONES - EP02" [level=3] [ref=e128]
+                - generic [ref=e129]:
+                  - generic [ref=e130]:
+                    - img [ref=e131]
+                    - generic [ref=e133]: 20 SEPT 2025
+                  - generic [ref=e134]:
+                    - img [ref=e135]
+                    - generic [ref=e138]: 22:00
+                  - generic [ref=e139]:
+                    - img [ref=e140]
+                    - generic [ref=e143]: "?????"
+                  - generic [ref=e144]: BRISTOL
+                - button "Free ticket - opens Instagram" [ref=e145] [cursor=pointer]: FREE
+  - button "Open Next.js Dev Tools" [ref=e151] [cursor=pointer]:
+    - img [ref=e152] [cursor=pointer]
+  - alert [ref=e155]
+```

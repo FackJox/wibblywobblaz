@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer reset, base, tokens, recipes, utilities;
 
 @font-face {
   font-family: 'Hegval';
@@ -14,31 +12,29 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .font-hegval {
-    font-family: 'Hegval', Arial, Helvetica, sans-serif;
-  }
-  
-  /* Screen reader only utility class */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+/* Custom utility classes */
+.text-balance {
+  text-wrap: balance;
 }
 
-@layer base {
-  :root {
+.font-hegval {
+  font-family: 'Hegval', Arial, Helvetica, sans-serif;
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -55,7 +51,7 @@ body {
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
+    --border: 0 0% 0%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --chart-1: 12 76% 61%;
@@ -72,8 +68,9 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-  .dark {
+}
+
+.dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -90,7 +87,7 @@ body {
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
+    --border: 0 0% 100%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
@@ -106,19 +103,16 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Base styles */
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
 
-/* Shhh SVG slide-up animation styles */
+/* Shhh SVG slide-up animation styles - Updated to use PandaCSS keyframes */
 @layer utilities {
   .shhh-slide-up {
     animation: slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
@@ -126,54 +120,6 @@ body {
 
   .shhh-slide-up-slow {
     animation: slideUpFromBottom 1200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-}
-
-@keyframes slideUpBounce {
-  0% {
-    transform: translate3d(0, 100vh, 0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.6;
-  }
-  40% {
-    opacity: 1;
-    transform: translate3d(0, 10px, 0);
-  }
-  70% {
-    transform: translate3d(0, -10px, 0);
-  }
-  85% {
-    transform: translate3d(0, 5px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideUpFromBottom {
-  0% {
-    transform: translate3d(0, 100vh, 0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.3;
-  }
-  30% {
-    opacity: 0.8;
-  }
-  60% {
-    opacity: 1;
-    transform: translate3d(0, 20px, 0);
-  }
-  80% {
-    transform: translate3d(0, -5px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
   }
 }
 
