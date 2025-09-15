@@ -1,7 +1,7 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-15T14:03:37Z
-version: 1.2
+last_updated: 2025-09-15T21:28:14Z
+version: 1.3
 author: Claude Code PM System
 ---
 
@@ -17,9 +17,21 @@ wibbly-wobblaz-landing/
 │   └── globals.css        # Global styles and animations
 ├── components/            # React components
 │   ├── ui/               # Shadcn/UI components (43 files)
+│   ├── navigation/       # Navigation components
+│   │   └── NavigationHeader.tsx # Header navigation
+│   ├── pages/           # Page components
+│   │   ├── links-page.tsx    # Links view component
+│   │   └── parties-page.tsx  # Parties view component
+│   ├── layouts/         # Layout components
+│   │   └── swipeable-layout.tsx # Swipeable container
+│   ├── wibbly/          # Custom app components
+│   │   ├── party-card.tsx        # Party info cards
+│   │   ├── social-link-button.tsx # Social media links
+│   │   └── shhh.tsx              # Animated Shhh text
 │   └── theme-provider.tsx # Theme management wrapper
 ├── lib/                   # Utility functions
-│   └── utils.ts          # cn() utility for class merging
+│   ├── utils.ts          # cn() utility for class merging
+│   └── ripple-utils.ts   # Ripple effect utilities
 ├── public/               # Static assets
 │   ├── images/          # Event posters and assets
 │   │   ├── 1/          # Hot Series Dixies Chicken artwork
@@ -27,6 +39,10 @@ wibbly-wobblaz-landing/
 │   │   ├── 3/          # STGARTER event assets
 │   │   └── 4/          # Dayglo poster variations
 │   └── fonts/           # Custom fonts (Hegval)
+├── hooks/               # Custom React hooks
+│   └── use-ripple.tsx   # Ripple effect hook
+├── utils/               # Utility functions
+│   └── utopia.ts        # Responsive typography utilities
 ├── styles/              # Additional styles
 ├── .claude/             # Claude Code PM system
 │   ├── context/         # Project context docs
@@ -63,9 +79,13 @@ wibbly-wobblaz-landing/
 - `eslint.config.mjs` - ESLint configuration for PandaCSS
 
 ### Application Files
-- `app/page.tsx` - Main application (816 lines, monolithic component)
+- `app/page.tsx` - Main application (refactored to use extracted components)
 - `app/layout.tsx` - Root layout with metadata configuration
 - `app/globals.css` - Global styles, animations, custom properties
+- `app/demo/page.tsx` - Demo page with PandaCSS styles
+- `app/test-button/page.tsx` - Button component testing page
+- `app/test-card/page.tsx` - Card component testing page
+- `app/test-form/page.tsx` - Form component testing page
 
 ### Component Library (`components/ui/`)
 43 pre-built UI components including:

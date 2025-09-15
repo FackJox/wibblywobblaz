@@ -38,7 +38,7 @@ export function NavigationHeader({
         borderColor: currentPage === "parties" ? "white" : "black",
         backgroundColor: currentPage === "parties" ? "black" : "white",
         color: currentPage === "parties" ? "white" : "black",
-        padding: { base: '4', md: '6' },
+        padding: 'fluid-md',  // Fluid padding that scales from 1rem to 1.5rem
         flexShrink: '0',
         zIndex: 50
       })}

@@ -69,7 +69,7 @@ export function generateTypographyScale(): Record<string, TypographyScale> {
     '4xl': { min: 2.25, max: 3 },
     '5xl': { min: 3, max: 3.75 },
     '6xl': { min: 3.75, max: 4.5 },
-    '7xl': { min: 4.5, max: 6 },
+    '7xl': { min: 2, max: 6 },  // Adjusted for better mobile scaling (32px to 96px)
     '8xl': { min: 6, max: 8 },
     '9xl': { min: 8, max: 12 },
   };
