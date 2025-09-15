@@ -25,26 +25,8 @@ import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import Link from "next/link";
-import { PandaTestComponent } from "@/components/test-panda";
 import { css, cx } from "@/styled-system/css";
-
-interface PartyEvent {
-  id: number;
-  title: string;
-  date: string;
-  time: string;
-  venue: string;
-  location: string;
-  poster: string;
-  hotOnes?: boolean;
-  ticketLink?: string;
-}
-
-interface SocialLink {
-  name: string;
-  icon: React.ComponentType<{ size: number }>;
-  url: string;
-}
+import { PartyEvent, SocialLink } from "@/types";
 
 // Define page components outside to prevent recreation
 const LinksPage = ({
@@ -469,9 +451,17 @@ const LinksPage = ({
 const PartiesPage = ({
   upcomingParties,
   isVisible,
+  handleFreeClick,
+  handleFreeKeyDown,
+  shhhState,
+  freeButtonRef,
 }: {
   upcomingParties: Array<PartyEvent>;
   isVisible: boolean;
+  handleFreeClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
+  handleFreeKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
+  shhhState: "hidden" | "animating" | "visible";
+  freeButtonRef: React.RefObject<HTMLButtonElement>;
 }) => {
   // Scroll animations for parties page
   const partiesStagger = useStaggerReveal<HTMLDivElement>(upcomingParties.length, {
@@ -657,31 +647,63 @@ const PartiesPage = ({
                   </div>
                 </div>
 
-                <Button
-                  ref={ticketButtonsMagnetic[index].ref}
-                  className={css({
-                    width: 'full',
-                    backgroundColor: 'transparent',
-                    border: '2px solid white',
-                    color: 'white',
-                    fontWeight: 'black',
-                    _hover: {
-                      backgroundColor: 'white',
-                      color: 'black'
-                    },
-                    '.group:hover &': {
+                {party.hotOnes ? (
+                  <Button
+                    ref={index === 0 ? freeButtonRef : ticketButtonsMagnetic[index].ref}
+                    onClick={handleFreeClick}
+                    onKeyDown={handleFreeKeyDown}
+                    aria-label="Free ticket - opens Instagram"
+                    aria-pressed={shhhState === "animating"}
+                    disabled={shhhState === "animating"}
+                    className={css({
+                      width: 'full',
                       backgroundColor: 'black',
+                      borderWidth: '2px',
+                      borderColor: 'white',
                       color: 'white',
-                      borderColor: 'black'
-                    }
-                  })}
-                  onClick={() => window.open('https://hdfst.uk/e132325', '_blank')}
-                  ripple={true}
-                  clickAnimation={true}
-                  magnetic={true}
-                >
-                  GET TICKETS
-                </Button>
+                      fontWeight: '900',
+                      transition: 'colors 0.2s ease',
+                      _hover: {
+                        backgroundColor: 'white',
+                        color: 'black',
+                        borderColor: 'black'
+                      },
+                      _disabled: {
+                        opacity: '0.75',
+                        cursor: 'not-allowed'
+                      }
+                    })}
+                    ripple={true}
+                    clickAnimation={true}
+                    magnetic={true}
+                  >
+                    {shhhState === "animating" ? "LOADING..." : "FREE"}
+                  </Button>
+                ) : (
+                  <Button
+                    ref={ticketButtonsMagnetic[index].ref}
+                    className={css({
+                      width: 'full',
+                      backgroundColor: 'black',
+                      borderWidth: '2px',
+                      borderColor: 'white',
+                      color: 'white',
+                      fontWeight: '900',
+                      transition: 'colors 0.2s ease',
+                      _hover: {
+                        backgroundColor: 'white',
+                        color: 'black',
+                        borderColor: 'black'
+                      }
+                    })}
+                    onClick={() => window.open(party.ticketLink || 'https://hdfst.uk/e132325', '_blank')}
+                    ripple={true}
+                    clickAnimation={true}
+                    magnetic={true}
+                  >
+                    GET TICKETS
+                  </Button>
+                )}
               </div>
             </div>
             );
@@ -700,6 +722,8 @@ export default function WibblyWobblazLanding() {
     "hidden" | "animating" | "visible"
   >("hidden");
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const freeButtonRef = useRef<HTMLButtonElement>(null);
   
   // Magnetic effect for navigation header text
   const magnetic = useSimpleMagneticHover<HTMLDivElement>('strong');
@@ -748,6 +772,24 @@ export default function WibblyWobblazLanding() {
       },
     },
   );
+
+  // Handle FREE button click with accessibility
+  const handleFreeClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.preventDefault();
+    setShhhState("animating");
+    // Store reference to the button that triggered the animation for focus management
+    if (freeButtonRef.current) {
+      freeButtonRef.current.blur(); // Remove focus during animation
+    }
+  };
+
+  // Handle keyboard events for FREE button
+  const handleFreeKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleFreeClick(e);
+    }
+  };
 
   // Reset shhh state when back on links page and transition is complete
   useEffect(() => {
@@ -1056,29 +1098,100 @@ export default function WibblyWobblazLanding() {
 
           {/* Parties Page */}
           <div
+            ref={scrollContainerRef}
             className={css({
               position: 'absolute',
               inset: '0',
               transition: 'transform 0.7s ease-in-out',
-              transform: currentPage === "parties" ? 'translateX(0)' : 'translateX(100%)'
+              transform: currentPage === "parties" ? 'translateX(0)' : 'translateX(100%)',
+              overflow: 'auto'
             })}
           >
+            {/* Accessibility live region for animation announcements */}
+            <div aria-live="polite" aria-atomic="true" className={css({ srOnly: true })}>
+              {shhhState === "animating" &&
+                "Animation started, opening Instagram..."}
+              {shhhState === "visible" &&
+                "Animation completed, Instagram opening in new tab"}
+            </div>
+
+            {/* Shhh SVG - stays visible after first animation */}
+            <div
+              role="img"
+              aria-label="Shhh character animation"
+              aria-hidden={shhhState === "hidden"}
+              className={cx(
+                css({
+                  position: 'absolute',
+                  inset: '0',
+                  display: 'flex',
+                  alignItems: 'end',
+                  justifyContent: 'center',
+                  willChange: 'transform',
+                  zIndex: '50',
+                  pointerEvents: 'none'
+                }),
+                shhhState === "animating" ? css({ 
+                  animation: 'slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+                  '@media (prefers-reduced-motion: reduce)': {
+                    animation: 'fadeInReduced 400ms ease-out forwards'
+                  }
+                }) : ""
+              )}
+              style={{
+                transform:
+                  shhhState === "animating" || shhhState === "visible"
+                    ? "translateY(0)"
+                    : "translateY(100vh)",
+                transition: shhhState === "animating" ? "none" : "transform 0ms",
+                opacity:
+                  shhhState === "animating" || shhhState === "visible" ? 1 : 0,
+              }}
+              onAnimationEnd={(e) => {
+                if (e.animationName === "slideUpBounce") {
+                  setShhhState("visible");
+                  setCurrentPage("links");
+                  window.open("https://instagram.com/wibblywobblaz", "_blank");
+                }
+              }}
+            >
+              <div className={css({ 
+                position: 'absolute',
+                bottom: '0',
+                left: '50%',
+                transform: 'translateX(-50%) translateZ(0)',
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                width: 'auto',
+                height: 'auto',
+                backfaceVisibility: 'hidden',
+                perspective: '1000px'
+              })}>
+                <Image
+                  src="/images/shhh.svg"
+                  alt="Shhh"
+                  width={1024}
+                  height={1024}
+                  className={css({ 
+                    width: 'auto', 
+                    height: 'auto', 
+                    objectFit: 'contain' 
+                  })}
+                  priority
+                />
+              </div>
+            </div>
+
             <PartiesPage
               upcomingParties={upcomingParties}
               isVisible={currentPage === "parties"}
+              handleFreeClick={handleFreeClick}
+              handleFreeKeyDown={handleFreeKeyDown}
+              shhhState={shhhState}
+              freeButtonRef={freeButtonRef}
             />
           </div>
         </div>
-      </div>
-
-      {/* PandaCSS Test Component - for hot reload testing */}
-      <div className={css({
-        position: 'absolute',
-        top: '0',
-        right: '0',
-        zIndex: '50'
-      })}>
-        <PandaTestComponent />
       </div>
 
       {/* Performance Overlay (Development Only) */}
