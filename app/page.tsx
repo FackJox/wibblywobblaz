@@ -24,7 +24,6 @@ import { useHorizontalSwipeNavigation } from "@/hooks/use-swipe";
 import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
-import Link from "next/link";
 import { css, cx } from "@/styled-system/css";
 import { PartyEvent, SocialLink } from "@/types";
 
@@ -461,7 +460,7 @@ const PartiesPage = ({
   handleFreeClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
   handleFreeKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   shhhState: "hidden" | "animating" | "visible";
-  freeButtonRef: React.RefObject<HTMLButtonElement>;
+  freeButtonRef: React.RefObject<HTMLButtonElement | null>;
 }) => {
   // Scroll animations for parties page
   const partiesStagger = useStaggerReveal<HTMLDivElement>(upcomingParties.length, {
@@ -1103,8 +1102,7 @@ export default function WibblyWobblazLanding() {
               position: 'absolute',
               inset: '0',
               transition: 'transform 0.7s ease-in-out',
-              transform: currentPage === "parties" ? 'translateX(0)' : 'translateX(100%)',
-              overflow: 'auto'
+              transform: currentPage === "parties" ? 'translateX(0)' : 'translateX(100%)'
             })}
           >
             {/* Accessibility live region for animation announcements */}
@@ -1143,15 +1141,18 @@ export default function WibblyWobblazLanding() {
                   shhhState === "animating" || shhhState === "visible"
                     ? "translateY(0)"
                     : "translateY(100vh)",
-                transition: shhhState === "animating" ? "none" : "transform 0ms",
+                transition: shhhState === "animating" ? "none" : "transform 600ms ease-in-out",
                 opacity:
                   shhhState === "animating" || shhhState === "visible" ? 1 : 0,
               }}
               onAnimationEnd={(e) => {
                 if (e.animationName === "slideUpBounce") {
                   setShhhState("visible");
-                  setCurrentPage("links");
                   window.open("https://instagram.com/wibblywobblaz", "_blank");
+                  // Hide the shhh SVG after 2 seconds
+                  setTimeout(() => {
+                    setShhhState("hidden");
+                  }, 2000);
                 }
               }}
             >
