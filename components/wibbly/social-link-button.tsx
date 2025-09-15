@@ -4,7 +4,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { GestureWrapper } from "@/components/ui/gesture-wrapper";
-import { useMagneticHover } from "@/hooks/use-magnetic-hover";
 import { toast } from "@/components/ui/use-toast";
 import { css } from "@/styled-system/css";
 import { SocialLink } from "@/types";
@@ -18,12 +17,6 @@ export const SocialLinkButton: React.FC<SocialLinkButtonProps> = ({
   social,
   style,
 }) => {
-  // Magnetic hover effect
-  const magneticEffect = useMagneticHover<HTMLButtonElement>({ 
-    strength: 0.2, 
-    maxDistance: 80 
-  });
-
   return (
     <GestureWrapper
       longPress={{
@@ -51,7 +44,6 @@ export const SocialLinkButton: React.FC<SocialLinkButtonProps> = ({
       style={style}
     >
       <Button
-        ref={magneticEffect.ref}
         className={css({
           width: 'full',
           display: 'flex',

@@ -7,7 +7,6 @@ import { Calendar, Clock, MapPin } from "lucide-react";
 import { css } from "@/styled-system/css";
 import { PartyEvent } from "@/types";
 import { useMouseParallax } from "@/hooks/use-parallax";
-import { useMagneticHover } from "@/hooks/use-magnetic-hover";
 
 interface PartyCardProps {
   party: PartyEvent;
@@ -37,11 +36,6 @@ export function PartyCard({
     maxOffset: 20 + index * 3 
   });
   
-  // Magnetic hover for ticket button
-  const ticketButtonMagnetic = useMagneticHover<HTMLButtonElement>({ 
-    strength: 0.3, 
-    maxDistance: 100 
-  });
 
   // Combine parallax and stagger transforms
   const parallaxTransform = cardParallax.styles?.transform || 'translate3d(0, 0, 0)';
@@ -162,7 +156,7 @@ export function PartyCard({
 
         {party.hotOnes ? (
           <Button
-            ref={index === 0 ? freeButtonRef : ticketButtonMagnetic.ref}
+            ref={index === 0 ? freeButtonRef : undefined}
             onClick={onFreeClick}
             onKeyDown={onFreeKeyDown}
             aria-label="Free ticket - opens Instagram"
@@ -194,7 +188,6 @@ export function PartyCard({
           </Button>
         ) : (
           <Button
-            ref={ticketButtonMagnetic.ref}
             className={css({
               width: 'full',
               backgroundColor: 'black',
