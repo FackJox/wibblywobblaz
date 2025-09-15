@@ -3,8 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Instagram,
-  Music,
   ExternalLink,
   Calendar,
   MapPin,
@@ -26,6 +24,7 @@ import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import { css, cx } from "@/styled-system/css";
 import { PartyEvent, SocialLink } from "@/types";
+import { upcomingParties, socialLinks } from "@/data/constants";
 
 // Define page components outside to prevent recreation
 const LinksPage = ({
@@ -802,51 +801,6 @@ export default function WibblyWobblazLanding() {
     }
   }, [currentPage, isTransitioning, shhhState]);
 
-  const upcomingParties = [
-    {
-      id: 1,
-      title: "WIBBLY WOBBLAZ - LAUNCH PARTY",
-      date: "2025-08-30",
-      time: "22:00",
-      venue: "THE PACKHORSE SECRET CELLAR",
-      location: "BS5 0DN",
-      poster: "/images/2/posterflyer 4.png",
-      ticketLink: "https://hdfst.uk/e132325",
-    },
-    {
-      id: 2,
-      title: "HOT ONES - EP01",
-      date: "2025-08-16",
-      time: "22:00",
-      venue: "DIXIES CHICKEN SHOP",
-      location: "BS1 3QU",
-      poster: "/images/1/output.gif",
-      hotOnes: true,
-    },
-    {
-      id: 3,
-      title: "HOT ONES - EP02",
-      date: "2025-09-20",
-      time: "22:00",
-      venue: "THE STAR AND GARTER",
-      location: "BS6 5LR",
-      poster: "/images/3/STGARTER.png",
-      hotOnes: true,
-    },
-  ];
-
-  const socialLinks = [
-    {
-      name: "Instagram",
-      icon: Instagram,
-      url: "https://instagram.com/wibblywobblaz",
-    },
-    {
-      name: "SoundCloud",
-      icon: Music,
-      url: "https://soundcloud.com/wibblywobblaz",
-    },
-  ];
 
   return (
     <div className={css({
