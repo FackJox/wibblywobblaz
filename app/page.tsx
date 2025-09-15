@@ -1,108 +1,15 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useStaggerReveal } from "@/hooks/use-stagger-reveal";
 import { SwipeableLayout } from "@/components/layouts/swipeable-layout";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
-import { PartyCard } from "@/components/wibbly/party-card";
 import { LinksPage } from "@/components/pages/links-page";
+import { PartiesPage } from "@/components/pages/parties-page";
 import { ShhhAnimation } from "@/components/wibbly/shhh-animation";
 import { css } from "@/styled-system/css";
-import { PartyEvent } from "@/types";
 import { upcomingParties, socialLinks } from "@/data/constants";
 
-// Define page components outside to prevent recreation
-
-const PartiesPage = ({
-  upcomingParties,
-  isVisible,
-  handleFreeClick,
-  handleFreeKeyDown,
-  shhhState,
-  freeButtonRef,
-}: {
-  upcomingParties: Array<PartyEvent>;
-  isVisible: boolean;
-  handleFreeClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
-  handleFreeKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
-  shhhState: "hidden" | "animating" | "visible";
-  freeButtonRef: React.RefObject<HTMLButtonElement | null>;
-}) => {
-  // Scroll animations for parties page
-  const partiesStagger = useStaggerReveal<HTMLDivElement>(upcomingParties.length, {
-    staggerDelay: 200,
-    duration: 700,
-    threshold: 0.1,
-    once: false,
-  });
-  
-  // Note: Individual magnetic and parallax effects are now handled within PartyCard component
-
-  // Store animation functions in refs to avoid dependency issues
-  const partiesTriggerRef = React.useRef(partiesStagger.trigger);
-  const partiesResetRef = React.useRef(partiesStagger.reset);
-  
-  React.useEffect(() => {
-    partiesTriggerRef.current = partiesStagger.trigger;
-    partiesResetRef.current = partiesStagger.reset;
-  }, [partiesStagger.trigger, partiesStagger.reset]);
-
-  // Reset animations when page becomes hidden
-  React.useEffect(() => {
-    console.log('[RND-PAGE] PartiesPage visibility changed:', isVisible);
-    if (!isVisible) {
-      // Reset animations when page is hidden
-      partiesResetRef.current();
-    } else {
-      // Trigger animations when page becomes visible
-      setTimeout(() => {
-        partiesTriggerRef.current();
-      }, 100);
-    }
-  }, [isVisible]);
-
-  return (
-    <div className={css({
-      height: 'full',
-      backgroundColor: 'black',
-      color: 'white',
-      overflowY: 'auto'
-    })}>
-      <div className={css({
-        padding: { base: '4', md: '8' }
-      })}>
-        <div
-          ref={partiesStagger.containerRef}
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: { base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
-            gap: { base: '4', md: '6' },
-            maxWidth: '7xl',
-            marginX: 'auto'
-          })}
-        >
-          {upcomingParties.map((party: PartyEvent, index: number) => (
-            <PartyCard
-              key={party.id}
-              party={party}
-              index={index}
-              onFreeClick={handleFreeClick}
-              onFreeKeyDown={handleFreeKeyDown}
-              shhhState={shhhState}
-              freeButtonRef={index === 0 ? freeButtonRef : undefined}
-              staggerAnimation={{
-                opacity: partiesStagger.items[index]?.opacity,
-                transform: partiesStagger.items[index]?.transform,
-                transition: partiesStagger.items[index]?.transition,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function WibblyWobblazLanding() {
   const [currentPage, setCurrentPage] = useState<"links" | "parties">("links");
