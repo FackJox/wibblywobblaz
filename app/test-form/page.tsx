@@ -1,11 +1,18 @@
 "use client"
 
 import { FormDemo } from "@/components/examples/FormDemo"
+import { css } from "@/styled-system/css"
 
 export default function TestFormPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto max-w-6xl">
+    <div className={css({
+      minHeight: '100vh',
+      backgroundColor: 'background'
+    })}>
+      <div className={css({
+        maxWidth: '6xl',
+        marginX: 'auto'
+      })}>
         <FormDemo />
       </div>
     </div>

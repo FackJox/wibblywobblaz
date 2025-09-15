@@ -1,7 +1,7 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-08T19:17:52Z
-version: 1.0
+last_updated: 2025-09-15T14:03:37Z
+version: 1.1
 author: Claude Code PM System
 ---
 
@@ -25,7 +25,7 @@ import { Card } from "@/components/ui/card"
 ```
 - Pre-built components with consistent API
 - Radix UI for accessibility
-- Tailwind for styling
+- PandaCSS for type-safe styling
 - Class Variance Authority for variants
 
 #### Theme System Pattern
@@ -112,11 +112,11 @@ User Interaction → Event Handler → State Update → Re-render → DOM Update
 
 ### Utility-First CSS
 ```jsx
-<div className="min-h-screen bg-black text-white p-8">
+<div className={css({ minH: 'screen', bg: 'black', color: 'white', p: '8' })}>
 ```
-- Tailwind utility classes
-- Inline responsive modifiers
-- No CSS modules or styled-components
+- PandaCSS patterns and recipes
+- Type-safe responsive modifiers
+- Generated atomic CSS classes
 
 ### Animation Patterns
 ```css
@@ -127,7 +127,7 @@ User Interaction → Event Handler → State Update → Re-render → DOM Update
 }
 ```
 - CSS keyframes for complex animations
-- Tailwind animate classes for simple animations
+- PandaCSS animation patterns
 - Transform-based transitions
 
 ## Code Organization Patterns

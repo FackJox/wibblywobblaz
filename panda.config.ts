@@ -286,6 +286,22 @@ export default defineConfig({
           '100%': { opacity: '1', transform: 'translateY(0)' }
         },
         
+        // Ripple effect animations
+        'ripple-expand': {
+          '0%': {
+            width: '0',
+            height: '0',
+            opacity: '0.6',
+            transform: 'translate(-50%, -50%) scale(0)'
+          },
+          '100%': {
+            width: 'var(--ripple-size)',
+            height: 'var(--ripple-size)',
+            opacity: '0',
+            transform: 'translate(-50%, -50%) scale(1)'
+          }
+        },
+        
         // Dialog and overlay animations
         'fade-in': {
           '0%': { opacity: '0' },

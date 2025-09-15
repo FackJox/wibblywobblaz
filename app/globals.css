@@ -111,3 +111,577 @@ body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
 }
+
+/* Shhh SVG slide-up animation styles - Updated to use PandaCSS keyframes */
+@layer utilities {
+  .shhh-slide-up {
+    animation: slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  }
+
+  .shhh-slide-up-slow {
+    animation: slideUpFromBottom 1200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+/* Hardware acceleration and performance optimizations */
+@layer base {
+  .will-change-transform {
+    will-change: transform, opacity;
+  }
+  
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .shhh-slide-up,
+  .shhh-slide-up-slow {
+    animation: fadeInReduced 400ms ease-out forwards;
+  }
+  
+  @keyframes fadeInReduced {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
+
+/* Responsive positioning utilities */
+@layer utilities {
+  .bottom-aligned {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .bottom-aligned-responsive {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+  }
+}
+
+/* Enhanced easing curves for natural motion */
+@layer utilities {
+  .ease-out-quart {
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  
+  .ease-out-expo {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .ease-bounce {
+    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
+
+/* Smooth scrolling styles */
+@layer utilities {
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  
+  .scrollable-content {
+    /* Desktop: no scrolling */
+    @media (min-width: 768px) {
+      overflow: hidden;
+      height: 100%;
+    }
+    /* Mobile: enable scrolling */
+    @media (max-width: 767px) {
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+  }
+  
+  .links-container {
+    /* Desktop: fit viewport exactly */
+    @media (min-width: 768px) {
+      height: 100%;
+    }
+    /* Mobile: minimal extra height for scroll trigger */
+    @media (max-width: 767px) {
+      min-height: 100%;
+    }
+  }
+}
+
+/* Parties page viewport optimization */
+@layer utilities {
+  .parties-container {
+    /* Ensure content fits viewport on all devices */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .parties-content {
+    /* Desktop: center content vertically */
+    @media (min-width: 768px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+    }
+    /* Mobile: allow scrolling with proper spacing */
+    @media (max-width: 767px) {
+      padding-bottom: 2rem;
+      min-height: calc(100vh - 120px); /* Account for nav height */
+    }
+  }
+  
+  .parties-grid {
+    /* Ensure grid doesn't overflow viewport */
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Mobile-specific adjustments for parties */
+  @media (max-width: 767px) {
+    .parties-card {
+      margin-bottom: 1rem;
+    }
+    
+    .parties-card:last-child {
+      margin-bottom: 2rem; /* Extra space for last card */
+    }
+  }
+}
+
+/* Smooth scrolling for supported browsers */
+@supports (scroll-behavior: smooth) {
+  .scrollable-content {
+    @media (max-width: 767px) {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+/* Enhanced mobile scrolling */
+@layer utilities {
+  .mobile-scroll-optimized {
+    @media (max-width: 767px) {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+    }
+  }
+}
+
+/* Ripple Effect Animations */
+@layer utilities {
+  .animate-ripple {
+    animation: rippleEffect var(--ripple-duration, 600ms) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  .animate-micro-bounce {
+    animation: microBounce 200ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .animate-click-scale {
+    animation: clickScale 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-success-bounce {
+    animation: successBounce 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+@keyframes rippleEffect {
+  0% {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes microBounce {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(0.95, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes clickScale {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(0.95, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes successBounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: scale3d(1, 1, 1);
+  }
+  40%, 43% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+  70% {
+    transform: scale3d(1.05, 1.05, 1);
+  }
+  90% {
+    transform: scale3d(1.02, 1.02, 1);
+  }
+}
+
+/* Interactive Element States */
+@layer utilities {
+  .hover-micro-scale:hover {
+    transform: scale(1.05);
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .focus-micro-scale:focus {
+    transform: scale(1.02);
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .active-micro-scale:active {
+    transform: scale(0.98);
+    transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .ripple-container {
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+/* Hover Enhancement Animations */
+@layer utilities {
+  .animate-magnetic-return {
+    animation: magneticReturn 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-parallax-tilt {
+    animation: parallaxTilt 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-text-reveal-slide {
+    animation: textRevealSlide 300ms ease forwards;
+  }
+  
+  .animate-text-reveal-fade {
+    animation: textRevealFade 300ms ease forwards;
+  }
+  
+  .animate-text-reveal-scale {
+    animation: textRevealScale 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  .animate-gradient-pulse {
+    animation: gradientPulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes magneticReturn {
+  0% {
+    transform: translate3d(var(--magnetic-x, 0), var(--magnetic-y, 0), 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes parallaxTilt {
+  0% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(var(--parallax-x, 0deg)) rotateY(var(--parallax-y, 0deg));
+  }
+  100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@keyframes textRevealSlide {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes textRevealFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes textRevealScale {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.8, 0.8, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes gradientPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Enhanced Hover States */
+@layer utilities {
+  .hover-magnetic:hover {
+    --magnetic-attraction: 1;
+  }
+  
+  .hover-gradient-follow:hover {
+    --gradient-opacity: 1;
+  }
+  
+  .hover-parallax:hover {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .hover-depth-1:hover {
+    transform: translateZ(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hover-depth-2:hover {
+    transform: translateZ(20px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  
+  .hover-depth-3:hover {
+    transform: translateZ(30px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Reduced motion support for hover enhancements */
+@media (prefers-reduced-motion: reduce) {
+  .animate-magnetic-return,
+  .animate-parallax-tilt,
+  .animate-text-reveal-slide,
+  .animate-text-reveal-fade,
+  .animate-text-reveal-scale,
+  .animate-gradient-pulse {
+    animation: fadeInReduced 200ms ease-out forwards;
+  }
+  
+  .hover-magnetic:hover,
+  .hover-gradient-follow:hover,
+  .hover-parallax:hover,
+  .hover-depth-1:hover,
+  .hover-depth-2:hover,
+  .hover-depth-3:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  @keyframes fadeInReduced {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+/* Reduced motion support for ripples */
+@media (prefers-reduced-motion: reduce) {
+  .animate-ripple {
+    animation: fadeInOutReduced 200ms ease-out;
+  }
+  
+  .animate-micro-bounce,
+  .animate-click-scale,
+  .animate-success-bounce {
+    animation: none;
+  }
+  
+  .hover-micro-scale:hover,
+  .focus-micro-scale:focus,
+  .active-micro-scale:active {
+    transform: none;
+  }
+  
+  @keyframes fadeInOutReduced {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+/* Enhanced performance optimizations */
+@layer base {
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  .will-change-contents {
+    will-change: contents;
+  }
+  
+  .will-change-scroll {
+    will-change: scroll-position;
+  }
+  
+  .composite-layer {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  
+  .animation-smooth {
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+  
+  .parallax-optimized {
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    contain: layout style paint;
+  }
+
+  /* Optimized transform classes */
+  .transform-gpu {
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .transform-preserve-3d {
+    transform-style: preserve-3d;
+  }
+}
+
+/* Performance budgeting utilities */
+@layer utilities {
+  .animation-budget-low {
+    animation-duration: 150ms;
+    transition-duration: 150ms;
+  }
+  
+  .animation-budget-medium {
+    animation-duration: 250ms;
+    transition-duration: 250ms;
+  }
+  
+  .animation-budget-high {
+    animation-duration: 400ms;
+    transition-duration: 400ms;
+  }
+  
+  /* Frame rate optimizations */
+  .fps-optimized {
+    contain: layout style paint;
+    content-visibility: auto;
+  }
+  
+  .scroll-optimized {
+    contain: layout style;
+    will-change: scroll-position;
+  }
+}
+
+/* Animation frame budgeting keyframes */
+@keyframes lowMotion {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes mediumMotion {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0) scale3d(0.95, 0.95, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  }
+}
+
+@keyframes highMotion {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) scale3d(0.9, 0.9, 1) rotate3d(0, 0, 1, -2deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate3d(0, -5px, 0) scale3d(1.05, 1.05, 1) rotate3d(0, 0, 1, 1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+/* Enhanced reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all will-change optimizations for reduced motion */
+  * {
+    will-change: auto !important;
+  }
+  
+  /* Force low-motion animations */
+  .animation-budget-medium,
+  .animation-budget-high {
+    animation-duration: 150ms;
+    transition-duration: 150ms;
+  }
+}

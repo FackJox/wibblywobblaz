@@ -1,0 +1,431 @@
+name: Performance Monitoring
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run performance tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      full_analysis:
+        description: 'Run full performance analysis'
+        required: false
+        default: 'false'
+
+jobs:
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    name: Bundle Size Analysis
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        env:
+          NODE_ENV: production
+        run: npm run build
+
+      - name: Analyze bundle size
+        env:
+          CI: true
+        run: npm run analyze:bundle
+
+      - name: Run bundlesize check
+        run: npm run bundle:size
+
+      - name: Upload bundle reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bundle-reports
+          path: |
+            reports/bundle-analysis-*.json
+            .next/bundle-report.html
+          retention-days: 30
+
+      - name: Comment bundle size on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Find the latest bundle report
+            const reportsDir = 'reports';
+            const reports = fs.readdirSync(reportsDir)
+              .filter(file => file.startsWith('bundle-analysis-'))
+              .sort()
+              .reverse();
+              
+            if (reports.length === 0) {
+              console.log('No bundle reports found');
+              return;
+            }
+            
+            const reportPath = path.join(reportsDir, reports[0]);
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            
+            const formatBytes = (bytes) => {
+              if (bytes === 0) return '0 B';
+              const k = 1024;
+              const sizes = ['B', 'KB', 'MB', 'GB'];
+              const i = Math.floor(Math.log(bytes) / Math.log(k));
+              return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            };
+            
+            const status = report.performance.meetsTarget ? '✅' : '❌';
+            const totalSize = formatBytes(report.totalGzipped);
+            
+            let comment = `## 📦 Bundle Size Analysis ${status}\n\n`;
+            comment += `**Total Gzipped Size:** ${totalSize}\n`;
+            comment += `**Target:** 30KB gzipped\n`;
+            comment += `**Status:** ${report.performance.meetsTarget ? 'Meets target' : 'Exceeds target'}\n\n`;
+            
+            if (report.chunks.length > 0) {
+              comment += `### Largest Chunks\n`;
+              report.chunks.slice(0, 5).forEach(chunk => {
+                const indicator = chunk.gzippedSize > 30720 ? '🔴' : 
+                                chunk.gzippedSize > 25600 ? '🟡' : '🟢';
+                comment += `- ${indicator} \`${chunk.name}\`: ${chunk.formatted.gzippedSize}\n`;
+              });
+            }
+            
+            if (report.warnings.length > 0) {
+              comment += `\n### ⚠️ Warnings\n`;
+              report.warnings.forEach(warning => {
+                comment += `- ${warning.replace(/^⚠️\s*/, '')}\n`;
+              });
+            }
+            
+            if (report.performance.recommendations.length > 0) {
+              comment += `\n### 💡 Recommendations\n`;
+              report.performance.recommendations.forEach(rec => {
+                comment += `- ${rec}\n`;
+              });
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  performance-testing:
+    runs-on: ubuntu-latest
+    name: Performance Testing
+    needs: bundle-analysis
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        env:
+          NODE_ENV: production
+        run: npm run build
+
+      - name: Start application
+        run: |
+          npm run start &
+          sleep 10
+
+      - name: Wait for server
+        run: |
+          timeout=60
+          while ! curl -f http://localhost:3000 >/dev/null 2>&1; do
+            sleep 1
+            timeout=$((timeout - 1))
+            if [ $timeout -eq 0 ]; then
+              echo "Server failed to start"
+              exit 1
+            fi
+          done
+          echo "Server is ready"
+
+      - name: Install Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3-dev \
+            libatk-bridge2.0-dev \
+            libdrm-dev \
+            libxcomposite-dev \
+            libxdamage-dev \
+            libxrandr-dev \
+            libgbm-dev \
+            libxss-dev \
+            libasound2-dev
+
+      - name: Run performance tests
+        env:
+          CI: true
+        run: npm run performance:test
+
+      - name: Upload performance reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-reports
+          path: reports/performance-*.json
+          retention-days: 30
+
+      - name: Comment performance results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Find the latest performance report
+            const reportsDir = 'reports';
+            const reports = fs.readdirSync(reportsDir)
+              .filter(file => file.startsWith('performance-'))
+              .sort()
+              .reverse();
+              
+            if (reports.length === 0) {
+              console.log('No performance reports found');
+              return;
+            }
+            
+            const reportPath = path.join(reportsDir, reports[0]);
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            
+            const passRate = Math.round((report.summary.passedTargets / report.summary.totalTargets) * 100);
+            const status = passRate >= 80 ? '✅' : '❌';
+            
+            let comment = `## 🚀 Performance Test Results ${status}\n\n`;
+            comment += `**Pass Rate:** ${report.summary.passedTargets}/${report.summary.totalTargets} (${passRate}%)\n\n`;
+            
+            // Lighthouse scores
+            comment += `### 📊 Lighthouse Scores\n`;
+            report.scenarios.forEach(scenario => {
+              comment += `\n**${scenario.scenario}:**\n`;
+              Object.entries(scenario.scores).forEach(([category, score]) => {
+                const emoji = score >= 90 ? '🟢' : score >= 70 ? '🟡' : '🔴';
+                comment += `- ${emoji} ${category}: ${score}/100\n`;
+              });
+            });
+            
+            // Core Web Vitals
+            comment += `\n### ⚡ Core Web Vitals\n`;
+            report.scenarios.forEach(scenario => {
+              const metrics = scenario.metrics;
+              comment += `\n**${scenario.scenario}:**\n`;
+              comment += `- LCP: ${Math.round(metrics.largestContentfulPaint)}ms\n`;
+              comment += `- CLS: ${metrics.cumulativeLayoutShift.toFixed(3)}\n`;
+              comment += `- TBT: ${Math.round(metrics.totalBlockingTime)}ms\n`;
+              comment += `- FCP: ${Math.round(metrics.firstContentfulPaint)}ms\n`;
+            });
+            
+            if (report.summary.criticalIssues.length > 0) {
+              comment += `\n### ❌ Critical Issues\n`;
+              report.summary.criticalIssues.forEach(issue => {
+                comment += `- ${issue}\n`;
+              });
+            }
+            
+            if (report.summary.recommendations.length > 0) {
+              comment += `\n### 💡 Recommendations\n`;
+              [...new Set(report.summary.recommendations)].forEach(rec => {
+                comment += `- ${rec}\n`;
+              });
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  regression-detection:
+    runs-on: ubuntu-latest
+    name: Performance Regression Detection
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [bundle-analysis, performance-testing]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-reports"
+          merge-multiple: true
+          path: current-reports
+
+      - name: Download previous reports
+        uses: actions/cache@v4
+        with:
+          path: previous-reports
+          key: performance-baseline-${{ github.sha }}
+          restore-keys: |
+            performance-baseline-
+
+      - name: Compare performance
+        run: |
+          echo "🔍 Checking for performance regressions..."
+          
+          # Create directories if they don't exist
+          mkdir -p previous-reports current-reports
+          
+          # Find current reports
+          CURRENT_BUNDLE=$(ls current-reports/bundle-analysis-*.json 2>/dev/null | head -1 || echo "")
+          CURRENT_PERF=$(ls current-reports/performance-*.json 2>/dev/null | head -1 || echo "")
+          
+          # Find previous reports
+          PREV_BUNDLE=$(ls previous-reports/bundle-analysis-*.json 2>/dev/null | tail -1 || echo "")
+          PREV_PERF=$(ls previous-reports/performance-*.json 2>/dev/null | tail -1 || echo "")
+          
+          REGRESSION_DETECTED=false
+          
+          # Bundle size regression check
+          if [[ -n "$CURRENT_BUNDLE" && -n "$PREV_BUNDLE" ]]; then
+            echo "📦 Comparing bundle sizes..."
+            
+            CURRENT_SIZE=$(node -e "
+              const report = require('./$CURRENT_BUNDLE');
+              console.log(report.totalGzipped);
+            ")
+            
+            PREV_SIZE=$(node -e "
+              const report = require('./$PREV_BUNDLE');
+              console.log(report.totalGzipped);
+            ")
+            
+            INCREASE=$(node -e "
+              const increase = ($CURRENT_SIZE - $PREV_SIZE) / $PREV_SIZE * 100;
+              console.log(increase.toFixed(2));
+            ")
+            
+            echo "Previous size: $(node -e "console.log(Math.round($PREV_SIZE/1024))")KB"
+            echo "Current size: $(node -e "console.log(Math.round($CURRENT_SIZE/1024))")KB"
+            echo "Change: ${INCREASE}%"
+            
+            if (( $(echo "$INCREASE > 10" | bc -l) )); then
+              echo "❌ Bundle size regression detected: +${INCREASE}%"
+              REGRESSION_DETECTED=true
+            fi
+          fi
+          
+          # Performance regression check
+          if [[ -n "$CURRENT_PERF" && -n "$PREV_PERF" ]]; then
+            echo "🚀 Comparing performance scores..."
+            
+            # Compare average performance scores
+            CURRENT_AVG=$(node -e "
+              const report = require('./$CURRENT_PERF');
+              const totalScore = report.scenarios.reduce((sum, s) => sum + s.scores.performance, 0);
+              console.log(Math.round(totalScore / report.scenarios.length));
+            ")
+            
+            PREV_AVG=$(node -e "
+              const report = require('./$PREV_PERF');
+              const totalScore = report.scenarios.reduce((sum, s) => sum + s.scores.performance, 0);
+              console.log(Math.round(totalScore / report.scenarios.length));
+            ")
+            
+            DECREASE=$(node -e "
+              const decrease = $PREV_AVG - $CURRENT_AVG;
+              console.log(decrease);
+            ")
+            
+            echo "Previous average score: ${PREV_AVG}"
+            echo "Current average score: ${CURRENT_AVG}"
+            echo "Change: -${DECREASE} points"
+            
+            if (( $(echo "$DECREASE > 5" | bc -l) )); then
+              echo "❌ Performance regression detected: -${DECREASE} points"
+              REGRESSION_DETECTED=true
+            fi
+          fi
+          
+          if [[ "$REGRESSION_DETECTED" == "true" ]]; then
+            echo "regression_detected=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ No significant performance regression detected"
+            echo "regression_detected=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Save current reports as baseline
+        if: success()
+        run: |
+          # Copy current reports to previous for next comparison
+          rm -rf previous-reports
+          cp -r current-reports previous-reports
+
+      - name: Update performance baseline cache
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: previous-reports
+          key: performance-baseline-${{ github.sha }}
+
+  deployment-gate:
+    runs-on: ubuntu-latest
+    name: Performance Deployment Gate
+    needs: [bundle-analysis, performance-testing, regression-detection]
+    if: always() && (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    
+    steps:
+      - name: Check performance results
+        run: |
+          echo "🔍 Evaluating deployment readiness..."
+          
+          BUNDLE_STATUS="${{ needs.bundle-analysis.result }}"
+          PERF_STATUS="${{ needs.performance-testing.result }}"
+          REGRESSION_STATUS="${{ needs.regression-detection.result }}"
+          
+          echo "Bundle analysis: $BUNDLE_STATUS"
+          echo "Performance testing: $PERF_STATUS"
+          echo "Regression detection: $REGRESSION_STATUS"
+          
+          if [[ "$BUNDLE_STATUS" == "success" && "$PERF_STATUS" == "success" && "$REGRESSION_STATUS" == "success" ]]; then
+            echo "✅ All performance checks passed - Ready for deployment"
+            echo "ready_for_deployment=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Performance checks failed - Deployment blocked"
+            echo "ready_for_deployment=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [[ "${{ steps.check-performance-results.outputs.ready_for_deployment }}" == "true" ]]; then
+            echo "🚀 Performance validation complete - Application ready for deployment"
+          else
+            echo "🚫 Deployment blocked due to performance issues"
+          fi
