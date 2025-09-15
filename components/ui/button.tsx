@@ -104,6 +104,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     // Merge refs
     const mergedRef = React.useCallback((element: HTMLButtonElement | null) => {
+      // Debug logging for button dimensions
+      if (element) {
+        const computedStyle = window.getComputedStyle(element)
+        console.log('[DEBUGBUT] Button mounted:', {
+          element,
+          width: element.offsetWidth,
+          height: element.offsetHeight,
+          display: computedStyle.display,
+          position: computedStyle.position,
+          overflow: computedStyle.overflow,
+          className: element.className,
+          variant,
+          size
+        })
+      }
+      
       // Set all hook refs
       if (rippleHook.rippleRef) {
         (rippleHook.rippleRef as React.MutableRefObject<HTMLButtonElement | null>).current = element
@@ -121,22 +137,57 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       } else if (ref) {
         ref.current = element
       }
-    }, [rippleHook.rippleRef, clickAnimationHook.clickRef, magneticHook.ref, ref])
+    }, [rippleHook.rippleRef, clickAnimationHook.clickRef, magneticHook.ref, ref, variant, size])
     
     // Merge all event handlers
     const handleMouseDown = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-      console.log('[BUTTON] handleMouseDown triggered')
+      console.log('[DEBUGBUT] handleMouseDown triggered')
+      const target = event.currentTarget
+      const beforeStyle = window.getComputedStyle(target)
+      const beforeWidth = target.offsetWidth
+      
+      console.log('[DEBUGBUT] Before click:', {
+        width: beforeWidth,
+        display: beforeStyle.display,
+        position: beforeStyle.position,
+        overflow: beforeStyle.overflow
+      })
+      
       if (!disabled) {
         // Call ripple handler
         if (ripple) {
           const rippleProps = rippleHook.getRippleProps()
-          console.log('[BUTTON] Calling ripple onMouseDown', rippleProps)
+          console.log('[DEBUGBUT] Calling ripple onMouseDown')
           rippleProps.onMouseDown?.(event as React.MouseEvent<HTMLElement>)
+          
+          // Check after ripple
+          setTimeout(() => {
+            const afterStyle = window.getComputedStyle(target)
+            const afterWidth = target.offsetWidth
+            console.log('[DEBUGBUT] After ripple:', {
+              width: afterWidth,
+              widthChanged: afterWidth !== beforeWidth,
+              display: afterStyle.display,
+              position: afterStyle.position,
+              overflow: afterStyle.overflow
+            })
+          }, 10)
         }
         // Call click animation handler
         if (clickAnimation) {
           const clickProps = clickAnimationHook.getClickProps()
           clickProps.onMouseDown?.()
+          
+          // Check after click animation
+          setTimeout(() => {
+            const afterStyle = window.getComputedStyle(target)
+            const afterWidth = target.offsetWidth
+            console.log('[DEBUGBUT] After clickAnimation:', {
+              width: afterWidth,
+              widthChanged: afterWidth !== beforeWidth,
+              transform: afterStyle.transform
+            })
+          }, 20)
         }
       }
       // Call parent's handler if exists

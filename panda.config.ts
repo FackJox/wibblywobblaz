@@ -559,6 +559,9 @@ export default defineConfig({
           transitionTimingFunction: 'ease-in-out',
           cursor: 'pointer',
           outline: 'none',
+          position: 'relative',
+          overflow: 'hidden',
+          isolation: 'isolate',
           
           // Ring styles for focus
           _focusVisible: {

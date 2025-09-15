@@ -74,7 +74,8 @@ export function calculateRipplePosition(
  */
 export function createRippleElement(
   position: RipplePosition,
-  config: RippleConfig = {}
+  config: RippleConfig = {},
+  element?: HTMLElement
 ): HTMLElement {
   const {
     color = 'currentColor',
@@ -89,17 +90,28 @@ export function createRippleElement(
   const rippleColor = color === 'currentColor' 
     ? 'rgba(255, 255, 255, 0.5)' 
     : color;
+  
+  // Calculate the position to center the ripple at the click point
+  let left = position.x - position.size / 2
+  let top = position.y - position.size / 2
+  
+  // If element is provided, constrain the ripple within bounds
+  if (element) {
+    left = Math.max(0, Math.min(left, element.offsetWidth - position.size))
+    top = Math.max(0, Math.min(top, element.offsetHeight - position.size))
+  }
     
   ripple.style.cssText = `
-    left: ${position.x - position.size / 2}px;
-    top: ${position.y - position.size / 2}px;
+    position: absolute;
+    left: ${left}px;
+    top: ${top}px;
     width: ${position.size}px;
     height: ${position.size}px;
     background: ${rippleColor};
     animation-duration: ${duration}ms;
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     animation-fill-mode: forwards;
-    z-index: 1;
+    z-index: 0;
   `
   
   return ripple
@@ -113,10 +125,16 @@ export function addRippleToElement(
   event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | null,
   config: RippleConfig = {}
 ): () => void {
-  console.log('[RIPPLE-UTILS] addRippleToElement called', {
+  console.log('[DEBUGBUT] addRippleToElement called', {
     element,
     disabled: config.disabled,
-    event: !!event
+    event: !!event,
+    beforeWidth: element.offsetWidth,
+    beforeStyles: {
+      position: element.style.position,
+      overflow: element.style.overflow,
+      display: window.getComputedStyle(element).display
+    }
   })
   
   if (config.disabled) {
@@ -124,25 +142,24 @@ export function addRippleToElement(
   }
   
   const position = calculateRipplePosition(event, element, config)
-  const ripple = createRippleElement(position, config)
+  const ripple = createRippleElement(position, config, element)
   
-  console.log('[RIPPLE-UTILS] Created ripple', {
+  console.log('[DEBUGBUT] Created ripple', {
     position,
     ripple,
     styles: ripple.style.cssText
   })
   
-  // Ensure element has relative positioning for ripple positioning
-  const originalPosition = element.style.position
-  if (!element.style.position || element.style.position === 'static') {
-    element.style.position = 'relative'
-  }
-  
-  // Add overflow hidden to contain ripples
-  const originalOverflow = element.style.overflow
-  element.style.overflow = 'hidden'
+  // Note: The button component should have position:relative and overflow:hidden
+  // set in its base styles to avoid layout shifts
   
   element.appendChild(ripple)
+  
+  console.log('[DEBUGBUT] After ripple append:', {
+    afterWidth: element.offsetWidth,
+    childCount: element.children.length,
+    rippleAdded: true
+  })
   
   // Remove ripple after animation completes
   const cleanup = () => {
@@ -157,12 +174,6 @@ export function addRippleToElement(
   // Return immediate cleanup function
   return () => {
     cleanup()
-    // Restore original styles if no other ripples
-    const remainingRipples = element.querySelectorAll('.animate-ripple')
-    if (remainingRipples.length === 0) {
-      element.style.position = originalPosition || ''
-      element.style.overflow = originalOverflow || ''
-    }
   }
 }
 
