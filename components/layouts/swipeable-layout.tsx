@@ -133,9 +133,11 @@ export const SwipeableLayout: React.FC<SwipeableLayoutProps> = ({
               className={css({
                 position: "absolute",
                 inset: "0",
+              })}
+              style={{
                 transition: transitionStyle,
                 transform: `translateX(${translateX})`,
-              })}
+              }}
             >
               {children[pageId]}
             </div>
