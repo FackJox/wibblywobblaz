@@ -320,4 +320,3 @@ export {
   cardContent as cardContentRecipe,
   cardFooter as cardFooterRecipe
 }
-export type { CardProps, CardTitleProps }
