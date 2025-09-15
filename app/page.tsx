@@ -18,7 +18,6 @@ export default function WibblyWobblazLanding() {
   const [shhhState, setShhhState] = useState<
     "hidden" | "animating" | "visible"
   >("hidden");
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const freeButtonRef = useRef<HTMLButtonElement>(null);
   
   // Handle mobile menu toggle
@@ -120,7 +119,7 @@ export default function WibblyWobblazLanding() {
             />
           ),
           parties: (
-            <div ref={scrollContainerRef} className={css({ height: 'full' })}>
+            <div className={css({ height: 'full' })}>
               {/* Shhh Animation Component */}
               <ShhhAnimation
                 state={shhhState}
