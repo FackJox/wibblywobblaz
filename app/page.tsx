@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   ExternalLink,
   Calendar,
-  MapPin,
-  Clock,
   ShoppingBag,
 } from "lucide-react";
 import Image from "next/image";
@@ -21,6 +19,7 @@ import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
+import { PartyCard } from "@/components/wibbly/party-card";
 import { css, cx } from "@/styled-system/css";
 import { PartyEvent, SocialLink } from "@/types";
 import { upcomingParties, socialLinks } from "@/data/constants";
@@ -468,19 +467,7 @@ const PartiesPage = ({
     once: false,
   });
   
-  // Mouse parallax for party cards with staggered depth - create individual hooks
-  const card1Parallax = useMouseParallax<HTMLDivElement>(0.02, { maxOffset: 20 });
-  const card2Parallax = useMouseParallax<HTMLDivElement>(0.025, { maxOffset: 23 });
-  const card3Parallax = useMouseParallax<HTMLDivElement>(0.03, { maxOffset: 26 });
-  
-  // Magnetic hover for GET TICKETS buttons - create individual hooks
-  const ticket1Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 });
-  const ticket2Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 });
-  const ticket3Magnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.3, maxDistance: 100 });
-  
-  // Create arrays for easier access
-  const cardsParallax = [card1Parallax, card2Parallax, card3Parallax];
-  const ticketButtonsMagnetic = [ticket1Magnetic, ticket2Magnetic, ticket3Magnetic];
+  // Note: Individual magnetic and parallax effects are now handled within PartyCard component
 
   // Store animation functions in refs to avoid dependency issues
   const partiesTriggerRef = React.useRef(partiesStagger.trigger);
@@ -525,186 +512,22 @@ const PartiesPage = ({
             marginX: 'auto'
           })}
         >
-          {upcomingParties.map((party: PartyEvent, index: number) => {
-            // Combine parallax and stagger transforms
-            const parallaxTransform = cardsParallax[index]?.styles?.transform || 'translate3d(0, 0, 0)';
-            const staggerTransform = partiesStagger.items[index]?.transform || '';
-            const combinedTransform = staggerTransform ? 
-              `${parallaxTransform} ${staggerTransform}` : 
-              parallaxTransform;
-            
-            return (
-              <div
-                key={party.id}
-                ref={cardsParallax[index].ref}
-                className={css({
-                  display: 'flex',
-                  flexDirection: 'column',
-                  border: '4px solid white',
-                  backgroundColor: 'black',
-                  color: 'white',
-                  transition: 'all 0.3s',
-                  backdropFilter: 'blur(0.125rem)',
-                  _hover: {
-                    backgroundColor: 'white',
-                    color: 'black'
-                  }
-                })}
-                style={{
-                  opacity: partiesStagger.items[index]?.opacity ?? 0,
-                  transform: combinedTransform,
-                  transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease-out',
-                  willChange: 'transform, opacity',
-                }}
-              >
-              {/* Poster */}
-              <div className={css({
-                aspectRatio: '3/4',
-                borderBottom: '4px solid white',
-                position: 'relative',
-                overflow: 'hidden'
-              })}>
-                <Image
-                  src={party.poster || "/images/flyer4.png"}
-                  alt={party.title}
-                  fill
-                  className={css({
-                    objectFit: 'cover',
-                    transition: 'all 0.2s',
-                    '.group:hover &': {
-                      filter: 'invert(1)'
-                    }
-                  })}
-                />
-              </div>
-
-              {/* Event Details */}
-              <div className={css({
-                padding: '4',
-                '& > * + *': {
-                  marginTop: '3'
-                }
-              })}>
-                <h3 className={css({
-                  fontSize: { base: 'lg', md: 'xl' },
-                  fontWeight: 'black',
-                  letterSpacing: 'tighter'
-                })}>
-                  {party.title}
-                </h3>
-
-                <div className={css({
-                  '& > * + *': {
-                    marginTop: '2'
-                  },
-                  fontSize: { base: 'sm', md: 'base' },
-                  fontWeight: 'bold'
-                })}>
-                  <div className={css({
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '2'
-                  })}>
-                    <Calendar size={16} />
-                    <span>
-                      {new Date(party.date)
-                        .toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })
-                        .toUpperCase()}
-                    </span>
-                  </div>
-
-                  <div className={css({
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '2'
-                  })}>
-                    <Clock size={16} />
-                    <span>{party.time}</span>
-                  </div>
-
-                  <div className={css({
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '2'
-                  })}>
-                    <MapPin size={16} />
-                    <span>{party.venue}</span>
-                  </div>
-
-                  <div className={css({
-                    fontSize: 'xs',
-                    fontWeight: 'black',
-                    letterSpacing: 'wider'
-                  })}>
-                    {party.location}
-                  </div>
-                </div>
-
-                {party.hotOnes ? (
-                  <Button
-                    ref={index === 0 ? freeButtonRef : ticketButtonsMagnetic[index].ref}
-                    onClick={handleFreeClick}
-                    onKeyDown={handleFreeKeyDown}
-                    aria-label="Free ticket - opens Instagram"
-                    aria-pressed={shhhState === "animating"}
-                    disabled={shhhState === "animating"}
-                    className={css({
-                      width: 'full',
-                      backgroundColor: 'black',
-                      borderWidth: '2px',
-                      borderColor: 'white',
-                      color: 'white',
-                      fontWeight: '900',
-                      transition: 'colors 0.2s ease',
-                      _hover: {
-                        backgroundColor: 'white',
-                        color: 'black',
-                        borderColor: 'black'
-                      },
-                      _disabled: {
-                        opacity: '0.75',
-                        cursor: 'not-allowed'
-                      }
-                    })}
-                    ripple={true}
-                    clickAnimation={true}
-                    magnetic={true}
-                  >
-                    {shhhState === "animating" ? "LOADING..." : "FREE"}
-                  </Button>
-                ) : (
-                  <Button
-                    ref={ticketButtonsMagnetic[index].ref}
-                    className={css({
-                      width: 'full',
-                      backgroundColor: 'black',
-                      borderWidth: '2px',
-                      borderColor: 'white',
-                      color: 'white',
-                      fontWeight: '900',
-                      transition: 'colors 0.2s ease',
-                      _hover: {
-                        backgroundColor: 'white',
-                        color: 'black',
-                        borderColor: 'black'
-                      }
-                    })}
-                    onClick={() => window.open(party.ticketLink || 'https://hdfst.uk/e132325', '_blank')}
-                    ripple={true}
-                    clickAnimation={true}
-                    magnetic={true}
-                  >
-                    GET TICKETS
-                  </Button>
-                )}
-              </div>
-            </div>
-            );
-          })}
+          {upcomingParties.map((party: PartyEvent, index: number) => (
+            <PartyCard
+              key={party.id}
+              party={party}
+              index={index}
+              onFreeClick={handleFreeClick}
+              onFreeKeyDown={handleFreeKeyDown}
+              shhhState={shhhState}
+              freeButtonRef={index === 0 ? freeButtonRef : undefined}
+              staggerAnimation={{
+                opacity: partiesStagger.items[index]?.opacity,
+                transform: partiesStagger.items[index]?.transform,
+                transition: partiesStagger.items[index]?.transition,
+              }}
+            />
+          ))}
         </div>
       </div>
     </div>
