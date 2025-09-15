@@ -14,8 +14,8 @@ import {
 } from "@/hooks/use-scroll-animations";
 import { useMouseParallax } from "@/hooks/use-parallax";
 import { useMagneticHover } from "@/hooks/use-magnetic-hover";
-import { useHorizontalSwipeNavigation } from "@/hooks/use-swipe";
 import { GestureWrapper } from "@/components/ui/gesture-wrapper";
+import { SwipeableLayout } from "@/components/layouts/swipeable-layout";
 import { toast } from "@/components/ui/use-toast";
 import { AnimationPerformanceOverlay } from "@/components/dev/animation-performance-overlay";
 import { NavigationHeader } from "@/components/navigation/NavigationHeader";
@@ -486,7 +486,6 @@ export default function WibblyWobblazLanding() {
   const [shhhState, setShhhState] = useState<
     "hidden" | "animating" | "visible"
   >("hidden");
-  const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const freeButtonRef = useRef<HTMLButtonElement>(null);
   
@@ -506,34 +505,8 @@ export default function WibblyWobblazLanding() {
     // Allow CSS transition to complete
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 800);
+    }, 700); // Match SwipeableLayout default duration
   };
-
-  // Swipe navigation handlers
-  const handleSwipeLeft = () => {
-    if (currentPage === "links") {
-      handlePageTransition("parties");
-    }
-  };
-
-  const handleSwipeRight = () => {
-    if (currentPage === "parties") {
-      handlePageTransition("links");
-    }
-  };
-
-  // Setup gesture navigation
-  const { gestureHandlers } = useHorizontalSwipeNavigation(
-    handleSwipeLeft,
-    handleSwipeRight,
-    {
-      enabled: !isTransitioning,
-      swipeConfig: {
-        minSwipeDistance: 100,
-        minSwipeVelocity: 0.5,
-      },
-    },
-  );
 
   // Handle FREE button click with accessibility
   const handleFreeClick = (e: React.MouseEvent | React.KeyboardEvent) => {
@@ -583,142 +556,115 @@ export default function WibblyWobblazLanding() {
         onMobileMenuToggle={handleMobileMenuToggle}
       />
 
-      {/* Content Container with Conditional Rendering */}
-      <div
-        ref={containerRef}
-        className={css({
-          flex: '1',
-          position: 'relative',
-          overflow: 'hidden'
-        })}
-        onTouchStart={(e) => gestureHandlers.onTouchStart(e.nativeEvent)}
-        onTouchMove={(e) => gestureHandlers.onTouchMove(e.nativeEvent)}
-        onTouchEnd={(e) => gestureHandlers.onTouchEnd(e.nativeEvent)}
-        onTouchCancel={(e) => gestureHandlers.onTouchCancel(e.nativeEvent)}
-        onMouseDown={(e) => gestureHandlers.onMouseDown(e.nativeEvent)}
-        onMouseMove={(e) => gestureHandlers.onMouseMove(e.nativeEvent)}
-        onMouseUp={(e) => gestureHandlers.onMouseUp(e.nativeEvent)}
-        onMouseLeave={(e) => gestureHandlers.onMouseLeave(e.nativeEvent)}
+      {/* SwipeableLayout for page transitions */}
+      <SwipeableLayout
+        currentPage={currentPage}
+        onPageChange={(page) => handlePageTransition(page as "links" | "parties")}
+        pages={["links", "parties"]}
+        isTransitioning={isTransitioning}
+        transitionDuration={700}
+        minSwipeDistance={100}
+        minSwipeVelocity={0.5}
       >
-        <div className={css({
-          position: 'relative',
-          width: 'full',
-          height: 'full'
-        })}>
-          {/* Links Page */}
-          <div
-            className={css({
-              position: 'absolute',
-              inset: '0',
-              transition: 'transform 0.7s ease-in-out',
-              transform: currentPage === "links" ? 'translateX(0)' : 'translateX(-100%)'
-            })}
-          >
+        {{
+          links: (
             <LinksPage
               socialLinks={socialLinks}
               isVisible={currentPage === "links"}
             />
-          </div>
-
-          {/* Parties Page */}
-          <div
-            ref={scrollContainerRef}
-            className={css({
-              position: 'absolute',
-              inset: '0',
-              transition: 'transform 0.7s ease-in-out',
-              transform: currentPage === "parties" ? 'translateX(0)' : 'translateX(100%)'
-            })}
-          >
-            {/* Accessibility live region for animation announcements */}
-            <div aria-live="polite" aria-atomic="true" className={css({ srOnly: true })}>
-              {shhhState === "animating" &&
-                "Animation started, opening Instagram..."}
-              {shhhState === "visible" &&
-                "Animation completed, Instagram opening in new tab"}
-            </div>
-
-            {/* Shhh SVG - stays visible after first animation */}
-            <div
-              role="img"
-              aria-label="Shhh character animation"
-              aria-hidden={shhhState === "hidden"}
-              className={cx(
-                css({
-                  position: 'absolute',
-                  inset: '0',
-                  display: 'flex',
-                  alignItems: 'end',
-                  justifyContent: 'center',
-                  willChange: 'transform',
-                  zIndex: '50',
-                  pointerEvents: 'none'
-                }),
-                shhhState === "animating" ? css({ 
-                  animation: 'slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
-                  '@media (prefers-reduced-motion: reduce)': {
-                    animation: 'fadeInReduced 400ms ease-out forwards'
-                  }
-                }) : ""
-              )}
-              style={{
-                transform:
-                  shhhState === "animating" || shhhState === "visible"
-                    ? "translateY(0)"
-                    : "translateY(100vh)",
-                transition: shhhState === "animating" ? "none" : "transform 600ms ease-in-out",
-                opacity:
-                  shhhState === "animating" || shhhState === "visible" ? 1 : 0,
-              }}
-              onAnimationEnd={(e) => {
-                if (e.animationName === "slideUpBounce") {
-                  setShhhState("visible");
-                  window.open("https://instagram.com/wibblywobblaz", "_blank");
-                  // Hide the shhh SVG after 2 seconds
-                  setTimeout(() => {
-                    setShhhState("hidden");
-                  }, 2000);
-                }
-              }}
-            >
-              <div className={css({ 
-                position: 'absolute',
-                bottom: '0',
-                left: '50%',
-                transform: 'translateX(-50%) translateZ(0)',
-                maxWidth: '90vw',
-                maxHeight: '90vh',
-                width: 'auto',
-                height: 'auto',
-                backfaceVisibility: 'hidden',
-                perspective: '1000px'
-              })}>
-                <Image
-                  src="/images/shhh.svg"
-                  alt="Shhh"
-                  width={1024}
-                  height={1024}
-                  className={css({ 
-                    width: 'auto', 
-                    height: 'auto', 
-                    objectFit: 'contain' 
-                  })}
-                  priority
-                />
+          ),
+          parties: (
+            <div ref={scrollContainerRef} className={css({ height: 'full' })}>
+              {/* Accessibility live region for animation announcements */}
+              <div aria-live="polite" aria-atomic="true" className={css({ srOnly: true })}>
+                {shhhState === "animating" &&
+                  "Animation started, opening Instagram..."}
+                {shhhState === "visible" &&
+                  "Animation completed, Instagram opening in new tab"}
               </div>
-            </div>
 
-            <PartiesPage
-              upcomingParties={upcomingParties}
-              isVisible={currentPage === "parties"}
-              handleFreeClick={handleFreeClick}
-              handleFreeKeyDown={handleFreeKeyDown}
-              shhhState={shhhState}
-              freeButtonRef={freeButtonRef}
-            />
-          </div>
-        </div>
-      </div>
+              {/* Shhh SVG - stays visible after first animation */}
+              <div
+                role="img"
+                aria-label="Shhh character animation"
+                aria-hidden={shhhState === "hidden"}
+                className={cx(
+                  css({
+                    position: 'absolute',
+                    inset: '0',
+                    display: 'flex',
+                    alignItems: 'end',
+                    justifyContent: 'center',
+                    willChange: 'transform',
+                    zIndex: '50',
+                    pointerEvents: 'none'
+                  }),
+                  shhhState === "animating" ? css({ 
+                    animation: 'slideUpBounce 900ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+                    '@media (prefers-reduced-motion: reduce)': {
+                      animation: 'fadeInReduced 400ms ease-out forwards'
+                    }
+                  }) : ""
+                )}
+                style={{
+                  transform:
+                    shhhState === "animating" || shhhState === "visible"
+                      ? "translateY(0)"
+                      : "translateY(100vh)",
+                  transition: shhhState === "animating" ? "none" : "transform 600ms ease-in-out",
+                  opacity:
+                    shhhState === "animating" || shhhState === "visible" ? 1 : 0,
+                }}
+                onAnimationEnd={(e) => {
+                  if (e.animationName === "slideUpBounce") {
+                    setShhhState("visible");
+                    window.open("https://instagram.com/wibblywobblaz", "_blank");
+                    // Hide the shhh SVG after 2 seconds
+                    setTimeout(() => {
+                      setShhhState("hidden");
+                    }, 2000);
+                  }
+                }}
+              >
+                <div className={css({ 
+                  position: 'absolute',
+                  bottom: '0',
+                  left: '50%',
+                  transform: 'translateX(-50%) translateZ(0)',
+                  maxWidth: '90vw',
+                  maxHeight: '90vh',
+                  width: 'auto',
+                  height: 'auto',
+                  backfaceVisibility: 'hidden',
+                  perspective: '1000px'
+                })}>
+                  <Image
+                    src="/images/shhh.svg"
+                    alt="Shhh"
+                    width={1024}
+                    height={1024}
+                    className={css({ 
+                      width: 'auto', 
+                      height: 'auto', 
+                      objectFit: 'contain' 
+                    })}
+                    priority
+                  />
+                </div>
+              </div>
+
+              <PartiesPage
+                upcomingParties={upcomingParties}
+                isVisible={currentPage === "parties"}
+                handleFreeClick={handleFreeClick}
+                handleFreeKeyDown={handleFreeKeyDown}
+                shhhState={shhhState}
+                freeButtonRef={freeButtonRef}
+              />
+            </div>
+          ),
+        }}
+      </SwipeableLayout>
 
       {/* Performance Overlay (Development Only) */}
       <AnimationPerformanceOverlay />

@@ -15,7 +15,7 @@ interface PartyCardProps {
   onFreeClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
   onFreeKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   shhhState: "hidden" | "animating" | "visible";
-  freeButtonRef?: React.RefObject<HTMLButtonElement>;
+  freeButtonRef?: React.RefObject<HTMLButtonElement | null>;
   staggerAnimation?: {
     opacity?: number;
     transform?: string;
