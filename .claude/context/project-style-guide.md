@@ -1,7 +1,7 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-08T19:17:52Z
-version: 1.0
+last_updated: 2025-09-15T14:03:37Z
+version: 1.1
 author: Claude Code PM System
 ---
 
@@ -128,19 +128,38 @@ const [error, setError] = useState<string | null>(null)
 // Avoid: const [state, setState] = useState({ loading: false, error: null })
 ```
 
-### CSS/Tailwind Conventions
+### CSS/PandaCSS Conventions
 
-#### Class Organization
+#### Style Organization
 ```jsx
-// Order: Layout → Display → Spacing → Typography → Colors → Effects
-<div className="flex flex-col gap-4 p-6 text-lg font-bold text-white bg-black rounded-lg shadow-xl">
+// Use PandaCSS patterns and recipes
+import { css } from '@/styled-system/css'
+import { stack, hstack } from '@/styled-system/patterns'
+
+// Type-safe styling
+<div className={css({ 
+  display: 'flex', 
+  flexDirection: 'column', 
+  gap: '4', 
+  p: '6',
+  fontSize: 'lg',
+  fontWeight: 'bold',
+  color: 'white',
+  bg: 'black',
+  borderRadius: 'lg',
+  boxShadow: 'xl'
+})}>
 ```
 
 #### Responsive Design
 ```jsx
-// Mobile-first approach
-<div className="p-4 md:p-6 lg:p-8">
-  <h1 className="text-2xl md:text-4xl lg:text-6xl">
+// Mobile-first approach with PandaCSS
+<div className={css({
+  p: { base: '4', md: '6', lg: '8' }
+})}>
+  <h1 className={css({
+    fontSize: { base: '2xl', md: '4xl', lg: '6xl' }
+  })}>
 ```
 
 #### Custom Properties
