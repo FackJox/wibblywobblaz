@@ -5,10 +5,12 @@ import { useStaggerReveal } from "@/hooks/use-stagger-reveal";
 import { PartyCard } from "@/components/wibbly/party-card";
 import { css } from "@/styled-system/css";
 import { PartyEvent } from "@/types";
+import { type MousePosition } from "@/hooks/use-shared-mouse";
 
 interface PartiesPageProps {
   upcomingParties: Array<PartyEvent>;
   isVisible: boolean;
+  mousePosition?: MousePosition;
   handleFreeClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
   handleFreeKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   shhhState: "hidden" | "animating" | "visible";
@@ -18,6 +20,7 @@ interface PartiesPageProps {
 export const PartiesPage: React.FC<PartiesPageProps> = ({
   upcomingParties,
   isVisible,
+  mousePosition,
   handleFreeClick,
   handleFreeKeyDown,
   shhhState,
@@ -30,8 +33,6 @@ export const PartiesPage: React.FC<PartiesPageProps> = ({
     threshold: 0.1,
     once: false,
   });
-  
-  // Note: Individual magnetic and parallax effects are now handled within PartyCard component
 
   // Store animation functions in refs to avoid dependency issues
   const partiesTriggerRef = React.useRef(partiesStagger.trigger);
@@ -81,6 +82,7 @@ export const PartiesPage: React.FC<PartiesPageProps> = ({
               key={party.id}
               party={party}
               index={index}
+              mousePosition={mousePosition}
               onFreeClick={handleFreeClick}
               onFreeKeyDown={handleFreeKeyDown}
               shhhState={shhhState}

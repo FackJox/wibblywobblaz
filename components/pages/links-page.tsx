@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useStaggerReveal } from "@/hooks/use-stagger-reveal";
 import { useSimpleFadeIn } from "@/hooks/use-scroll-animations";
-import { useMouseParallax } from "@/hooks/use-parallax";
+import { calculateParallaxTransform, type MousePosition } from "@/hooks/use-shared-mouse";
 import { useMagneticHover } from "@/hooks/use-magnetic-hover";
 import { GestureWrapper } from "@/components/ui/gesture-wrapper";
 import { toast } from "@/components/ui/use-toast";
@@ -21,11 +21,13 @@ import { SocialLink } from "@/types";
 export interface LinksPageProps {
   socialLinks: Array<SocialLink>;
   isVisible: boolean;
+  mousePosition?: MousePosition;
 }
 
 export const LinksPage: React.FC<LinksPageProps> = ({
   socialLinks,
   isVisible,
+  mousePosition,
 }) => {
   // Unified stagger animation for all elements (3 headers + 4 buttons = 7 total)
   const logoFadeIn = useSimpleFadeIn("left");
@@ -36,9 +38,20 @@ export const LinksPage: React.FC<LinksPageProps> = ({
     once: false,
   });
   
-  // Mouse parallax for depth layers
-  const logoParallax = useMouseParallax<HTMLDivElement>(0.05, { maxOffset: 30 }); // Furthest layer - moves most
-  const linksParallax = useMouseParallax<HTMLDivElement>(0.02, { maxOffset: 15 }); // Middle layer - moderate movement
+  // Refs for parallax calculations
+  const logoRef = React.useRef<HTMLDivElement>(null);
+  const linksRef = React.useRef<HTMLDivElement>(null);
+  
+  // Calculate parallax transforms using shared mouse position
+  const logoParallaxTransform = React.useMemo(() => {
+    if (!mousePosition) return 'translate3d(0, 0, 0)';
+    return calculateParallaxTransform(logoRef.current, mousePosition, 0.05, 30);
+  }, [mousePosition]);
+  
+  const linksParallaxTransform = React.useMemo(() => {
+    if (!mousePosition) return 'translate3d(0, 0, 0)';
+    return calculateParallaxTransform(linksRef.current, mousePosition, 0.02, 15);
+  }, [mousePosition]);
   
   // Magnetic effects for link buttons - create individual hooks
   const ticketLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
@@ -98,7 +111,7 @@ export const LinksPage: React.FC<LinksPageProps> = ({
         <div
           ref={(el) => {
             logoFadeIn.ref.current = el;
-            logoParallax.ref.current = el;
+            logoRef.current = el;
           }}
           className={css({
             maxWidth: 'lg',
@@ -106,7 +119,7 @@ export const LinksPage: React.FC<LinksPageProps> = ({
           })}
           style={{
             ...logoFadeIn.styles,
-            ...logoParallax.styles,
+            transform: logoParallaxTransform,
             transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             willChange: 'transform',
           }}
@@ -138,14 +151,14 @@ export const LinksPage: React.FC<LinksPageProps> = ({
         zIndex: 2
       })}>
         <div 
-          ref={linksParallax.ref}
+          ref={linksRef}
           className={css({
             '& > * + *': {
               marginTop: { base: '6', md: '8' }
             }
           })}
           style={{
-            ...linksParallax.styles,
+            transform: linksParallaxTransform,
             transition: 'transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             willChange: 'transform',
           }}

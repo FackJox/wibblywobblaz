@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { css } from "@/styled-system/css";
 import { PartyEvent } from "@/types";
-import { useMouseParallax } from "@/hooks/use-parallax";
+import { calculateParallaxTransform, type MousePosition } from "@/hooks/use-shared-mouse";
 
 interface PartyCardProps {
   party: PartyEvent;
   index: number;
+  mousePosition?: MousePosition;
   onFreeClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
   onFreeKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   shhhState: "hidden" | "animating" | "visible";
@@ -25,20 +26,29 @@ interface PartyCardProps {
 export function PartyCard({
   party,
   index,
+  mousePosition,
   onFreeClick,
   onFreeKeyDown,
   shhhState,
   freeButtonRef,
   staggerAnimation,
 }: PartyCardProps) {
-  // Mouse parallax for individual card
-  const cardParallax = useMouseParallax<HTMLDivElement>(0.02 + index * 0.005, { 
-    maxOffset: 20 + index * 3 
-  });
+  // Card ref for parallax calculations
+  const cardRef = React.useRef<HTMLDivElement>(null);
   
+  // Track when magnetic hover is active to disable parallax
+  const [isMagneticActive, setIsMagneticActive] = React.useState(false);
+  
+  // Calculate parallax transform using shared mouse position
+  const intensity = 0.02 + index * 0.005;
+  const maxOffset = 20 + index * 3;
+  const parallaxTransform = React.useMemo(() => {
+    // Don't apply parallax when magnetic effect is active
+    if (!mousePosition || isMagneticActive) return 'translate3d(0, 0, 0)';
+    return calculateParallaxTransform(cardRef.current, mousePosition, intensity, maxOffset);
+  }, [mousePosition, intensity, maxOffset, isMagneticActive]);
 
   // Combine parallax and stagger transforms
-  const parallaxTransform = cardParallax.styles?.transform || 'translate3d(0, 0, 0)';
   const staggerTransform = staggerAnimation?.transform || '';
   const combinedTransform = staggerTransform ? 
     `${parallaxTransform} ${staggerTransform}` : 
@@ -46,7 +56,7 @@ export function PartyCard({
 
   return (
     <div
-      ref={cardParallax.ref}
+      ref={cardRef}
       className={css({
         display: 'flex',
         flexDirection: 'column',
@@ -55,6 +65,7 @@ export function PartyCard({
         color: 'white',
         transition: 'all 0.3s',
         backdropFilter: 'blur(0.125rem)',
+        contain: 'layout style',
         _hover: {
           backgroundColor: 'white',
           color: 'black'
@@ -157,6 +168,8 @@ export function PartyCard({
         {party.hotOnes ? (
           <Button
             ref={index === 0 ? freeButtonRef : undefined}
+            onMouseEnter={() => setIsMagneticActive(true)}
+            onMouseLeave={() => setIsMagneticActive(false)}
             onClick={onFreeClick}
             onKeyDown={onFreeKeyDown}
             aria-label="Free ticket - opens Instagram"
@@ -188,6 +201,8 @@ export function PartyCard({
           </Button>
         ) : (
           <Button
+            onMouseEnter={() => setIsMagneticActive(true)}
+            onMouseLeave={() => setIsMagneticActive(false)}
             className={css({
               width: 'full',
               backgroundColor: 'black',

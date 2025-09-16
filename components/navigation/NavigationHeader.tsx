@@ -4,13 +4,14 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useSimpleMagneticHover } from "@/hooks/use-magnetic-hover";
-import { useMouseParallax } from "@/hooks/use-parallax";
+import { calculateParallaxTransform, type MousePosition } from "@/hooks/use-shared-mouse";
 import { css } from "@/styled-system/css";
 
 interface NavigationHeaderProps {
   currentPage: "links" | "parties";
   mobileMenuOpen: boolean;
   isTransitioning: boolean;
+  mousePosition?: MousePosition;
   onPageTransition: (targetPage: "links" | "parties") => void;
   onMobileMenuToggle: () => void;
 }
@@ -19,17 +20,27 @@ export function NavigationHeader({
   currentPage,
   mobileMenuOpen,
   isTransitioning,
+  mousePosition,
   onPageTransition,
   onMobileMenuToggle,
 }: NavigationHeaderProps) {
   // Magnetic effect for navigation header text
   const magnetic = useSimpleMagneticHover<HTMLDivElement>('strong');
   
-  // Mouse parallax for header (closest layer - minimal movement)
-  const headerParallax = useMouseParallax<HTMLDivElement>(0.01, { maxOffset: 10 });
+  // Refs for parallax calculations
+  const headerRef = React.useRef<HTMLDivElement>(null);
+  const navButtonsRef = React.useRef<HTMLDivElement>(null);
   
-  // Mouse parallax for navigation buttons (slightly more movement than header)
-  const navButtonsParallax = useMouseParallax<HTMLDivElement>(0.015, { maxOffset: 12 });
+  // Calculate parallax transforms using shared mouse position
+  const headerParallaxTransform = React.useMemo(() => {
+    if (!mousePosition) return 'translate3d(0, 0, 0)';
+    return calculateParallaxTransform(headerRef.current, mousePosition, 0.01, 10);
+  }, [mousePosition]);
+  
+  const navButtonsParallaxTransform = React.useMemo(() => {
+    if (!mousePosition) return 'translate3d(0, 0, 0)';
+    return calculateParallaxTransform(navButtonsRef.current, mousePosition, 0.015, 12);
+  }, [mousePosition]);
 
   return (
     <nav
@@ -51,7 +62,7 @@ export function NavigationHeader({
         <div
           ref={(el) => {
             magnetic.ref.current = el;
-            headerParallax.ref.current = el;
+            headerRef.current = el;
           }}
           className={css({
             fontSize: 'brand',
@@ -68,7 +79,7 @@ export function NavigationHeader({
             willChange: 'transform'
           })}
           style={{ 
-            ...headerParallax.styles
+            transform: headerParallaxTransform
           }}
         >
           WIBBLY WOBBLAZ
@@ -76,13 +87,13 @@ export function NavigationHeader({
 
         {/* Desktop Navigation */}
         <div 
-          ref={navButtonsParallax.ref}
+          ref={navButtonsRef}
           className={css({
             display: { base: 'none', md: 'flex' },
             gap: '8'
           })}
           style={{
-            ...navButtonsParallax.styles,
+            transform: navButtonsParallaxTransform,
             transition: 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             willChange: 'transform',
           }}

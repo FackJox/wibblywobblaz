@@ -7,6 +7,7 @@ import { NavigationHeader } from "@/components/navigation/NavigationHeader";
 import { LinksPage } from "@/components/pages/links-page";
 import { PartiesPage } from "@/components/pages/parties-page";
 import { ShhhAnimation } from "@/components/wibbly/shhh-animation";
+import { useSharedMouse } from "@/hooks/use-shared-mouse";
 import { css } from "@/styled-system/css";
 import { upcomingParties, socialLinks } from "@/data/constants";
 
@@ -19,6 +20,9 @@ export default function WibblyWobblazLanding() {
     "hidden" | "animating" | "visible"
   >("hidden");
   const freeButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // Single shared mouse position for entire app
+  const mousePosition = useSharedMouse({ throttleMs: 16 });
   
   // Handle mobile menu toggle
   const handleMobileMenuToggle = () => {
@@ -97,6 +101,7 @@ export default function WibblyWobblazLanding() {
         currentPage={currentPage}
         mobileMenuOpen={mobileMenuOpen}
         isTransitioning={isTransitioning}
+        mousePosition={mousePosition}
         onPageTransition={handlePageTransition}
         onMobileMenuToggle={handleMobileMenuToggle}
       />
@@ -116,6 +121,7 @@ export default function WibblyWobblazLanding() {
             <LinksPage
               socialLinks={socialLinks}
               isVisible={currentPage === "links"}
+              mousePosition={mousePosition}
             />
           ),
           parties: (
@@ -130,6 +136,7 @@ export default function WibblyWobblazLanding() {
               <PartiesPage
                 upcomingParties={upcomingParties}
                 isVisible={currentPage === "parties"}
+                mousePosition={mousePosition}
                 handleFreeClick={handleFreeClick}
                 handleFreeKeyDown={handleFreeKeyDown}
                 shhhState={shhhState}
