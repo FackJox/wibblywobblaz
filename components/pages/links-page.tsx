@@ -41,6 +41,12 @@ export const LinksPage: React.FC<LinksPageProps> = ({
   // Refs for parallax calculations
   const logoRef = React.useRef<HTMLDivElement>(null);
   const linksRef = React.useRef<HTMLDivElement>(null);
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const logoContainerRef = React.useRef<HTMLDivElement>(null);
+  
+  // State for logo scaling and container height on scroll
+  const [logoScale, setLogoScale] = React.useState(1);
+  const [containerHeight, setContainerHeight] = React.useState('100%');
   
   // Calculate parallax transforms using shared mouse position
   const logoParallaxTransform = React.useMemo(() => {
@@ -82,6 +88,87 @@ export const LinksPage: React.FC<LinksPageProps> = ({
     fadeTriggerRef.current = logoFadeIn.trigger;
     fadeResetRef.current = logoFadeIn.reset;
   }, [logoFadeIn.trigger, logoFadeIn.reset]);
+  
+  // Handle scroll event for logo scaling
+  React.useEffect(() => {
+    const handleScroll = () => {
+      // Always use the scroll container
+      const scrollElement = scrollContainerRef.current;
+      
+      if (!scrollElement) return;
+      
+      const scrollTop = scrollElement.scrollTop;
+      const scrollHeight = scrollElement.scrollHeight - scrollElement.clientHeight;
+      
+      // Calculate scroll progress (0 to 1)
+      const scrollProgress = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+      
+      // Map scroll progress to scale (1 → 0.6)
+      // Using easing for smoother scaling
+      const minScale = 0.6;
+      const maxScale = 1;
+      const scale = maxScale - (scrollProgress * (maxScale - minScale));
+      
+      setLogoScale(scale);
+      
+      // Disabled container height animation to prevent spring back
+      // The height changes were causing layout recalculations that interfered with scrolling
+      /* 
+      if (isMobile) {
+        // Calculate container height for mobile (100% → 30%)
+        const minHeightPercent = 30;
+        const maxHeightPercent = 100;
+        const heightPercent = maxHeightPercent - (scrollProgress * (maxHeightPercent - minHeightPercent));
+        setContainerHeight(`${heightPercent}%`);
+      } else {
+        // Reset to full height on desktop
+        setContainerHeight('100%');
+      }
+      */
+    };
+    
+    const handleResize = () => {
+      // No longer needed since container height animation is disabled
+      // Keeping for potential future use
+    };
+    
+    // Handle wheel events on logo container (desktop only)
+    const handleLogoWheel = (e: WheelEvent) => {
+      const isMobile = window.innerWidth < 768;
+      if (!isMobile && scrollContainerRef.current) {
+        // Prevent default to avoid any conflicting scroll behavior
+        e.preventDefault();
+        // Forward the scroll to the links container
+        scrollContainerRef.current.scrollBy({
+          top: e.deltaY,
+          behavior: 'auto'
+        });
+      }
+    };
+    
+    const scrollElement = scrollContainerRef.current;
+    const logoElement = logoContainerRef.current;
+    
+    if (scrollElement) {
+      // Add scroll listener to scroll container
+      scrollElement.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleResize);
+      
+      // Add wheel event listener to logo container for desktop only
+      const isMobile = window.innerWidth < 768;
+      if (logoElement && !isMobile) {
+        logoElement.addEventListener('wheel', handleLogoWheel, { passive: false });
+      }
+      
+      return () => {
+        scrollElement.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+        if (logoElement) {
+          logoElement.removeEventListener('wheel', handleLogoWheel);
+        }
+      };
+    }
+  }, []);
 
   // Reset animations when page becomes hidden
   React.useEffect(() => {
@@ -100,32 +187,40 @@ export const LinksPage: React.FC<LinksPageProps> = ({
   }, [isVisible]);
 
   return (
-    <div className={css({
-      height: 'full',
-      backgroundColor: 'white',
-      display: 'flex',
-      flexDirection: { base: 'column', md: 'row' },
-      position: 'relative'
-    })}>
-      {/* Left Side - Logo */}
-      <div className={css({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: { base: '4', md: '8' },
+    <div 
+      data-links-page-container
+      className={css({
+        height: 'full',
         backgroundColor: 'white',
-        flex: { md: '1' },
-        height: { md: 'full' },
-        zIndex: 1
+        display: 'flex',
+        flexDirection: { base: 'column', md: 'row' },
+        position: 'relative',
+        overflow: 'hidden'
       })}>
+      {/* Left Side - Logo */}
+      <div 
+        ref={logoContainerRef}
+        className={css({
+          display: { base: 'none', md: 'flex' },
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '8',
+          backgroundColor: 'white',
+          flex: '1',
+          height: 'full',
+          zIndex: 1
+        })}>
         <div
           ref={(el) => {
             logoFadeIn.ref.current = el;
             logoRef.current = el;
           }}
           className={css({
+            width: 'full',
             maxWidth: 'lg',
-            width: 'full'
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
           })}
           style={{
             ...logoFadeIn.styles,
@@ -139,30 +234,76 @@ export const LinksPage: React.FC<LinksPageProps> = ({
             alt="WIBBLY WOBBLAZ"
             width={500}
             height={400}
-            className={css({
-              width: 'full',
-              height: 'auto'
-            })}
+            style={{
+              width: `${logoScale * 100}%`,
+              height: 'auto',
+              maxWidth: '500px',
+              transition: 'width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }}
             priority
           />
         </div>
       </div>
 
-      {/* Right Side - Links */}
-      <div className={css({
-        flex: '1',
-        backgroundColor: 'black',
-        color: 'white',
-        padding: { base: '4', md: '8' },
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        height: { md: 'full' },
-        zIndex: 2
-      })}>
+      {/* Right Side - Links (includes logo on mobile) */}
+      <div 
+        ref={scrollContainerRef}
+        className={css({
+          flex: '1',
+          backgroundColor: { base: 'white', md: 'black' },
+          color: { base: 'black', md: 'white' },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: { base: 'flex-start', md: 'center' },
+          height: 'full',
+          zIndex: 2,
+          overflowY: 'auto',
+          overflowX: 'hidden'
+        })}>
+        {/* Mobile Logo - shown only on mobile */}
+        <div className={css({
+          display: { base: 'flex', md: 'none' },
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '4',
+          backgroundColor: 'white'
+        })}>
+          <div className={css({
+            width: 'full',
+            maxWidth: 'lg',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          })}>
+            <Image
+              src="/images/wibbly-wobblaz-logo.png"
+              alt="WIBBLY WOBBLAZ"
+              width={500}
+              height={400}
+              style={{
+                width: `${logoScale * 100}%`,
+                height: 'auto',
+                maxWidth: '500px',
+                transition: 'width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+              }}
+              priority
+            />
+          </div>
+        </div>
+        
+        {/* Links Content */}
         <div 
           ref={linksRef}
           className={css({
+            backgroundColor: 'black',
+            color: 'white',
+            padding: { base: '4', md: '8' },
+            flex: { md: '1' },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: { md: 'center' }
+          })}>
+          <div className={css({
             '& > * + *': {
               marginTop: { base: '6', md: '8' }
             }
@@ -304,7 +445,7 @@ export const LinksPage: React.FC<LinksPageProps> = ({
               >
                 <Calendar size={24} />
                 <span>HEADFIRST</span>
-                <ExternalLink size={20} className="ml-auto" />
+                <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
               </Button>
             </GestureWrapper>
           </div>
@@ -396,9 +537,10 @@ export const LinksPage: React.FC<LinksPageProps> = ({
               >
                 <ShoppingBag size={20} />
                 <span>SHOP NOW</span>
-                <ExternalLink size={20} className="ml-auto" />
+                <ExternalLink size={20} className={css({ marginLeft: 'auto' })} />
               </Button>
             </GestureWrapper>
+            </div>
           </div>
         </div>
       </div>
