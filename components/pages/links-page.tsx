@@ -54,8 +54,18 @@ export const LinksPage: React.FC<LinksPageProps> = ({
   }, [mousePosition]);
   
   // Magnetic effects for link buttons - create individual hooks
-  const ticketLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
-  const merchLinkMagnetic = useMagneticHover<HTMLButtonElement>({ strength: 0.2, maxDistance: 80 });
+  const ticketLinkMagnetic = useMagneticHover<HTMLButtonElement>({ 
+    strength: 0.25, 
+    maxDistance: 100, 
+    boundaries: { x: 0.4, y: 0.4 }, 
+    lerp: 0.12 
+  });
+  const merchLinkMagnetic = useMagneticHover<HTMLButtonElement>({ 
+    strength: 0.25, 
+    maxDistance: 100, 
+    boundaries: { x: 0.4, y: 0.4 }, 
+    lerp: 0.12 
+  });
 
   // Store animation functions in refs to avoid dependency issues
   const staggerTriggerRef = React.useRef(allButtonsStagger.trigger);
