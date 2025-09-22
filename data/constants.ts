@@ -32,6 +32,16 @@ export const upcomingParties: PartyEvent[] = [
     poster: "/images/3/STGARTER.png",
     hotOnes: true,
   },
+  {
+    id: 4,
+    title: "WIBBLY WOBBLAZ - ZPA DAY",
+    date: "2025-10-18",
+    time: "22:00",
+    venue: "CLUB365",
+    location: "BS2 9EB",
+    poster: "/images/4/Page 4_5.png",
+    ticketLink: "https://hdfst.uk/e138426",
+  },
 ];
 
 export const socialLinks: SocialLink[] = [
