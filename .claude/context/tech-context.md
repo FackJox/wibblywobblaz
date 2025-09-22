@@ -1,7 +1,7 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-15T14:03:37Z
-version: 1.2
+last_updated: 2025-09-16T19:22:59Z
+version: 1.4
 author: Claude Code PM System
 ---
 
@@ -46,7 +46,7 @@ author: Claude Code PM System
 - **recharts**: 2.15.0 (React charts library)
 
 ### Date & Time
-- **date-fns**: 4.1.0 (Date utility library)
+- **date-fns**: 3.6.0 (Date utility library - downgraded for compatibility)
 - **react-day-picker**: 8.10.1 (Calendar component)
 
 ### UI Utilities
@@ -85,10 +85,11 @@ author: Claude Code PM System
 ### Available Scripts
 ```json
 {
-  "dev": "next dev",                      // Development server (port 3000)
-  "build": "next build",                  // Production build
+  "dev": "panda codegen && next dev",     // Development with PandaCSS codegen
+  "build": "panda codegen && next build", // Production build with PandaCSS
   "start": "next start",                  // Production server
   "lint": "next lint",                    // ESLint checking
+  "panda:codegen": "panda codegen",       // Generate PandaCSS styles
   "panda:watch": "panda codegen --watch", // PandaCSS development mode
   "test": "playwright test",              // Run all tests
   "test:visual": "playwright test tests/visual/", // Visual regression tests
@@ -193,5 +194,6 @@ author: Claude Code PM System
 - Playwright Test extension for VS Code
 
 ## Update History
+- 2025-09-16: Updated build scripts to include PandaCSS codegen, date-fns version adjusted
 - 2025-09-15: Tailwind CSS completely removed, PandaCSS fully integrated
 - 2025-09-14: Added PandaCSS migration, new testing infrastructure, performance tools

@@ -1,7 +1,7 @@
 ---
 created: 2025-09-08T19:17:52Z
-last_updated: 2025-09-15T21:28:14Z
-version: 1.3
+last_updated: 2025-09-16T19:22:59Z
+version: 1.4
 author: Claude Code PM System
 ---
 
@@ -14,9 +14,12 @@ wibbly-wobblaz-landing/
 ├── app/                    # Next.js App Router directory
 │   ├── layout.tsx         # Root layout with metadata
 │   ├── page.tsx           # Main landing page component
-│   └── globals.css        # Global styles and animations
+│   ├── globals.css        # Global styles and animations
+│   ├── providers.tsx      # App providers wrapper
+│   ├── demo/              # Demo pages
+│   └── test-*/            # Test pages (button, card, dialog, form, etc.)
 ├── components/            # React components
-│   ├── ui/               # Shadcn/UI components (43 files)
+│   ├── ui/               # Shadcn/UI components (50+ files)
 │   ├── navigation/       # Navigation components
 │   │   └── NavigationHeader.tsx # Header navigation
 │   ├── pages/           # Page components
@@ -27,11 +30,17 @@ wibbly-wobblaz-landing/
 │   ├── wibbly/          # Custom app components
 │   │   ├── party-card.tsx        # Party info cards
 │   │   ├── social-link-button.tsx # Social media links
-│   │   └── shhh.tsx              # Animated Shhh text
+│   │   └── shhh-animation.tsx    # Animated Shhh text
+│   ├── dev/             # Development tools
+│   ├── examples/        # Example components
+│   ├── lazy/            # Lazy-loaded components
 │   └── theme-provider.tsx # Theme management wrapper
-├── lib/                   # Utility functions
+├── lib/                   # Utility libraries (10+ files)
 │   ├── utils.ts          # cn() utility for class merging
-│   └── ripple-utils.ts   # Ripple effect utilities
+│   ├── ripple-utils.ts   # Ripple effect utilities
+│   ├── haptics.ts        # Haptic feedback
+│   ├── animation-utils.ts # Animation utilities
+│   └── performance-utils.ts # Performance monitoring
 ├── public/               # Static assets
 │   ├── images/          # Event posters and assets
 │   │   ├── 1/          # Hot Series Dixies Chicken artwork
@@ -39,10 +48,25 @@ wibbly-wobblaz-landing/
 │   │   ├── 3/          # STGARTER event assets
 │   │   └── 4/          # Dayglo poster variations
 │   └── fonts/           # Custom fonts (Hegval)
-├── hooks/               # Custom React hooks
-│   └── use-ripple.tsx   # Ripple effect hook
+├── hooks/               # Custom React hooks (19 files)
+│   ├── use-ripple.tsx   # Ripple effect hook
+│   ├── use-animation.tsx # Animation management
+│   ├── use-haptics.ts   # Haptic feedback hook
+│   ├── use-parallax.tsx # Parallax scrolling
+│   └── use-performance.tsx # Performance monitoring
 ├── utils/               # Utility functions
-│   └── utopia.ts        # Responsive typography utilities
+│   ├── utopia.ts        # Responsive typography utilities
+│   └── fluid-helpers.ts # Fluid design helpers
+├── __tests__/           # Test files
+│   ├── components/      # Component tests
+│   ├── hooks/           # Hook tests
+│   └── performance/     # Performance tests
+├── tests/               # Playwright tests
+│   └── visual/          # Visual regression tests
+├── scripts/             # Build and test scripts
+│   ├── analyze-bundle.js     # Bundle analysis
+│   ├── performance-test.js   # Performance testing
+│   └── lighthouse-audit.js   # Lighthouse auditing
 ├── styles/              # Additional styles
 ├── .claude/             # Claude Code PM system
 │   ├── context/         # Project context docs

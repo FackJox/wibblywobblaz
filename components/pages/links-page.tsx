@@ -260,14 +260,22 @@ export const LinksPage: React.FC<LinksPageProps> = ({
           overflowY: 'auto',
           overflowX: 'hidden'
         })}>
-        {/* Mobile Logo - shown only on mobile */}
+        {/* Mobile Logo - shown only on mobile, sticky at top */}
         <div className={css({
           display: { base: 'flex', md: 'none' },
           alignItems: 'center',
           justifyContent: 'center',
           padding: '4',
-          backgroundColor: 'white'
-        })}>
+          backgroundColor: 'white',
+          position: 'sticky',
+          top: '0',
+          zIndex: 10,
+          borderBottom: '1px solid rgba(0,0,0,0.1)',
+          transition: 'padding 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        })}
+        style={{
+          padding: `${Math.max(1 - (1 - logoScale) * 2, 0.5)}rem`
+        }}>
           <div className={css({
             width: 'full',
             maxWidth: 'lg',
